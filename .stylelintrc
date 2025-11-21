@@ -1,0 +1,28 @@
+{
+  "extends": ["stylelint-config-standard-scss", "stylelint-config-rational-order"],
+  "ignoreFiles": ["**/*.css"],
+  "rules": {
+    "property-no-vendor-suffix": true,
+    "value-no-vendor-suffix": true,
+    "selector-no-vendor-suffix": true,
+    "media-feature-name-no-vendor-suffix": true,
+    "at-rule-no-vendor-suffix": true,
+    "max-nesting-depth": 3,
+    "showOutputWindowOn": true,
+    "max-line-length": 160,
+    "selector-no-qualifying-type": [
+      true,
+      {
+        "ignore": ["attribute"]
+      }
+    ],
+    "order/properties-order": [],
+    "plugin/rational-order": [
+      true,
+      {
+        "border-in-box-model": false,
+        "empty-line-between-groups": false
+      }
+    ]
+  }
+}
