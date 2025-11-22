@@ -23,9 +23,9 @@ This monorepo contains multiple npm packages:
 
 | Package | Description | Version |
 |---------|-------------|---------|
-| [eva-css-fluid](./packages/eva-css) | Core fluid design framework | 1.0.3 |
-| [eva-colors](./packages/eva-colors) | OKLCH color utilities | 1.0.3 |
-| [eva-css-purge](./packages/eva-purge) | Intelligent CSS purging | 1.0.3 |
+| [eva-css-fluid](./packages/eva-css) | Core fluid design framework | 1.0.4 |
+| [eva-colors](./packages/eva-colors) | OKLCH color utilities | 1.0.4 |
+| [eva-css-purge](./packages/eva-purge) | Intelligent CSS purging | 1.0.4 |
 
 ## 🚀 Quick Start
 

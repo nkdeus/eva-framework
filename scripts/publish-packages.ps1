@@ -28,9 +28,9 @@ Write-Host ""
 
 # Simple package info
 Write-Host "Packages a publier:" -ForegroundColor Yellow
-Write-Host "  - eva-colors v1.0.3" -ForegroundColor Cyan
-Write-Host "  - eva-css-fluid v1.0.3" -ForegroundColor Cyan
-Write-Host "  - eva-css-purge v1.0.3" -ForegroundColor Cyan
+Write-Host "  - eva-colors v1.0.4" -ForegroundColor Cyan
+Write-Host "  - eva-css-fluid v1.0.4" -ForegroundColor Cyan
+Write-Host "  - eva-css-purge v1.0.4" -ForegroundColor Cyan
 Write-Host ""
 
 Write-Host "Etes-vous pret a publier ces packages sur NPM ?" -ForegroundColor Yellow
@@ -91,7 +91,7 @@ Write-Host ""
 Write-Host "Tous les packages ont ete publies avec succes !" -ForegroundColor Green
 Write-Host ""
 Write-Host "Prochaines etapes recommandees:" -ForegroundColor Cyan
-Write-Host "   1. Creer un tag git: git tag v1.0.3 && git push --tags"
+Write-Host "   1. Creer un tag git: git tag v1.0.4 && git push --tags"
 Write-Host "   2. Verifier sur NPM:"
 Write-Host "      - https://www.npmjs.com/package/eva-colors"
 Write-Host "      - https://www.npmjs.com/package/eva-css-fluid"
