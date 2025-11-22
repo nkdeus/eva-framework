@@ -23,18 +23,18 @@ This monorepo contains multiple npm packages:
 
 | Package | Description | Version |
 |---------|-------------|---------|
-| [@eva/css](./packages/eva-css) | Core fluid design framework | 1.0.0 |
-| [@eva/colors](./packages/eva-colors) | OKLCH color utilities | 1.0.0 |
-| [@eva/purge](./packages/eva-purge) | Intelligent CSS purging | 1.0.0 |
+| [eva-css-fluid](./packages/eva-css) | Core fluid design framework | 1.0.3 |
+| [eva-colors](./packages/eva-colors) | OKLCH color utilities | 1.0.3 |
+| [eva-css-purge](./packages/eva-purge) | Intelligent CSS purging | 1.0.3 |
 
 ## 🚀 Quick Start
 
 ### 1. Install EVA CSS
 
 ```bash
-npm install @eva/css
+npm install eva-css-fluid
 # or
-pnpm add @eva/css
+pnpm add eva-css-fluid
 ```
 
 ### 2. Extract Sizes from Your Design
@@ -48,7 +48,7 @@ Look at your Figma/Sketch design and note ALL sizes used:
 
 ```scss
 // my-project.scss
-@use '@eva/css' with (
+@use 'eva-css-fluid' with (
   // 👇 YOUR sizes from Figma/Sketch
   $sizes: (4, 8, 16, 32, 64, 120, 141),
   $font-sizes: (16, 120),
@@ -88,30 +88,30 @@ EVA CSS:
 
 ```bash
 # 1. Extract colors from Figma
-npx @eva/colors convert #ff0000
+npx eva-colors convert #ff0000
 # → oklch(62.8% 0.258 29.23)
 
 # 2. Create theme
-npx @eva/colors theme theme-config.json > theme.scss
+npx eva-colors theme theme-config.json > theme.scss
 
 # 3. Compile CSS with your sizes
-@use '@eva/css' with (
+@use 'eva-css-fluid' with (
   $sizes: (4, 8, 16, 32, 64),  # From Figma analysis
   $font-sizes: (16, 24, 32)
 );
 
 # 4. Build and optimize
 npm run build        # Compile SCSS
-npx @eva/purge --css dist/style.css --content "src/**/*.html"
+npx eva-css-purge --css dist/style.css --content "src/**/*.html"
 # → 40-70% size reduction
 ```
 
 ## 📚 Documentation
 
-### Core Framework: @eva/css
+### Core Framework: eva-css-fluid
 
 ```scss
-@use '@eva/css' with (
+@use 'eva-css-fluid' with (
   $sizes: (4, 8, 16, 32, 64, 128),
   $font-sizes: (14, 16, 20, 24, 32),
   $build-class: true,           // Generate utility classes
@@ -127,7 +127,7 @@ npx @eva/purge --css dist/style.css --content "src/**/*.html"
 
 [Full Documentation →](./packages/eva-css)
 
-### Color Utilities: @eva/colors
+### Color Utilities: eva-colors
 
 ```bash
 # Convert hex to OKLCH
@@ -141,7 +141,7 @@ eva-color contrast #ffffff #000000
 ```
 
 ```javascript
-import { hexToOklch, generateTheme } from '@eva/colors';
+import { hexToOklch, generateTheme } from 'eva-colors';
 
 const oklch = hexToOklch('#ff0000');
 // { l: 62.8, c: 0.258, h: 29.23, css: 'oklch(...)' }
@@ -149,7 +149,7 @@ const oklch = hexToOklch('#ff0000');
 
 [Full Documentation →](./packages/eva-colors)
 
-### CSS Optimization: @eva/purge
+### CSS Optimization: eva-css-purge
 
 ```bash
 # Purge unused CSS
@@ -227,7 +227,7 @@ EVA CSS:          Generated automatically from 7 sizes
 ## 🚀 Get Started
 
 ```bash
-npm install @eva/css @eva/colors @eva/purge
+npm install eva-css-fluid eva-colors eva-css-purge
 ```
 
 Check out the [Live Demo](https://eva-css.xyz/demo/) or visit [eva-css.xyz](https://eva-css.xyz/).

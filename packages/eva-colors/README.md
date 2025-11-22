@@ -212,8 +212,12 @@ MIT © [Michaël Tati](https://ulysse-2029.com/)
 - LinkedIn: [linkedin.com/in/mtati](https://www.linkedin.com/in/mtati/)
 - Website: [eva-css.xyz](https://eva-css.xyz/)
 
+## 🎨 Examples & Demo
+
+Live examples and color system documentation:
+- [https://eva-css.xyz/framework/colors](https://eva-css.xyz/framework/colors)
+
 ## 🔗 Related Packages
 
-- [@eva/css](https://www.npmjs.com/package/@eva/css) - Fluid design framework
-- [@eva/purge](https://www.npmjs.com/package/@eva/purge) - CSS optimization tool
-- [@eva/mcp-server](https://www.npmjs.com/package/@eva/mcp-server) - Figma to HTML MCP server
+- [eva-css-fluid](https://www.npmjs.com/package/eva-css-fluid) - Fluid design framework
+- [eva-css-purge](https://www.npmjs.com/package/eva-css-purge) - CSS optimization tool

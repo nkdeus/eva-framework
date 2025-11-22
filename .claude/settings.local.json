@@ -5,7 +5,13 @@
       "WebFetch(domain:raw.githubusercontent.com)",
       "Bash(tree:*)",
       "WebFetch(domain:api.github.com)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(pnpm build:*)",
+      "Bash(pnpm build:min:*)",
+      "Bash(npm pack:*)",
+      "Bash(chmod:*)",
+      "Bash(npm view:*)",
+      "WebFetch(domain:eva-css.xyz)"
     ],
     "deny": [],
     "ask": []

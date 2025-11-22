@@ -39,7 +39,6 @@ $wght-steps: math.div(($wght-max - $wght-min), $wght-step) + 1;
 
   .fwg-#{$i + 1} {
     --current-f-wg: var(--f-wg-#{$i + 1});
-    @debug var(--f-wg-#{$i + 1});
   }
 }
 

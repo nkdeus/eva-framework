@@ -4,6 +4,7 @@
 @use "sass:math";
 @use "sass:map";
 @use "sass:list";
+@use "sass:meta";
 
 $max: 1rem;
 $Φ: 1.61803398875;
@@ -83,7 +84,7 @@ $font-properties: (
 
 
 @function round2($number) {
-  @return math.div(round($number * 100), 100);
+  @return math.div(math.round($number * 100), 100);
 }
 
 @function getPercent($size, $ratio: 100) {
@@ -140,7 +141,7 @@ $font-properties: (
 }
 
 @function is-map($var) {
-  @return type-of($var) == "map";
+  @return meta.type-of($var) == "map";
 }
 
 // GÉNÉRATION DES VARIABLES CSS PERSONNALISÉES
@@ -153,7 +154,6 @@ $font-properties: (
     @if $name-by-size {
       $eva: $size;
     }
-    @debug "size : #{$size}";
     $calc-percent: getPercent($size);
     $calc-percent_: getPercent($size, $ez);
 
@@ -206,7 +206,7 @@ $font-properties: (
 
     @each $key, $prop in $css-vars {
       @if (is-map($prop)) {
-        --#{$eva}#{$key}: clamp(#{map-get($prop, min)}, #{map-get($prop, fluid)}, #{map-get($prop, max)});
+        --#{$eva}#{$key}: clamp(#{map.get($prop, min)}, #{map.get($prop, fluid)}, #{map.get($prop, max)});
       } @else {
         --#{$eva}#{$key}: #{$prop};
       }
@@ -269,12 +269,11 @@ $font-properties: (
 
     @each $key, $prop in $css-fs-vars {
       @if (is-map($prop)) {
-       
-        --#{$fs}-#{$eva}#{$key}: clamp(#{map-get($prop, min)}, #{map-get($prop, fluid)}, #{map-get($prop, max)});
-       
+
+        --#{$fs}-#{$eva}#{$key}: clamp(#{map.get($prop, min)}, #{map.get($prop, fluid)}, #{map.get($prop, max)});
+
       } @else {
         --#{$fs}-#{$eva}#{$key}: #{$prop};
-        @debug "fs-#{$eva}#{$key} : #{$prop}";
       }
     }
   }
@@ -294,7 +293,7 @@ $font-properties: (
       $should-generate: false;
       @if $custom-class {
         // Si custom-class est true, utiliser le filtrage par $class-config
-        $allowed-sizes: map-get($class-config, $key);
+        $allowed-sizes: map.get($class-config, $key);
         @if $allowed-sizes {
           @each $allowed-size in $allowed-sizes {
             @if $allowed-size == $size {

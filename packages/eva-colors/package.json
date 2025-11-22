@@ -1,6 +1,6 @@
 {
-  "name": "@eva/colors",
-  "version": "1.0.0",
+  "name": "eva-colors",
+  "version": "1.0.3",
   "description": "OKLCH color utilities for EVA CSS framework",
   "type": "module",
   "main": "src/index.js",
@@ -30,9 +30,6 @@
   },
   "dependencies": {
     "culori": "^4.0.2"
-  },
-  "publishConfig": {
-    "access": "public"
   },
   "repository": {
     "type": "git",

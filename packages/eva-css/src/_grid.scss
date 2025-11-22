@@ -1,8 +1,9 @@
 // Fonction strip-unit pour retirer les unités des valeurs Sass
 @use 'sass:math';
+@use 'sass:meta';
 
 @function strip-unit($number) {
-  @if type-of($number) == 'number' and not unitless($number) {
+  @if meta.type-of($number) == 'number' and not math.is-unitless($number) {
     @return math.div($number, ($number * 0 + 1));
   }
   @return $number;
@@ -30,7 +31,6 @@ $grid-min-size: 100 !default;
     @each $class in $sizing-class {
       .auto-fit-#{$size}#{$class} {
         --current-minmax: var(--#{$size}#{$class});
-        @debug "auto-fit-#{$size}#{$class}  --#{$size}#{$class}";
       }
     }
   }
@@ -104,9 +104,7 @@ $breakpoints: (
     flex: 0 0 auto;
     // Utilise --grid-columns dans le calcul pour être adaptable
     width: min(calc(var(--col-fraction) / var(--grid-columns) * 100% - (var(--grid-columns) / var(--col-fraction) - 1) * var(--current-gap) / (var(--grid-columns) / var(--col-fraction))), 100%);
-    @debug "col-1\/#{$denominator}  --col-fraction: calc(var(--grid-columns) / #{$denominator})";
   }
-  @debug "col-1\/#{$denominator}  --col-fraction: calc(var(--grid-columns) / #{$denominator})";
 }
 
 // ==========================================

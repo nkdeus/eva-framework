@@ -1,0 +1,28 @@
+# Development files
+.vscode/
+.idea/
+
+# Examples (optional, keep if useful for users)
+example-custom-sizes.css
+example-custom-sizes.scss
+
+# Build artifacts
+node_modules/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Source maps (optional, remove if you want to keep them)
+*.map
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# CI/CD
+.github/
+.gitlab-ci.yml

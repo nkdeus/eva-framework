@@ -1,6 +1,6 @@
 {
-  "name": "@eva/css",
-  "version": "1.0.0",
+  "name": "eva-css-fluid",
+  "version": "1.0.3",
   "description": "Fluid design framework with OKLCH colors - Transform static designs into responsive fluid systems",
   "type": "module",
   "main": "src/index.scss",
@@ -39,9 +39,6 @@
   },
   "devDependencies": {
     "sass": "^1.94.1"
-  },
-  "publishConfig": {
-    "access": "public"
   },
   "repository": {
     "type": "git",

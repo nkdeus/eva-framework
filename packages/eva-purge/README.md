@@ -1,4 +1,4 @@
-# @eva/purge
+# eva-css-purge
 
 > Intelligent CSS purging tool for EVA CSS projects
 
@@ -17,11 +17,11 @@ Removes unused CSS classes, IDs, and optimizes your stylesheets while keeping wh
 ## 📦 Installation
 
 ```bash
-npm install @eva/purge
+npm install eva-css-purge
 # or
-pnpm add @eva/purge
+pnpm add eva-css-purge
 # or
-yarn add @eva/purge
+yarn add eva-css-purge
 ```
 
 ## 🚀 Usage
@@ -86,7 +86,7 @@ eva-purge --config eva.config.js
 ### Programmatic Usage
 
 ```javascript
-const CSSPurger = require('@eva/purge');
+const CSSPurger = require('eva-css-purge');
 
 const config = {
   content: ['src/**/*.{html,js}'],
@@ -133,7 +133,7 @@ export default defineConfig({
 
 ## 📋 What Gets Kept
 
-@eva/purge intelligently keeps:
+eva-css-purge intelligently keeps:
 
 ✅ **CSS Variables** - All `:root` variables (essential for EVA CSS)
 ✅ **HTML Elements** - `body`, `h1`, `p`, `button`, etc.
@@ -152,7 +152,7 @@ export default defineConfig({
 
 ## 🎨 Perfect for EVA CSS
 
-@eva/purge is specifically designed for EVA CSS projects:
+eva-css-purge is specifically designed for EVA CSS projects:
 
 - Preserves all CSS variable definitions in `:root`
 - Keeps utility classes like `w-64`, `p-16`, `fs-32`
@@ -192,6 +192,5 @@ MIT © [Michaël Tati](https://ulysse-2029.com/)
 
 ## 🔗 Related Packages
 
-- [@eva/css](https://www.npmjs.com/package/@eva/css) - Fluid design framework
-- [@eva/colors](https://www.npmjs.com/package/@eva/colors) - OKLCH color utilities
-- [@eva/mcp-server](https://www.npmjs.com/package/@eva/mcp-server) - Figma to HTML MCP server
+- [eva-css-fluid](https://www.npmjs.com/package/eva-css-fluid) - Fluid design framework
+- [eva-colors](https://www.npmjs.com/package/eva-colors) - OKLCH color utilities

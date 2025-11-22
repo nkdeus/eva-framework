@@ -1,4 +1,6 @@
 @use "sass:math";
+@use "sass:map";
+@use "sass:list";
 
 // Configuration du système de couleurs
 $auto-theme-switch: false !default;     // true = changement automatique sur prefers-color-scheme, false = changement manuel avec .toggle-theme
@@ -65,24 +67,24 @@ $color-map: (
 
 // Map des variations fade (générée dynamiquement)
 $fade-map: ();
-@for $i from 1 through length($fade-variations) {
-  $variation: nth($fade-variations, $i);
-  $value: nth($fade-values, $i);
-  $fade-map: map-merge($fade-map, ($variation: $value));
+@for $i from 1 through list.length($fade-variations) {
+  $variation: list.nth($fade-variations, $i);
+  $value: list.nth($fade-values, $i);
+  $fade-map: map.merge($fade-map, ($variation: $value));
 }
 
 // Map des variations brightness (générée dynamiquement)
 $darkbright-map: ();
-@for $i from 1 through length($brightness-variations) {
-  $variation: nth($brightness-variations, $i);
-  $value: nth($brightness-values, $i);
-  $darkbright-map: map-merge($darkbright-map, ($variation: $value));
+@for $i from 1 through list.length($brightness-variations) {
+  $variation: list.nth($brightness-variations, $i);
+  $value: list.nth($brightness-values, $i);
+  $darkbright-map: map.merge($darkbright-map, ($variation: $value));
 }
 
 // Variables partagées consolidées
 $gradients: $base-colors;
 $gradients-darkbright: $brightness-variations;
-$all-variations: join(join(("",), $fade-variations), $brightness-variations);
+$all-variations: list.join(list.join(("",), $fade-variations), $brightness-variations);
 
 
 

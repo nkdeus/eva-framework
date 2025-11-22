@@ -1,24 +1,65 @@
-# @eva/css
+# eva-css-fluid
 
-> Fluid design framework with OKLCH colors - Transform static designs into responsive fluid systems
+> Revolutionary fluid design framework - Transform static Figma designs into truly responsive fluid systems
+
+**EVA CSS** replaces traditional breakpoint-based responsive design with **automatic fluid scaling**. Instead of defining arbitrary breakpoints for every screen size, EVA converts your static pixel values from Figma into intelligent `clamp()` functions that scale smoothly across all devices.
+
+## 💡 The Revolutionary Concept
+
+### Why Adaptive Responsive Design is Broken
+
+Traditional responsive design with breakpoints is fundamentally flawed:
+- ❌ **Arbitrary breakpoints** force designs into rigid device categories (mobile/tablet/desktop)
+- ❌ **Maintenance nightmare** - dozens of media queries for every component
+- ❌ **Breaks user zoom** - layouts break when users need to zoom for accessibility
+- ❌ **Inconsistent scaling** - elements don't maintain proportional relationships
+- ❌ **Design intent lost** - manual breakpoint adjustments compromise the original vision
+
+### The EVA Solution: Proportion Over Size
+
+EVA CSS introduces **proactive fluid responsiveness**:
+- ✅ **Continuous scaling** - no breakpoints, smooth transitions across all screen sizes
+- ✅ **Maintains proportions** - visual hierarchy and balance preserved automatically
+- ✅ **Accessibility first** - works perfectly with browser zoom and user preferences
+- ✅ **Design-to-code bridge** - Figma values become fluid automatically
+- ✅ **One source of truth** - define sizes once, scale everywhere
+
+```scss
+// ❌ Traditional Responsive (Adaptive)
+.title {
+  font-size: 24px;
+  @media (min-width: 768px) { font-size: 32px; }
+  @media (min-width: 1024px) { font-size: 48px; }
+  @media (min-width: 1440px) { font-size: 64px; }
+}
+
+// ✅ EVA Fluid (Continuous)
+.title {
+  font-size: var(--fs-64);
+  // Automatically: clamp(2.22rem, 2.22vw + 2rem, 4.44rem)
+  // Scales smoothly from mobile to desktop
+}
+```
 
 ## 🎯 Features
 
-- **Fluid Scaling System**: Modern clamp() functions for truly responsive designs
+- **Automatic Fluid Conversion**: Transform static px values into intelligent clamp() functions
+- **Figma-to-Code Workflow**: Extract sizes from your design, paste into config, done
 - **OKLCH Colors**: Perceptually uniform color system with opacity/brightness modifiers
 - **Modern Gradients**: Emmet-style syntax for ultra-compact gradient creation
 - **Theme System**: Built-in dark/light mode with seamless switching
 - **Two Modes**: Utility classes or CSS variables only
 - **Zero JavaScript**: Pure CSS/SCSS solution
+- **Accessibility Ready**: Perfect browser zoom support, respects user preferences
 
 ## 📦 Installation
 
 ```bash
-npm install @eva/css
+npm install eva-css-fluid
 # or
-pnpm add @eva/css
+pnpm add eva-css-fluid
 # or
-yarn add @eva/css
+yarn add eva-css-fluid
 ```
 
 ## 🚀 Quick Start
@@ -26,13 +67,13 @@ yarn add @eva/css
 ### Using Pre-built CSS
 
 ```html
-<link rel="stylesheet" href="node_modules/@eva/css/dist/eva.css">
+<link rel="stylesheet" href="node_modules/eva-css-fluid/dist/eva.css">
 ```
 
 ### Using SCSS with Default Configuration
 
 ```scss
-@use '@eva/css';
+@use 'eva-css-fluid';
 ```
 
 ### Using SCSS with Custom Configuration
@@ -41,7 +82,7 @@ yarn add @eva/css
 
 ```scss
 // Example: Sizes extracted from Figma design
-@use '@eva/css' with (
+@use 'eva-css-fluid' with (
   $sizes: 4, 8, 16, 32, 64, 128,        // 👈 Change these to YOUR design sizes!
   $font-sizes: 14, 16, 20, 24, 32,      // 👈 Change these to YOUR font sizes!
   $build-class: true,
@@ -53,7 +94,7 @@ yarn add @eva/css
 
 ```scss
 // Extracted from Figma: gaps, paddings, widths, heights
-@use '@eva/css' with (
+@use 'eva-css-fluid' with (
   $sizes: 4, 8, 16, 32, 64, 120, 141,   // 4=content-gap, 8=color-gap, 16=padding,
                                          // 32=section-gap, 64=hero-gap,
                                          // 120=H1, 141=circles
@@ -189,7 +230,11 @@ var(--brand-b_)  // More brighter
 
 - [Full Documentation](https://eva-css.xyz/)
 - [GitHub Repository](https://github.com/nkdeus/eva)
-- [Examples & Demo](https://eva-css.xyz/demo/)
+
+## 🎨 Examples & Demo
+
+Live examples and framework documentation:
+- [https://eva-css.xyz/](https://eva-css.xyz/)
 
 ## 🎯 Quick Workflow: Figma → EVA CSS
 
@@ -199,7 +244,7 @@ var(--brand-b_)  // More brighter
 
 # 2. Create your project SCSS file
 # my-project.scss
-@use '@eva/css' with (
+@use 'eva-css-fluid' with (
   $sizes: 4, 8, 16, 32, 64, 120, 141,   # ALL sizes from Figma
   $font-sizes: 16, 120,                  # ALL font sizes from Figma
   $build-class: true
@@ -243,6 +288,5 @@ MIT © [Michaël Tati](https://ulysse-2029.com/)
 
 ## 🔗 Related Packages
 
-- [@eva/colors](https://www.npmjs.com/package/@eva/colors) - OKLCH color utilities
-- [@eva/purge](https://www.npmjs.com/package/@eva/purge) - CSS optimization tool
-- [@eva/mcp-server](https://www.npmjs.com/package/@eva/mcp-server) - Figma to HTML MCP server
+- [eva-colors](https://www.npmjs.com/package/eva-colors) - OKLCH color utilities
+- [eva-css-purge](https://www.npmjs.com/package/eva-css-purge) - CSS optimization tool

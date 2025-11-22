@@ -1,0 +1,23 @@
+# Development files
+test/
+*.test.js
+.vscode/
+.idea/
+
+# Build artifacts
+node_modules/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# CI/CD
+.github/
+.gitlab-ci.yml

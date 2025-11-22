@@ -1,6 +1,6 @@
 {
-  "name": "@eva/purge",
-  "version": "1.0.0",
+  "name": "eva-css-purge",
+  "version": "1.0.3",
   "description": "Intelligent CSS purging tool for EVA CSS projects",
   "type": "commonjs",
   "main": "src/purge.js",
@@ -26,9 +26,6 @@
   },
   "dependencies": {
     "glob": "^10.3.10"
-  },
-  "publishConfig": {
-    "access": "public"
   },
   "repository": {
     "type": "git",
