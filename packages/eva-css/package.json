@@ -1,6 +1,6 @@
 {
   "name": "eva-css-fluid",
-  "version": "1.0.4",
+  "version": "2.0.0",
   "description": "Fluid design framework with OKLCH colors - Transform static designs into responsive fluid systems",
   "type": "module",
   "main": "src/index.scss",
@@ -68,7 +68,7 @@
     "generate:config": "node cli.cjs generate"
   },
   "dependencies": {
-    "eva-colors": "^1.0.4"
+    "eva-colors": "^2.0.0"
   },
   "devDependencies": {
     "sass": "^1.94.1"
