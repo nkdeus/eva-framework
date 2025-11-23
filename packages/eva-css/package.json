@@ -1,87 +1,87 @@
 {
-  "name": "eva-css-fluid",
-  "version": "2.0.0",
-  "description": "Fluid design framework with OKLCH colors - Transform static designs into responsive fluid systems",
-  "type": "module",
-  "main": "src/index.scss",
-  "sass": "src/index.scss",
-  "style": "dist/eva.css",
-  "bin": {
-    "eva-css": "./cli.cjs"
-  },
-  "exports": {
-    ".": {
-      "sass": "./index.scss",
-      "style": "./dist/eva.css",
-      "default": "./dist/eva.css"
-    },
-    "./src": {
-      "sass": "./src/index.scss",
-      "default": "./src/index.scss"
-    },
-    "./variables": {
-      "sass": "./src/variables.scss",
-      "default": "./src/variables.scss"
-    },
-    "./core": {
-      "sass": "./src/core.scss",
-      "default": "./src/core.scss"
-    },
-    "./colors": {
-      "sass": "./src/colors-only.scss",
-      "default": "./src/colors-only.scss"
-    },
-    "./src/*": "./src/*.scss",
-    "./package.json": "./package.json"
-  },
-  "files": [
-    "src/",
-    "dist/",
-    "index.scss",
-    "cli.cjs",
-    "scripts/",
-    "eva.config.template.js",
-    "README.md",
-    "MIGRATION.md"
-  ],
-  "keywords": [
-    "css",
-    "scss",
-    "sass",
-    "framework",
-    "fluid-design",
-    "oklch",
-    "utility-css",
-    "design-system",
-    "responsive",
-    "eva"
-  ],
-  "scripts": {
-    "build": "node scripts/build-with-config.cjs",
-    "build:min": "node scripts/build-with-config.cjs --min",
-    "build:purge": "node scripts/build-with-config.cjs --purge",
-    "build:sass": "sass src/index.scss dist/eva.css --style=expanded",
-    "build:sass:min": "sass src/index.scss dist/eva.min.css --style=compressed",
-    "watch": "sass --watch src/index.scss dist/eva.css",
-    "dev": "npm run watch",
-    "validate:config": "node cli.cjs validate",
-    "generate:config": "node cli.cjs generate"
-  },
-  "dependencies": {
-    "eva-colors": "^2.0.0"
-  },
-  "devDependencies": {
-    "sass": "^1.94.1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/nkdeus/eva.git",
-    "directory": "packages/eva-css"
-  },
-  "author": {
-    "name": "Michaël Tati",
-    "url": "https://ulysse-2029.com/"
-  },
-  "homepage": "https://eva-css.xyz/",
-  "license": "MIT"
+    "name":  "eva-css-fluid",
+    "version":  "2.0.5",
+    "description":  "Fluid design framework with OKLCH colors - Transform static designs into responsive fluid systems",
+    "type":  "module",
+    "main":  "src/index.scss",
+    "sass":  "src/index.scss",
+    "style":  "dist/eva.css",
+    "bin":  {
+                "eva-css":  "./cli.cjs"
+            },
+    "exports":  {
+                    ".":  {
+                              "sass":  "./index.scss",
+                              "style":  "./dist/eva.css",
+                              "default":  "./dist/eva.css"
+                          },
+                    "./src":  {
+                                  "sass":  "./src/index.scss",
+                                  "default":  "./src/index.scss"
+                              },
+                    "./variables":  {
+                                        "sass":  "./src/variables.scss",
+                                        "default":  "./src/variables.scss"
+                                    },
+                    "./core":  {
+                                   "sass":  "./src/core.scss",
+                                   "default":  "./src/core.scss"
+                               },
+                    "./colors":  {
+                                     "sass":  "./src/colors-only.scss",
+                                     "default":  "./src/colors-only.scss"
+                                 },
+                    "./src/*":  "./src/*.scss",
+                    "./package.json":  "./package.json"
+                },
+    "files":  [
+                  "src/",
+                  "dist/",
+                  "index.scss",
+                  "cli.cjs",
+                  "scripts/",
+                  "eva.config.template.js",
+                  "README.md",
+                  "MIGRATION.md"
+              ],
+    "keywords":  [
+                     "css",
+                     "scss",
+                     "sass",
+                     "framework",
+                     "fluid-design",
+                     "oklch",
+                     "utility-css",
+                     "design-system",
+                     "responsive",
+                     "eva"
+                 ],
+    "scripts":  {
+                    "build":  "node scripts/build-with-config.cjs",
+                    "build:min":  "node scripts/build-with-config.cjs --min",
+                    "build:purge":  "node scripts/build-with-config.cjs --purge",
+                    "build:sass":  "sass src/index.scss dist/eva.css --style=expanded",
+                    "build:sass:min":  "sass src/index.scss dist/eva.min.css --style=compressed",
+                    "watch":  "sass --watch src/index.scss dist/eva.css",
+                    "dev":  "npm run watch",
+                    "validate:config":  "node cli.cjs validate",
+                    "generate:config":  "node cli.cjs generate"
+                },
+    "dependencies":  {
+                         "eva-colors":  "^2.0.5"
+                     },
+    "devDependencies":  {
+                            "sass":  "^1.94.1"
+                        },
+    "repository":  {
+                       "type":  "git",
+                       "url":  "https://github.com/nkdeus/eva.git",
+                       "directory":  "packages/eva-css"
+                   },
+    "author":  {
+                   "name":  "Michaël Tati",
+                   "url":  "https://ulysse-2029.com/"
+               },
+    "homepage":  "https://eva-css.xyz/",
+    "license":  "MIT"
 }

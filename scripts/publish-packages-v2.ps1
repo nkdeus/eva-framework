@@ -3,7 +3,8 @@
 # With automatic version bump
 # ===========================================
 
-$ErrorActionPreference = "Stop"
+# Ne pas arrêter sur les warnings npm
+$ErrorActionPreference = "Continue"
 
 Write-Host ""
 Write-Host "EVA Framework - Publication sur NPM" -ForegroundColor Cyan
@@ -156,10 +157,17 @@ foreach ($pkgName in $packages.Keys) {
     $pkgPath = $packages[$pkgName]
     Write-Host "  $pkgName :" -ForegroundColor Cyan
     Push-Location $pkgPath
-    $packOutput = npm pack --dry-run 2>&1 | Select-String "package size|total files"
-    $packOutput | ForEach-Object {
-        Write-Host "    $($_ -replace 'npm notice ', '')"
+
+    try {
+        $packOutput = npm pack --dry-run 2>&1 | Out-String
+        $packOutput -split "`n" | Where-Object { $_ -match "package size|total files" } | ForEach-Object {
+            $line = $_ -replace 'npm notice ', ''
+            Write-Host "    $line"
+        }
+    } catch {
+        Write-Host "    (informations non disponibles)" -ForegroundColor Gray
     }
+
     Pop-Location
 }
 
@@ -211,12 +219,15 @@ foreach ($pkgName in $packages.Keys) {
     Write-Host "  Publishing $pkgName ..." -ForegroundColor Cyan
     Push-Location $pkgPath
 
-    npm publish 2>&1 | Out-Null
-    if ($LASTEXITCODE -eq 0) {
+    # Publish interactively to allow npm to handle authentication
+    npm publish
+    $exitCode = $LASTEXITCODE
+
+    if ($exitCode -eq 0) {
         Write-Host "  $pkgName publie avec succes" -ForegroundColor Green
         $publishedCount++
     } else {
-        Write-Host "  Echec de publication de $pkgName" -ForegroundColor Red
+        Write-Host "  Echec de publication de $pkgName (code: $exitCode)" -ForegroundColor Red
         $failedCount++
     }
 

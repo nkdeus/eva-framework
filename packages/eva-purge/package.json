@@ -1,6 +1,6 @@
 {
   "name": "eva-css-purge",
-  "version": "2.0.0",
+  "version": "2.0.5",
   "description": "Intelligent CSS purging tool for EVA CSS projects",
   "type": "commonjs",
   "main": "src/purge.js",

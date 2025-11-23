@@ -216,7 +216,8 @@ for pkg_name in "${!PACKAGES[@]}"; do
     echo -e "  ${CYAN}Publishing $pkg_name...${NC}"
     cd "$pkg_path"
 
-    if npm publish 2>&1; then
+    # Publish interactively to allow npm to handle authentication
+    if npm publish; then
         echo -e "  ${GREEN}✓ $pkg_name publié${NC}"
         ((PUBLISHED_COUNT++))
     else
