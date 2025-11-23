@@ -164,20 +164,27 @@ module.exports = {
 
 ## Implementation Roadmap
 
-### Phase 1 (v1.1.0) - Quick Wins
-- [ ] #2: Support $class-config variable
-- [ ] #5: Configuration validator
-- [ ] #8: Add migration guide
+### Phase 1 (v1.1.0) - Quick Wins ✅ COMPLETED
+- [x] #2: Support $class-config variable
+- [x] #5: Configuration validator
+- [x] #8: Add migration guide
 
-### Phase 2 (v1.2.0) - DX Improvements
-- [ ] #1: Auto-detect node_modules
-- [ ] #3: Pre-configured entry points
-- [ ] #6: Debug mode
+### Phase 2 (v1.2.0) - DX Improvements ✅ COMPLETED
+- [x] #1: Auto-detect node_modules (via build scripts)
+- [x] #3: Pre-configured entry points (via templates)
+- [x] #6: Debug mode
 
-### Phase 3 (v2.0.0) - Major Features
-- [ ] #4: JSON configuration support
-- [ ] #9: Starter templates
-- [ ] #11: Tree-shaking support
+### Phase 3 (v2.0.0) - Major Features ✅ COMPLETED
+- [x] #4: JSON configuration support (eva.config.cjs + package.json)
+- [x] #9: Starter templates (create-eva-css package)
+- [x] #11: Tree-shaking support (eva-purge integration)
+
+**Bonus features added in Phase 3:**
+- [x] HEX to OKLCH color conversion (via eva-colors integration)
+- [x] Theme configuration in JSON format
+- [x] CLI tools for config validation and management
+- [x] Interactive demo with theme customization
+- [x] Comprehensive documentation with examples
 
 ### Phase 4 (Future) - Ecosystem
 - [ ] #7: Interactive configurator
