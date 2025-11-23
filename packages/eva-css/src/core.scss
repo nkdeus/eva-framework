@@ -1,0 +1,43 @@
+// ===========================================
+// EVA CSS - Core Framework Entry Point
+// ===========================================
+// Use this when you want the framework
+// without pre-built utility classes
+// Perfect for building your own components
+// ===========================================
+
+// Configuration variables with defaults
+$sizes: 4, 8, 12, 16, 24, 32, 48, 64, 96, 128 !default;
+$font-sizes: 12, 14, 16, 18, 20, 24, 32, 48 !default;
+$px-rem-suffix: false !default;
+$name-by-size: true !default;
+$class-config: () !default;
+
+// Core variable generation system
+@use '_eva' with (
+  $sizes: $sizes,
+  $font-sizes: $font-sizes,
+  $build-class: false,           // ← No utility classes
+  $px-rem-suffix: $px-rem-suffix,
+  $name-by-size: $name-by-size,
+  $custom-class: false,
+  $class-config: $class-config
+);
+
+// Color system
+@use '_colors';
+
+// Gradients
+@use '_gradients';
+
+// Theme system
+@use '_theme';
+
+// CSS Reset
+@use '_reset';
+
+// Typography
+@use '_font';
+
+// Result: Variables + theme + reset + typography
+// No utility classes - build your own!

@@ -1,0 +1,25 @@
+/* Error: Can't find stylesheet to import.
+ *    ,
+ * 16 | / @use '_eva' with (
+ * 17 | |   $sizes: $sizes,
+ * 18 | |   $font-sizes: $font-sizes,
+ * 19 | |   $build-class: false,           // ← No utility classes
+ * 20 | |   $px-rem-suffix: $px-rem-suffix,
+ * 21 | |   $name-by-size: $name-by-size,
+ * 22 | |   $custom-class: false,
+ * 23 | |   $class-config: $class-config
+ * 24 | | );
+ *    | '-^
+ *    '
+ *   variables.scss 16:1  root stylesheet */
+
+body::before {
+  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
+      "Droid Sans Mono", monospace, monospace;
+  white-space: pre;
+  display: block;
+  padding: 1em;
+  margin-bottom: 1em;
+  border-bottom: 2px solid black;
+  content: "Error: Can't find stylesheet to import.\a    \2577 \a 16 \2502  \250c  @use '_eva' with (\a 17 \2502  \2502    $sizes: $sizes,\a 18 \2502  \2502    $font-sizes: $font-sizes,\a 19 \2502  \2502    $build-class: false,           // \2190  No utility classes\a 20 \2502  \2502    $px-rem-suffix: $px-rem-suffix,\a 21 \2502  \2502    $name-by-size: $name-by-size,\a 22 \2502  \2502    $custom-class: false,\a 23 \2502  \2502    $class-config: $class-config\a 24 \2502  \2502  );\a    \2502  \2514 \2500 ^\a    \2575 \a   variables.scss 16:1  root stylesheet";
+}

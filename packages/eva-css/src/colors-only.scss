@@ -1,0 +1,16 @@
+// ===========================================
+// EVA CSS - Colors Only Entry Point
+// ===========================================
+// Use this when you only want the OKLCH
+// color system without any other features
+// ===========================================
+
+// Import only the color system
+@use '_colors';
+
+// Import theme for dark/light mode support
+@use '_theme';
+
+// Result: Only color variables
+// var(--brand), var(--accent), var(--light), var(--dark), etc.
+// Perfect for integrating EVA colors into existing projects!

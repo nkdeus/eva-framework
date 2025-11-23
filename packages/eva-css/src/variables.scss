@@ -1,0 +1,33 @@
+// ===========================================
+// EVA CSS - Variables Only Entry Point
+// ===========================================
+// Use this when you only want CSS variables
+// and no utility classes
+// ===========================================
+
+// Configuration variables with defaults
+$sizes: 4, 8, 12, 16, 24, 32, 48, 64, 96, 128 !default;
+$font-sizes: 12, 14, 16, 18, 20, 24, 32, 48 !default;
+$px-rem-suffix: false !default;
+$name-by-size: true !default;
+$class-config: () !default;
+
+// Import only the core variable generation system
+@use '_eva' with (
+  $sizes: $sizes,
+  $font-sizes: $font-sizes,
+  $build-class: false,           // ← No utility classes
+  $px-rem-suffix: $px-rem-suffix,
+  $name-by-size: $name-by-size,
+  $custom-class: false,
+  $class-config: $class-config
+);
+
+// Import colors system
+@use '_colors';
+
+// Import theme system
+@use '_theme';
+
+// Result: Only CSS variables like var(--16), var(--brand), etc.
+// Perfect for custom component development!

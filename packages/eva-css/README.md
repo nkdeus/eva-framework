@@ -74,8 +74,26 @@ yarn add eva-css-fluid
 
 ### Using SCSS with Default Configuration
 
+**Simple import** (Sass automatically finds the package in node_modules):
+
 ```scss
 @use 'eva-css-fluid';
+```
+
+**Or with explicit path** (if needed):
+
+```scss
+@use 'eva-css-fluid/src' as *;
+```
+
+**Compilation** (no --load-path needed!):
+
+```bash
+# Simple - Sass finds the package automatically
+npx sass styles/main.scss:styles/main.css
+
+# Or with older Sass versions
+npx sass --load-path=node_modules styles/main.scss:styles/main.css
 ```
 
 ### Using SCSS with Custom Configuration
@@ -119,6 +137,7 @@ yarn add eva-css-fluid
 | `$name-by-size` | `true` | Use size values in variable names |
 | `$custom-class` | `false` | Enable custom class filtering |
 | `$class-config` | `()` | Map of properties to sizes when `$custom-class: true` |
+| `$debug` | `false` | Show class generation summary during compilation |
 
 ## 💡 Usage Examples
 
@@ -164,6 +183,65 @@ Generate only specific classes to reduce CSS output size:
 ```
 
 This generates only the specified classes, perfect for production builds or when you need fine control over output size.
+
+### Pre-configured Entry Points
+
+EVA CSS provides multiple entry points for different use cases:
+
+```scss
+// Full framework (default) - Everything included
+@use 'eva-css-fluid';
+
+// Variables only - Just CSS variables, no utility classes
+@use 'eva-css-fluid/variables';
+
+// Core framework - Variables + reset + typography, no utilities
+@use 'eva-css-fluid/core';
+
+// Colors only - Just the OKLCH color system
+@use 'eva-css-fluid/colors';
+```
+
+**When to use each:**
+- **Default** (`eva-css-fluid`): Full-featured projects with utility classes
+- **Variables** (`eva-css-fluid/variables`): Building custom components
+- **Core** (`eva-css-fluid/core`): Foundation + custom utilities
+- **Colors** (`eva-css-fluid/colors`): Adding EVA colors to existing projects
+
+### Debug Mode
+
+Enable debug mode to see a summary of your configuration during compilation:
+
+```scss
+@use 'eva-css-fluid' with (
+  $sizes: (16, 24, 50, 100),
+  $debug: true  // ← Shows configuration summary
+);
+```
+
+**Output example:**
+```
+╔══════════════════════════════════════════════════════════════
+║ EVA CSS - Configuration Summary
+╠══════════════════════════════════════════════════════════════
+║ Sizes: 16, 24, 50, 100
+║ Total sizes: 4
+║ Font sizes: 16, 24
+║ Total font sizes: 2
+╠══════════════════════════════════════════════════════════════
+║ Build Configuration:
+║   - Build classes: true
+║   - Custom class mode: false
+║   - Px/Rem suffix: false
+║   - Name by size: true
+╠══════════════════════════════════════════════════════════════
+║ Estimated Utility Classes:
+║   - Size properties: ~256 classes
+║   - Available properties: w, mw, h, p, px, pr, py, br, mb, mr, ml, mt, pt, pb, g, gap
+╚══════════════════════════════════════════════════════════════
+```
+
+Perfect for understanding what's being generated and optimizing your configuration!
 
 ## 🎨 Fluid Scaling
 

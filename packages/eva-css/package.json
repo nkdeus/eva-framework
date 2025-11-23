@@ -8,16 +8,35 @@
   "style": "dist/eva.css",
   "exports": {
     ".": {
-      "sass": "./src/index.scss",
+      "sass": "./index.scss",
       "style": "./dist/eva.css",
       "default": "./dist/eva.css"
     },
-    "./src/*": "./src/*.scss"
+    "./src": {
+      "sass": "./src/index.scss",
+      "default": "./src/index.scss"
+    },
+    "./variables": {
+      "sass": "./src/variables.scss",
+      "default": "./src/variables.scss"
+    },
+    "./core": {
+      "sass": "./src/core.scss",
+      "default": "./src/core.scss"
+    },
+    "./colors": {
+      "sass": "./src/colors-only.scss",
+      "default": "./src/colors-only.scss"
+    },
+    "./src/*": "./src/*.scss",
+    "./package.json": "./package.json"
   },
   "files": [
     "src/",
     "dist/",
-    "README.md"
+    "index.scss",
+    "README.md",
+    "MIGRATION.md"
   ],
   "keywords": [
     "css",

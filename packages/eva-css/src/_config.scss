@@ -25,6 +25,7 @@ $build-class: true !default;      // Generate utility classes
 $build-color-classes: true !default; // Generate color classes
 $custom-class: false !default;     // Enable custom class filtering
 $name-by-size: true !default;      // Use size values in variable names
+$debug: false !default;            // Show class generation summary
 
 // ===========================================
 // CUSTOM CLASS CONFIGURATION

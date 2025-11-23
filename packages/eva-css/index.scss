@@ -1,0 +1,9 @@
+// ===========================================
+// EVA CSS FRAMEWORK - Package Entry Point
+// ===========================================
+// This file uses pkg: protocol for automatic
+// node_modules resolution (Sass 1.71.0+)
+// ===========================================
+
+// Simply re-export the main source
+@forward 'src/index.scss';

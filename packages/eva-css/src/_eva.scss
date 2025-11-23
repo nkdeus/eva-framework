@@ -41,6 +41,7 @@ $build-class: false !default;      // DEV: false | PROD: true
 $custom-class: false !default;     // true pour filtrage personnalisé des classes
 $name-by-size: true !default;      // true = utilise les valeurs, false = utilise l'index
 $class-config: () !default;        // Configuration pour custom-class mode
+$debug: false !default;            // Show class generation summary
 
 
 
@@ -125,6 +126,45 @@ $font-properties: (
       }
     }
   }
+}
+
+// ===========================================
+// DEBUG MODE OUTPUT
+// ===========================================
+
+@if $debug {
+  @debug "╔══════════════════════════════════════════════════════════════";
+  @debug "║ EVA CSS - Configuration Summary";
+  @debug "╠══════════════════════════════════════════════════════════════";
+  @debug "║ Sizes: #{$sizes}";
+  @debug "║ Total sizes: #{list.length($sizes)}";
+  @debug "║ Font sizes: #{$font-sizes}";
+  @debug "║ Total font sizes: #{list.length($font-sizes)}";
+  @debug "╠══════════════════════════════════════════════════════════════";
+  @debug "║ Build Configuration:";
+  @debug "║   - Build classes: #{$build-class}";
+  @debug "║   - Custom class mode: #{$custom-class}";
+  @debug "║   - Px/Rem suffix: #{$px-rem-suffix}";
+  @debug "║   - Name by size: #{$name-by-size}";
+
+  @if $custom-class and list.length(map.keys($class-config)) > 0 {
+    @debug "╠══════════════════════════════════════════════════════════════";
+    @debug "║ Custom Class Configuration:";
+    @each $key in map.keys($class-config) {
+      $allowed-sizes: map.get($class-config, $key);
+      @debug "║   - #{$key}: #{$allowed-sizes} (#{list.length($allowed-sizes)} sizes)";
+    }
+  }
+
+  @if $build-class {
+    $class-count: list.length($sizes) * list.length(map.keys($properties)) * list.length($sizing-class);
+    @debug "╠══════════════════════════════════════════════════════════════";
+    @debug "║ Estimated Utility Classes:";
+    @debug "║   - Size properties: ~#{$class-count} classes";
+    @debug "║   - Available properties: #{map.keys($properties)}";
+  }
+
+  @debug "╚══════════════════════════════════════════════════════════════";
 }
 
 @function round2($number) {
