@@ -40,6 +40,7 @@ $px-rem-suffix: true !default;   // Valeurs statiques de debug uniquement
 $build-class: false !default;      // DEV: false | PROD: true
 $custom-class: false !default;     // true pour filtrage personnalisé des classes
 $name-by-size: true !default;      // true = utilise les valeurs, false = utilise l'index
+$class-config: () !default;        // Configuration pour custom-class mode
 
 
 
@@ -81,7 +82,50 @@ $font-properties: (
   fs: font-size,
 );
 
+// ===========================================
+// CONFIGURATION VALIDATION
+// ===========================================
 
+// Validate that required base sizes exist
+@if not list.index($sizes, 16) {
+  @error "EVA CSS: Size 16 is required as a base size. Please add 16 to your $sizes configuration.";
+}
+
+// Validate that sizes list is not empty
+@if list.length($sizes) == 0 {
+  @error "EVA CSS: $sizes cannot be empty. Please provide at least one size value.";
+}
+
+// Validate that font-sizes list is not empty
+@if list.length($font-sizes) == 0 {
+  @error "EVA CSS: $font-sizes cannot be empty. Please provide at least one font size value.";
+}
+
+// Validate custom-class configuration
+@if $custom-class and meta.type-of($class-config) != "map" {
+  @error "EVA CSS: When $custom-class is true, $class-config must be a map. Example: (w: (50, 100), px: (24))";
+}
+
+// Validate that class-config properties exist in $properties
+@if $custom-class and list.length(map.keys($class-config)) > 0 {
+  @each $key in map.keys($class-config) {
+    @if not map.has-key($properties, $key) {
+      @error "EVA CSS: Unknown property '#{$key}' in $class-config. Available properties: #{map.keys($properties)}";
+    }
+
+    // Validate that sizes in class-config exist in $sizes
+    $allowed-sizes: map.get($class-config, $key);
+    @if meta.type-of($allowed-sizes) != "list" {
+      @error "EVA CSS: Value for '#{$key}' in $class-config must be a list of sizes. Example: (24, 50, 100)";
+    }
+
+    @each $size in $allowed-sizes {
+      @if not list.index($sizes, $size) {
+        @error "EVA CSS: Size #{$size} in $class-config for property '#{$key}' is not in $sizes list. Available sizes: #{$sizes}";
+      }
+    }
+  }
+}
 
 @function round2($number) {
   @return math.div(math.round($number * 100), 100);

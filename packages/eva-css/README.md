@@ -62,6 +62,8 @@ pnpm add eva-css-fluid
 yarn add eva-css-fluid
 ```
 
+**Migrating from another framework?** See the [Migration Guide](./MIGRATION.md) for detailed instructions.
+
 ## 🚀 Quick Start
 
 ### Using Pre-built CSS
@@ -115,7 +117,8 @@ yarn add eva-css-fluid
 | `$build-class` | `true` | Generate utility classes (`true`) or variables only (`false`) |
 | `$px-rem-suffix` | `false` | Add px/rem static values for debugging |
 | `$name-by-size` | `true` | Use size values in variable names |
-| `$custom-class` | `false` | Enable custom class generation |
+| `$custom-class` | `false` | Enable custom class filtering |
+| `$class-config` | `()` | Map of properties to sizes when `$custom-class: true` |
 
 ## 💡 Usage Examples
 
@@ -143,6 +146,24 @@ yarn add eva-css-fluid
   }
 }
 ```
+
+### Custom Class Mode (`$custom-class: true`)
+
+Generate only specific classes to reduce CSS output size:
+
+```scss
+@use 'eva-css-fluid/src' as * with (
+  $sizes: (24, 50, 100),
+  $custom-class: true,
+  $class-config: (
+    w: (50, 100),      // Only .w-50 and .w-100
+    px: (24,),         // Only .px-24 (note trailing comma)
+    g: (24, 50)        // Only .g-24 and .g-50
+  )
+);
+```
+
+This generates only the specified classes, perfect for production builds or when you need fine control over output size.
 
 ## 🎨 Fluid Scaling
 

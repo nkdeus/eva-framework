@@ -11,7 +11,8 @@
       "Bash(npm pack:*)",
       "Bash(chmod:*)",
       "Bash(npm view:*)",
-      "WebFetch(domain:eva-css.xyz)"
+      "WebFetch(domain:eva-css.xyz)",
+      "Bash(npx sass:*)"
     ],
     "deny": [],
     "ask": []

@@ -13,6 +13,7 @@ $build-class: true !default;
 $px-rem-suffix: false !default;
 $name-by-size: true !default;
 $custom-class: false !default;
+$class-config: () !default;
 
 // ===========================================
 // CORE FRAMEWORK MODULES
@@ -27,7 +28,8 @@ $custom-class: false !default;
   $build-class: $build-class,
   $px-rem-suffix: $px-rem-suffix,
   $name-by-size: $name-by-size,
-  $custom-class: $custom-class
+  $custom-class: $custom-class,
+  $class-config: $class-config
 );
 
 // OKLCH color system with opacity/brightness modifiers

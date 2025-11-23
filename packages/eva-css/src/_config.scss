@@ -6,6 +6,8 @@
 // ===========================================
 
 @use "sass:list";
+@use "sass:map";
+@use "sass:meta";
 
 // ===========================================
 // SIZE CONFIGURATION
@@ -23,6 +25,13 @@ $build-class: true !default;      // Generate utility classes
 $build-color-classes: true !default; // Generate color classes
 $custom-class: false !default;     // Enable custom class filtering
 $name-by-size: true !default;      // Use size values in variable names
+
+// ===========================================
+// CUSTOM CLASS CONFIGURATION
+// ===========================================
+// Used when $custom-class is true to filter which classes are generated
+// Example: (w: (50, 100), px: (24), g: (24, 50))
+$class-config: () !default;
 
 // ===========================================
 // DERIVED CONFIGURATION
@@ -68,3 +77,48 @@ $properties: (
 $font-properties: (
   fs: font-size,
 );
+
+// ===========================================
+// CONFIGURATION VALIDATION
+// ===========================================
+
+// Validate that required base sizes exist
+@if not list.index($sizes, 16) {
+  @error "EVA CSS: Size 16 is required as a base size. Please add 16 to your $sizes configuration.";
+}
+
+// Validate that sizes list is not empty
+@if list.length($sizes) == 0 {
+  @error "EVA CSS: $sizes cannot be empty. Please provide at least one size value.";
+}
+
+// Validate that font-sizes list is not empty
+@if list.length($font-sizes) == 0 {
+  @error "EVA CSS: $font-sizes cannot be empty. Please provide at least one font size value.";
+}
+
+// Validate custom-class configuration
+@if $custom-class and meta.type-of($class-config) != "map" {
+  @error "EVA CSS: When $custom-class is true, $class-config must be a map. Example: (w: (50, 100), px: (24))";
+}
+
+// Validate that class-config properties exist in $properties
+@if $custom-class and list.length(map.keys($class-config)) > 0 {
+  @each $key in map.keys($class-config) {
+    @if not map.has-key($properties, $key) {
+      @error "EVA CSS: Unknown property '#{$key}' in $class-config. Available properties: #{map.keys($properties)}";
+    }
+
+    // Validate that sizes in class-config exist in $sizes
+    $allowed-sizes: map.get($class-config, $key);
+    @if meta.type-of($allowed-sizes) != "list" {
+      @error "EVA CSS: Value for '#{$key}' in $class-config must be a list of sizes. Example: (24, 50, 100)";
+    }
+
+    @each $size in $allowed-sizes {
+      @if not list.index($sizes, $size) {
+        @error "EVA CSS: Size #{$size} in $class-config for property '#{$key}' is not in $sizes list. Available sizes: #{$sizes}";
+      }
+    }
+  }
+}
