@@ -8,13 +8,30 @@
     <style>
         * { box-sizing: border-box; }
         body { transition: background-color 0.3s ease, color 0.3s ease; }
+        .theme-toggle {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 1000;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+        .theme-toggle:active {
+            transform: scale(0.95);
+        }
     </style>
 </head>
-<body class="current-theme theme-demo all-grads">
+<body class="current-theme theme-demo all-grads _bg-light _c-dark_">
 
     <!-- Theme Toggle Button -->
     <button onclick="document.body.classList.toggle('toggle-theme')"
-            class="theme-toggle p-16 br-16 _bg-brand _c-light fs-24"
+            class="theme-toggle p-16 br-16 _bg-dark _c-light fs-24"
             title="Toggle Dark/Light Mode">
         🌓
     </button>
@@ -192,6 +209,90 @@
                 <span class="fs-20 _c-light" style="font-weight: 600;">Animated</span>
             </div>
 
+        </div>
+    </section>
+
+    <!-- Theme Colors Section -->
+    <section class="demo-container p-32">
+        <h2 class="fs-48 _c-dark" style="text-align: center; margin-bottom: var(--48);">
+            Theme Colors
+        </h2>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--24); max-width: 1200px; margin: 0 auto;">
+
+            <!-- Brand Color -->
+            <div class="p-24 br-16 _bg-light" style="border: 2px solid var(--brand);">
+                <div class="p-48 br-8 _bg-brand mb-16" style="margin-bottom: var(--16);"></div>
+                <h3 class="fs-20 _c-brand" style="margin: 0 0 var(--8) 0; font-weight: 600;">Brand</h3>
+                <p class="fs-12 _c-dark_" style="margin: 0; font-family: monospace;">#ff5733</p>
+                <div class="g-4" style="display: flex; gap: var(--4); margin-top: var(--12);">
+                    <div class="p-16 br-4 _bg-brand" style="flex: 1;"></div>
+                    <div class="p-16 br-4 _bg-brand_" style="flex: 1;"></div>
+                    <div class="p-16 br-4 _bg-brand__" style="flex: 1;"></div>
+                    <div class="p-16 br-4 _bg-brand___" style="flex: 1;"></div>
+                </div>
+            </div>
+
+            <!-- Accent Color -->
+            <div class="p-24 br-16 _bg-light" style="border: 2px solid var(--accent);">
+                <div class="p-48 br-8 _bg-accent mb-16" style="margin-bottom: var(--16);"></div>
+                <h3 class="fs-20 _c-accent" style="margin: 0 0 var(--8) 0; font-weight: 600;">Accent</h3>
+                <p class="fs-12 _c-dark_" style="margin: 0; font-family: monospace;">#7300ff</p>
+                <div class="g-4" style="display: flex; gap: var(--4); margin-top: var(--12);">
+                    <div class="p-16 br-4 _bg-accent" style="flex: 1;"></div>
+                    <div class="p-16 br-4 _bg-accent_" style="flex: 1;"></div>
+                    <div class="p-16 br-4 _bg-accent__" style="flex: 1;"></div>
+                    <div class="p-16 br-4 _bg-accent___" style="flex: 1;"></div>
+                </div>
+            </div>
+
+            <!-- Extra Color -->
+            <div class="p-24 br-16 _bg-light" style="border: 2px solid var(--extra);">
+                <div class="p-48 br-8 _bg-extra mb-16" style="margin-bottom: var(--16);"></div>
+                <h3 class="fs-20 _c-extra" style="margin: 0 0 var(--8) 0; font-weight: 600;">Extra</h3>
+                <p class="fs-12 _c-dark_" style="margin: 0; font-family: monospace;">#ffe500</p>
+                <div class="g-4" style="display: flex; gap: var(--4); margin-top: var(--12);">
+                    <div class="p-16 br-4 _bg-extra" style="flex: 1;"></div>
+                    <div class="p-16 br-4 _bg-extra_" style="flex: 1;"></div>
+                    <div class="p-16 br-4 _bg-extra__" style="flex: 1;"></div>
+                    <div class="p-16 br-4 _bg-extra___" style="flex: 1;"></div>
+                </div>
+            </div>
+
+            <!-- Dark Color -->
+            <div class="p-24 br-16 _bg-light" style="border: 2px solid var(--dark);">
+                <div class="p-48 br-8 _bg-dark mb-16" style="margin-bottom: var(--16);"></div>
+                <h3 class="fs-20 _c-dark" style="margin: 0 0 var(--8) 0; font-weight: 600;">Dark</h3>
+                <p class="fs-12 _c-dark_" style="margin: 0; font-family: monospace;">#1a1a2e</p>
+                <div class="g-4" style="display: flex; gap: var(--4); margin-top: var(--12);">
+                    <div class="p-16 br-4 _bg-dark" style="flex: 1;"></div>
+                    <div class="p-16 br-4 _bg-dark_" style="flex: 1;"></div>
+                    <div class="p-16 br-4 _bg-dark__" style="flex: 1;"></div>
+                    <div class="p-16 br-4 _bg-dark___" style="flex: 1;"></div>
+                </div>
+            </div>
+
+            <!-- Light Color -->
+            <div class="p-24 br-16 _bg-dark__" style="border: 2px solid var(--dark_);">
+                <div class="p-48 br-8 _bg-light mb-16" style="margin-bottom: var(--16); border: 1px solid var(--dark_);"></div>
+                <h3 class="fs-20 _c-dark" style="margin: 0 0 var(--8) 0; font-weight: 600;">Light</h3>
+                <p class="fs-12 _c-dark_" style="margin: 0; font-family: monospace;">#f8f9fa</p>
+                <div class="g-4" style="display: flex; gap: var(--4); margin-top: var(--12);">
+                    <div class="p-16 br-4 _bg-light" style="flex: 1; border: 1px solid var(--dark_);"></div>
+                    <div class="p-16 br-4 _bg-light_" style="flex: 1; border: 1px solid var(--dark_);"></div>
+                    <div class="p-16 br-4 _bg-light__" style="flex: 1; border: 1px solid var(--dark_);"></div>
+                    <div class="p-16 br-4 _bg-light___" style="flex: 1; border: 1px solid var(--dark_);"></div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="p-24 br-16 _bg-brand_ mt-48" style="max-width: 800px; margin: var(--48) auto 0; text-align: center;">
+            <p class="fs-16 _c-dark" style="margin: 0; line-height: 1.6;">
+                💡 <strong>All colors are HEX → OKLCH converted!</strong><br>
+                Edit <code class="_bg-dark_ _c-light px-8 py-4 br-4" style="font-family: monospace; font-size: 14px;">eva.config.cjs</code>
+                to customize these colors with your own HEX values from Figma or any design tool.
+            </p>
         </div>
     </section>
 

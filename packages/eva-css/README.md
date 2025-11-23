@@ -66,6 +66,28 @@ yarn add eva-css-fluid
 
 ## 🚀 Quick Start
 
+### New Project (Recommended)
+
+Get started instantly with a fully configured project:
+
+```bash
+npm init eva-css my-project
+cd my-project
+npm install
+npm run dev
+```
+
+This scaffolds a complete EVA CSS project with:
+- ✅ Pre-configured `eva.config.cjs`
+- ✅ Example HTML and SCSS files
+- ✅ Build scripts with purge support
+- ✅ Ready to customize with your design sizes
+
+**Choose from 3 templates:**
+- **Minimal** - Variables only, no utilities
+- **Utility** - Full utility classes (recommended)
+- **Full** - Everything + examples + theme switching
+
 ### Using Pre-built CSS
 
 ```html
@@ -98,7 +120,48 @@ npx sass --load-path=node_modules styles/main.scss:styles/main.css
 
 ### Using SCSS with Custom Configuration
 
-**This is the main feature of EVA CSS!** Simply change the `$sizes` to match your Figma design:
+**This is the main feature of EVA CSS!** You can configure EVA CSS in two ways:
+
+#### Option 1: JSON Configuration (Recommended)
+
+Create `eva.config.cjs` in your project root:
+
+```javascript
+// eva.config.cjs
+module.exports = {
+  sizes: [4, 8, 16, 32, 64, 128],        // 👈 Change these to YOUR design sizes!
+  fontSizes: [14, 16, 20, 24, 32],       // 👈 Change these to YOUR font sizes!
+  buildClass: true,
+  pxRemSuffix: false
+};
+```
+
+Or add to your `package.json`:
+
+```json
+{
+  "eva": {
+    "sizes": [4, 8, 16, 32, 64, 128],
+    "fontSizes": [14, 16, 20, 24, 32],
+    "buildClass": true
+  }
+}
+```
+
+Then simply import EVA CSS:
+
+```scss
+@use 'eva-css-fluid';
+```
+
+And build with the integrated script:
+
+```bash
+npm run build
+# Configuration is automatically loaded from eva.config.cjs or package.json
+```
+
+#### Option 2: SCSS Variables
 
 ```scss
 // Example: Sizes extracted from Figma design
@@ -128,6 +191,86 @@ npx sass --load-path=node_modules styles/main.scss:styles/main.css
 
 ## 🎨 Configuration Options
 
+### JSON Configuration (eva.config.cjs or package.json)
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `sizes` | `number[]` | `[4, 8, 12, 16, ...]` | Available fluid size values (must include 16) |
+| `fontSizes` | `number[]` | `[12, 14, 16, ...]` | Available font sizes |
+| `buildClass` | `boolean` | `true` | Generate utility classes or variables only |
+| `pxRemSuffix` | `boolean` | `false` | Add px/rem static values for debugging |
+| `nameBySize` | `boolean` | `true` | Use size values in variable names |
+| `customClass` | `boolean` | `false` | Enable custom class filtering |
+| `classConfig` | `object` | `{}` | Map of properties to sizes for custom classes |
+| `debug` | `boolean` | `false` | Show configuration summary during compilation |
+| **`theme.name`** | `string` | `'eva'` | Theme name (CSS class: `.theme-{name}`) |
+| **`theme.colors`** | `object` | See below | Theme colors (HEX or OKLCH) |
+| **`theme.lightMode`** | `object` | `{lightness:96.4, darkness:6.4}` | Light mode configuration |
+| **`theme.darkMode`** | `object` | `{lightness:5, darkness:95}` | Dark mode configuration |
+| **`theme.autoSwitch`** | `boolean` | `false` | Auto-switch based on prefers-color-scheme |
+| `purge.enabled` | `boolean` | `false` | Enable CSS purging/tree-shaking |
+| `purge.content` | `string[]` | `['**/*.{html,js,...}']` | Files to scan for used classes |
+| `purge.css` | `string` | `'dist/eva.css'` | Input CSS file to purge |
+| `purge.output` | `string` | `'dist/eva-purged.css'` | Output path for purged CSS |
+| `purge.safelist` | `string[]` | `['theme-', ...]` | Classes/patterns to always keep |
+
+#### Theme Colors Configuration
+
+Define your theme colors in HEX (auto-converted to OKLCH) or OKLCH format:
+
+```javascript
+// eva.config.cjs
+module.exports = {
+  theme: {
+    name: 'myapp',
+    colors: {
+      // HEX format (from Figma, design tools, etc.)
+      brand: '#ff5733',    // Automatically converted to OKLCH
+      accent: '#7300ff',
+      extra: '#ffe500',
+
+      // Or OKLCH format (for precise control)
+      dark: { lightness: 20, chroma: 0.05, hue: 200 },
+      light: { lightness: 95, chroma: 0.01, hue: 200 }
+    },
+    lightMode: {
+      lightness: 96.4,   // Light background
+      darkness: 6.4      // Dark text
+    },
+    darkMode: {
+      lightness: 5,      // Dark background
+      darkness: 95       // Light text
+    },
+    autoSwitch: false    // Manual toggle with .toggle-theme class
+  }
+};
+```
+
+**Available colors:** `brand`, `accent`, `extra`, `dark`, `light`
+
+**Color formats:**
+- **HEX**: `"#ff5733"` - Automatically converted via eva-colors
+- **OKLCH**: `{ lightness: 68, chroma: 0.21, hue: 33.69 }`
+
+**Usage in HTML:**
+
+```html
+<body class="current-theme theme-myapp">
+  <h1 class="_c-brand">Hello World</h1>
+
+  <button onclick="document.body.classList.toggle('toggle-theme')">
+    Toggle Dark Mode
+  </button>
+</body>
+```
+
+**Configuration Priority:**
+1. JSON config file (`eva.config.cjs` or `eva.config.js`)
+2. package.json `"eva"` key
+3. SCSS `@use ... with ()` variables
+
+### SCSS Variables (when using @use with)
+
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `$sizes` | `4, 8, 12, 16, 24, 32, 48, 64, 96, 128` | Available fluid size values |
@@ -138,6 +281,19 @@ npx sass --load-path=node_modules styles/main.scss:styles/main.css
 | `$custom-class` | `false` | Enable custom class filtering |
 | `$class-config` | `()` | Map of properties to sizes when `$custom-class: true` |
 | `$debug` | `false` | Show class generation summary during compilation |
+
+### CLI Commands
+
+```bash
+# Validate your configuration
+npx eva-css validate
+
+# Generate SCSS variables from JSON config
+npx eva-css generate
+
+# Get help
+npx eva-css help
+```
 
 ## 💡 Usage Examples
 
@@ -365,12 +521,64 @@ npx sass my-project.scss:my-project.css
 
 **The magic:** All sizes scale fluidly across viewport sizes using `clamp()` - no media queries needed!
 
+## 🗜️ Production Optimization (Tree-shaking)
+
+EVA CSS includes automatic CSS purging to remove unused classes in production builds.
+
+### Enable in Configuration
+
+```javascript
+// eva.config.cjs
+module.exports = {
+  sizes: [16, 24, 32, 64],
+  fontSizes: [16, 24, 32],
+  purge: {
+    enabled: true,                          // Enable purging
+    content: ['src/**/*.{html,js,jsx,tsx}'], // Files to scan
+    css: 'dist/eva.css',                    // Input CSS
+    output: 'dist/eva-purged.css',          // Output CSS
+    safelist: ['theme-', 'current-']        // Classes to keep
+  }
+};
+```
+
+### Build with Purge
+
+```bash
+# Build with purge (if enabled in config)
+npm run build
+
+# Or force purge via CLI flag
+npm run build:purge
+```
+
+**Results:** Typically reduces CSS file size by 60-90% depending on usage.
+
+### Manual Purge with eva-purge
+
+For more control, use the standalone `eva-purge` package:
+
+```bash
+# Install
+npm install --save-dev eva-css-purge
+
+# Run purge
+npx eva-purge --css dist/eva.css --content "src/**/*.html"
+
+# Or use eva.config.cjs
+npx eva-purge --config eva.config.cjs
+```
+
+See [eva-purge documentation](https://www.npmjs.com/package/eva-css-purge) for more options.
+
 ## 🛠️ Build from Source
 
 ```bash
 cd packages/eva-css
-npm run build        # Build expanded CSS
+npm run build        # Build with config (includes purge if enabled)
 npm run build:min    # Build minified CSS
+npm run build:purge  # Build with purge (force)
+npm run build:sass   # Build without config (pure SCSS)
 npm run watch        # Watch mode for development
 ```
 

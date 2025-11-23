@@ -1,0 +1,38 @@
+{
+  "name": "create-eva-css",
+  "version": "1.0.0",
+  "description": "Scaffolding tool for EVA CSS projects - npm init eva-css",
+  "type": "module",
+  "bin": {
+    "create-eva-css": "./index.js"
+  },
+  "files": [
+    "index.js",
+    "templates/"
+  ],
+  "keywords": [
+    "eva",
+    "eva-css",
+    "scaffolding",
+    "cli",
+    "starter",
+    "template",
+    "create",
+    "init"
+  ],
+  "scripts": {
+    "test": "node index.js test-project --preset minimal"
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nkdeus/eva.git",
+    "directory": "packages/create-eva-css"
+  },
+  "author": {
+    "name": "Michaël Tati",
+    "url": "https://ulysse-2029.com/"
+  },
+  "homepage": "https://eva-css.xyz/",
+  "license": "MIT"
+}

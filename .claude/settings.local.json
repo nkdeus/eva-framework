@@ -12,7 +12,14 @@
       "Bash(chmod:*)",
       "Bash(npm view:*)",
       "WebFetch(domain:eva-css.xyz)",
-      "Bash(npx sass:*)"
+      "Bash(npx sass:*)",
+      "Bash(node cli.js:*)",
+      "Bash(node cli.cjs validate:*)",
+      "Bash(npm run build:*)",
+      "Bash(cat:*)",
+      "Bash(npm install)",
+      "Bash(node -e:*)",
+      "Bash(test:*)"
     ],
     "deny": [],
     "ask": []

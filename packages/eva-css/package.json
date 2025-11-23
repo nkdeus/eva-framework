@@ -6,6 +6,9 @@
   "main": "src/index.scss",
   "sass": "src/index.scss",
   "style": "dist/eva.css",
+  "bin": {
+    "eva-css": "./cli.cjs"
+  },
   "exports": {
     ".": {
       "sass": "./index.scss",
@@ -35,6 +38,9 @@
     "src/",
     "dist/",
     "index.scss",
+    "cli.cjs",
+    "scripts/",
+    "eva.config.template.js",
     "README.md",
     "MIGRATION.md"
   ],
@@ -51,10 +57,18 @@
     "eva"
   ],
   "scripts": {
-    "build": "sass src/index.scss dist/eva.css --style=expanded",
-    "build:min": "sass src/index.scss dist/eva.min.css --style=compressed",
+    "build": "node scripts/build-with-config.cjs",
+    "build:min": "node scripts/build-with-config.cjs --min",
+    "build:purge": "node scripts/build-with-config.cjs --purge",
+    "build:sass": "sass src/index.scss dist/eva.css --style=expanded",
+    "build:sass:min": "sass src/index.scss dist/eva.min.css --style=compressed",
     "watch": "sass --watch src/index.scss dist/eva.css",
-    "dev": "npm run watch"
+    "dev": "npm run watch",
+    "validate:config": "node cli.cjs validate",
+    "generate:config": "node cli.cjs generate"
+  },
+  "dependencies": {
+    "eva-colors": "^1.0.4"
   },
   "devDependencies": {
     "sass": "^1.94.1"

@@ -3,7 +3,14 @@
 @use "sass:list";
 
 // Configuration du système de couleurs
+// Ces variables peuvent être override par eva.config.cjs
 $auto-theme-switch: false !default;     // true = changement automatique sur prefers-color-scheme, false = changement manuel avec .toggle-theme
+$theme-name: 'eva' !default;             // Nom du thème (défini par eva.config.cjs)
+$theme-colors: () !default;              // Couleurs du thème depuis config
+$light-mode-lightness: 96.4% !default;   // Lightness en mode clair
+$light-mode-darkness: 6.4% !default;     // Darkness en mode clair
+$dark-mode-lightness: 5% !default;       // Lightness en mode sombre
+$dark-mode-darkness: 95% !default;       // Darkness en mode sombre
 
 :root {
 
@@ -22,13 +29,13 @@ $auto-theme-switch: false !default;     // true = changement automatique sur pre
   --extra-chroma: 0;
   --extra-hue: 0;
 
-  --dark-lightness: var(--current-darkness);  
-  --dark-chroma: 0.05;      
-  --dark-hue: var(--brand-hue);           
+  --dark-lightness: var(--current-darkness);
+  --dark-chroma: 0.05;
+  --dark-hue: var(--brand-hue);
 
-  --light-lightness: var(--current-lightness); 
-  --light-chroma: 0.1;      
-  --light-hue: var(--brand-hue);   
+  --light-lightness: var(--current-lightness);
+  --light-chroma: 0.1;
+  --light-hue: var(--brand-hue);
 
   --darker: -5%;
   --brighter: 10%;
@@ -103,6 +110,34 @@ $all-variations: list.join(list.join(("",), $fade-variations), $brightness-varia
     }
   }
 
+}
+
+// Génération du thème depuis eva.config.cjs
+@if list.length($theme-colors) > 0 {
+  .theme-#{$theme-name} {
+    @each $color-name, $color-values in $theme-colors {
+      --#{$color-name}-lightness: #{list.nth($color-values, 1)};
+      --#{$color-name}-chroma: #{list.nth($color-values, 2)};
+      --#{$color-name}-hue: #{list.nth($color-values, 3)};
+    }
+
+    --current-lightness: #{$light-mode-lightness};
+    --current-darkness: #{$light-mode-darkness};
+  }
+
+  @if $auto-theme-switch {
+    @media (prefers-color-scheme: dark) {
+      .theme-#{$theme-name} {
+        --current-lightness: #{$dark-mode-lightness};
+        --current-darkness: #{$dark-mode-darkness};
+      }
+    }
+  } @else {
+    .theme-#{$theme-name}.toggle-theme {
+      --current-lightness: #{$dark-mode-lightness};
+      --current-darkness: #{$dark-mode-darkness};
+    }
+  }
 }
 
 
