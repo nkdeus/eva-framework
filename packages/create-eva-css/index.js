@@ -157,11 +157,150 @@ body {
 `;
   }
 
-  if (preset === 'utility') {
-    return `// EVA CSS - Utility Classes Mode
+  if (preset === 'basic') {
+    return `// EVA CSS - Basic Setup
 @use 'eva-css-fluid';
 
 // Your custom styles here
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  transition: background 0.3s, color 0.3s;
+}
+`;
+  }
+
+  if (preset === 'landing') {
+    return `// EVA CSS - Landing Page
+@use 'eva-css-fluid';
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  transition: background 0.3s, color 0.3s;
+}
+
+.hero {
+  text-align: center;
+  padding: var(--96) var(--32);
+  background: linear-gradient(135deg, var(--brand), var(--accent));
+  color: var(--light);
+
+  h1 {
+    font-size: var(--64);
+    margin: 0 0 var(--24) 0;
+    font-weight: bold;
+  }
+
+  p {
+    font-size: var(--24);
+    margin: 0 0 var(--48) 0;
+    opacity: 0.9;
+  }
+}
+
+.button {
+  display: inline-block;
+  padding: var(--16) var(--32);
+  background: var(--light);
+  color: var(--brand);
+  border: none;
+  border-radius: var(--8);
+  font-size: var(--18);
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+.features {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--96) var(--32);
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--32);
+  }
+
+  .card {
+    background: var(--light);
+    padding: var(--32);
+    border-radius: var(--16);
+    box-shadow: 0 2px 8px var(--dark___);
+    transition: transform 0.2s;
+
+    &:hover {
+      transform: translateY(-4px);
+    }
+  }
+}
+`;
+  }
+
+  if (preset === 'dashboard') {
+    return `// EVA CSS - Dashboard
+@use 'eva-css-fluid';
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  transition: background 0.3s, color 0.3s;
+}
+
+.dashboard {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  min-height: 100vh;
+}
+
+.sidebar {
+  background: var(--light);
+  padding: var(--24);
+  border-right: 1px solid var(--light__);
+
+  nav a {
+    display: block;
+    padding: var(--12) var(--16);
+    color: var(--dark);
+    text-decoration: none;
+    border-radius: var(--8);
+    margin-bottom: var(--8);
+
+    &:hover {
+      background: var(--brand_);
+      color: var(--brand);
+    }
+  }
+}
+
+.main-content {
+  padding: var(--32);
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--24);
+  margin-bottom: var(--32);
+}
+
+.metric-card {
+  background: var(--light);
+  padding: var(--24);
+  border-radius: var(--12);
+  box-shadow: 0 2px 8px var(--dark___);
+
+  .value {
+    font-size: var(--40);
+    font-weight: bold;
+    color: var(--brand);
+  }
+}
 `;
   }
 
@@ -200,7 +339,7 @@ function generateHtml(projectName, preset) {
 </html>
 `;
 
-  const utilityContent = `<!DOCTYPE html>
+  const basicContent = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -208,15 +347,112 @@ function generateHtml(projectName, preset) {
   <title>${projectName}</title>
   <link rel="stylesheet" href="styles/main.css">
 </head>
-<body class="current-theme theme-myproject">
+<body class="current-theme theme-eva _bg-light _c-dark_">
   <div class="p-32">
     <h1 class="fs-32 _c-brand">Welcome to ${projectName}</h1>
-    <p class="fs-16 _c-dark mt-16">Built with EVA CSS fluid design framework</p>
+    <p class="fs-16 mt-16">Built with EVA CSS fluid design framework</p>
 
     <div class="mt-32 p-24 _bg-brand_ br-16">
-      <p class="_c-dark">Fluid responsive design with no breakpoints!</p>
+      <p>Fluid responsive design with no breakpoints!</p>
     </div>
+
+    <button class="p-16 mt-24 _bg-accent _c-light br-8" onclick="document.body.classList.toggle('toggle-theme')">
+      Toggle Theme
+    </button>
   </div>
+</body>
+</html>
+`;
+
+  const landingContent = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${projectName} - Landing Page</title>
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body class="current-theme theme-eva all-grads _bg-light _c-dark_">
+  <section class="hero">
+    <h1>Welcome to ${projectName}</h1>
+    <p>Build amazing products with EVA CSS fluid design framework</p>
+    <a href="#features" class="button">Get Started</a>
+  </section>
+
+  <section class="features" id="features">
+    <div class="grid">
+      <div class="card">
+        <h2>Fluid Design</h2>
+        <p>Responsive sizing without media queries using CSS clamp() functions</p>
+      </div>
+      <div class="card">
+        <h2>Auto Dark Mode</h2>
+        <p>OKLCH color system with automatic lightness inversion</p>
+      </div>
+      <div class="card">
+        <h2>Utility Classes</h2>
+        <p>Generated from your design tokens for rapid development</p>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const savedTheme = localStorage.getItem('eva-theme');
+    if (savedTheme === 'dark') document.body.classList.add('toggle-theme');
+  </script>
+</body>
+</html>
+`;
+
+  const dashboardContent = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${projectName} - Dashboard</title>
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body class="current-theme theme-eva _bg-light_ _c-dark_">
+  <div class="dashboard">
+    <aside class="sidebar">
+      <h1>${projectName}</h1>
+      <nav>
+        <a href="#" class="active">Dashboard</a>
+        <a href="#">Analytics</a>
+        <a href="#">Reports</a>
+        <a href="#">Settings</a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <h2>Dashboard Overview</h2>
+
+      <div class="metrics">
+        <div class="metric-card">
+          <div class="label">Total Users</div>
+          <div class="value">12,543</div>
+        </div>
+        <div class="metric-card">
+          <div class="label">Revenue</div>
+          <div class="value">$48,392</div>
+        </div>
+        <div class="metric-card">
+          <div class="label">Active</div>
+          <div class="value">892</div>
+        </div>
+      </div>
+
+      <button onclick="document.body.classList.toggle('toggle-theme')"
+              style="padding: var(--12); background: var(--brand); color: var(--light); border: none; border-radius: var(--8); cursor: pointer;">
+        Toggle Theme
+      </button>
+    </main>
+  </div>
+
+  <script>
+    const savedTheme = localStorage.getItem('eva-theme');
+    if (savedTheme === 'dark') document.body.classList.add('toggle-theme');
+  </script>
 </body>
 </html>
 `;
@@ -255,7 +491,9 @@ function generateHtml(projectName, preset) {
 `;
 
   if (preset === 'minimal') return minimalContent;
-  if (preset === 'utility') return utilityContent;
+  if (preset === 'basic') return basicContent;
+  if (preset === 'landing') return landingContent;
+  if (preset === 'dashboard') return dashboardContent;
   return fullContent;
 }
 
@@ -341,7 +579,9 @@ async function createProject(projectName, options = {}) {
     } else {
       preset = await select('Select project template:', [
         { label: 'Minimal', value: 'minimal', description: 'Variables only, no utilities' },
-        { label: 'Utility', value: 'utility', description: 'Full utility classes' },
+        { label: 'Basic', value: 'basic', description: 'Simple utility classes setup' },
+        { label: 'Landing', value: 'landing', description: 'Marketing landing page' },
+        { label: 'Dashboard', value: 'dashboard', description: 'Admin dashboard UI' },
         { label: 'Full', value: 'full', description: 'Everything + examples' }
       ]);
     }
@@ -466,15 +706,23 @@ Usage:
   npx create-eva-css <project-name> [options]
 
 Options:
-  --preset <type>        Template preset (minimal|utility|full)
+  --preset <type>        Template preset (minimal|basic|landing|dashboard|full)
   --sizes <sizes>        Comma-separated size values
   --font-sizes <sizes>   Comma-separated font size values
   --package-manager <pm> Package manager (npm|pnpm|yarn)
   --help, -h             Show this help
 
+Templates:
+  minimal    - Variables only, no utilities
+  basic      - Simple setup with utility classes
+  landing    - Marketing landing page template
+  dashboard  - Admin dashboard UI template
+  full       - Everything + examples
+
 Examples:
   npm init eva-css my-project
-  npx create-eva-css my-app --preset utility
+  npx create-eva-css my-app --preset landing
+  npx create-eva-css my-dashboard --preset dashboard
   npx create-eva-css my-site --sizes "16,24,32,64" --font-sizes "16,24,32"
 `);
   process.exit(0);

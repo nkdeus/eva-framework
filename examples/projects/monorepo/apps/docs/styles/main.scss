@@ -1,0 +1,282 @@
+// EVA CSS - Documentation App
+// Configuration is loaded from ../../eva.config.cjs
+
+@use 'eva-css/index';
+
+// Documentation styles
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  transition: background 0.3s, color 0.3s;
+}
+
+.docs {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  min-height: 100vh;
+}
+
+.sidebar {
+  background: var(--light);
+  padding: var(--24);
+  border-right: 1px solid var(--light__);
+  overflow-y: auto;
+
+  .logo {
+    font-size: var(--20);
+    font-weight: bold;
+    color: var(--brand);
+    margin-bottom: var(--24);
+  }
+
+  .search {
+    width: 100%;
+    padding: var(--12);
+    border: 1px solid var(--light__);
+    border-radius: var(--8);
+    margin-bottom: var(--24);
+    font-size: var(--14);
+    background: var(--light_);
+
+    &:focus {
+      outline: none;
+      border-color: var(--brand);
+    }
+  }
+
+  nav {
+    .section {
+      margin-bottom: var(--24);
+
+      h3 {
+        font-size: var(--14);
+        text-transform: uppercase;
+        color: var(--dark_);
+        margin: 0 0 var(--12) 0;
+        letter-spacing: 0.5px;
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        li {
+          margin-bottom: var(--4);
+
+          a {
+            display: block;
+            padding: var(--8) var(--12);
+            color: var(--dark);
+            text-decoration: none;
+            border-radius: var(--4);
+            font-size: var(--14);
+            transition: background 0.2s;
+
+            &:hover, &.active {
+              background: var(--brand_);
+              color: var(--brand);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.content {
+  max-width: 900px;
+  padding: var(--48) var(--64);
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--48);
+    padding-bottom: var(--24);
+    border-bottom: 1px solid var(--light__);
+
+    h1 {
+      font-size: var(--40);
+      margin: 0;
+      color: var(--brand);
+    }
+
+    .theme-toggle {
+      padding: var(--8) var(--16);
+      background: var(--brand);
+      color: var(--light);
+      border: none;
+      border-radius: var(--8);
+      cursor: pointer;
+      font-size: var(--14);
+      transition: opacity 0.2s;
+
+      &:hover {
+        opacity: 0.9;
+      }
+    }
+  }
+
+  h2 {
+    font-size: var(--32);
+    margin: var(--48) 0 var(--24) 0;
+    color: var(--brand);
+  }
+
+  h3 {
+    font-size: var(--24);
+    margin: var(--32) 0 var(--16) 0;
+    color: var(--brand);
+  }
+
+  p {
+    font-size: var(--16);
+    line-height: 1.7;
+    margin: 0 0 var(--24) 0;
+    color: var(--dark);
+  }
+
+  ul, ol {
+    font-size: var(--16);
+    line-height: 1.7;
+    margin: 0 0 var(--24) 0;
+    padding-left: var(--24);
+
+    li {
+      margin-bottom: var(--8);
+    }
+  }
+
+  code {
+    background: var(--light_);
+    padding: var(--4) var(--8);
+    border-radius: var(--4);
+    font-family: 'Courier New', monospace;
+    font-size: var(--14);
+    color: var(--brand);
+  }
+
+  pre {
+    background: var(--dark);
+    color: var(--light_);
+    padding: var(--24);
+    border-radius: var(--8);
+    overflow-x: auto;
+    margin: 0 0 var(--24) 0;
+
+    code {
+      background: none;
+      padding: 0;
+      color: var(--light_);
+    }
+  }
+
+  .note {
+    background: var(--brand_);
+    border-left: 4px solid var(--brand);
+    padding: var(--16) var(--24);
+    border-radius: var(--8);
+    margin: var(--24) 0;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  .warning {
+    background: var(--extra_);
+    border-left: 4px solid var(--extra);
+    padding: var(--16) var(--24);
+    border-radius: var(--8);
+    margin: var(--24) 0;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: var(--24) 0;
+
+    th, td {
+      padding: var(--12) var(--16);
+      text-align: left;
+      border-bottom: 1px solid var(--light__);
+    }
+
+    th {
+      background: var(--light_);
+      font-weight: 600;
+      color: var(--brand);
+      font-size: var(--14);
+    }
+
+    td {
+      font-size: var(--14);
+    }
+
+    tr:hover {
+      background: var(--light_);
+    }
+  }
+
+  .api-section {
+    background: var(--light);
+    padding: var(--24);
+    border-radius: var(--12);
+    margin: var(--24) 0;
+    box-shadow: 0 2px 8px var(--dark___);
+
+    h4 {
+      font-size: var(--18);
+      margin: 0 0 var(--12) 0;
+      color: var(--brand);
+    }
+
+    .params {
+      font-size: var(--14);
+      color: var(--dark_);
+      margin-bottom: var(--12);
+    }
+  }
+
+  .breadcrumb {
+    display: flex;
+    gap: var(--8);
+    margin-bottom: var(--24);
+    font-size: var(--14);
+    color: var(--dark_);
+
+    a {
+      color: var(--brand);
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    span {
+      color: var(--dark_);
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .docs {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    border-right: none;
+    border-bottom: 1px solid var(--light__);
+  }
+
+  .content {
+    padding: var(--32) var(--24);
+  }
+}

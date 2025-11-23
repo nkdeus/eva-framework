@@ -1,26 +1,15 @@
 {
   "permissions": {
     "allow": [
-      "WebFetch(domain:github.com)",
-      "WebFetch(domain:raw.githubusercontent.com)",
-      "Bash(tree:*)",
-      "WebFetch(domain:api.github.com)",
-      "Bash(rm:*)",
-      "Bash(pnpm build:*)",
-      "Bash(pnpm build:min:*)",
-      "Bash(npm pack:*)",
-      "Bash(chmod:*)",
-      "Bash(npm view:*)",
-      "WebFetch(domain:eva-css.xyz)",
-      "Bash(npx sass:*)",
-      "Bash(node cli.js:*)",
-      "Bash(node cli.cjs validate:*)",
-      "Bash(npm run build:*)",
-      "Bash(cat:*)",
-      "Bash(npm install)",
-      "Bash(node -e:*)",
-      "Bash(test:*)",
-      "Bash(find packages -name \"package.json\" -exec sh -c 'echo \"\"=== {} ===\"\" && grep -E \"\"\\\"\"(name|version)\\\"\":\"\" {} | head -2' ;)"
+      "Bash(ls:*)",
+      "Bash(node cli.cjs:*)",
+      "Bash(node:*)",
+      "Bash(for dir in /mnt/c/dev/eva-framework/examples/projects/*/)",
+      "Bash(jq:*)",
+      "Bash(done)",
+      "Bash(find:*)",
+      "Bash(bash -n:*)",
+      "Bash(dos2unix:*)"
     ],
     "deny": [],
     "ask": []

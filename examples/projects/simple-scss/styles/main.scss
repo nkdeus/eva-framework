@@ -1,0 +1,143 @@
+// EVA CSS Example - Simple SCSS Variables
+// This example shows the simplest way to use EVA CSS with inline configuration
+
+@use 'eva-css/index' with (
+  // Design sizes - extracted from a hypothetical Figma design
+  $sizes: (4, 8, 16, 32, 64, 128),
+
+  // Font sizes
+  $font-sizes: (14, 16, 20, 24, 32, 48),
+
+  // Generate utility classes
+  $build-class: true,
+
+  // Show configuration during build
+  $debug: true
+);
+
+// Custom styles using EVA CSS variables
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  // Background and color are handled by utility classes on <body>:
+  // class="_bg-light _c-dark_"
+  transition: background 0.3s, color 0.3s;
+}
+
+// Dark mode support is automatic thanks to EVA's OKLCH system!
+// All colors (--light, --dark, --brand, etc.) automatically inverse their lightness
+// when .toggle-theme is applied. No manual dark mode styles needed!
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--32);
+}
+
+.hero {
+  padding: var(--64) var(--32);
+  background: linear-gradient(135deg, var(--brand), var(--accent));
+  color: var(--light);
+  border-radius: var(--16);
+  margin-bottom: var(--32);
+
+  h1 {
+    font-size: var(--48);
+    margin: 0 0 var(--16) 0;
+  }
+
+  p {
+    font-size: var(--20);
+    margin: 0;
+    opacity: 0.9;
+  }
+}
+
+.card {
+  background: var(--light);
+  padding: var(--32);
+  border-radius: var(--8);
+  box-shadow: 0 2px 8px var(--dark___);
+  margin-bottom: var(--16);
+
+  h2 {
+    font-size: var(--24);
+    margin: 0 0 var(--16) 0;
+    color: var(--brand);
+  }
+
+  p {
+    font-size: var(--16);
+    line-height: 1.6;
+    margin: 0;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--16);
+}
+
+.button {
+  display: inline-block;
+  padding: var(--16) var(--32);
+  background: var(--brand);
+  color: var(--light);
+  border: none;
+  border-radius: var(--8);
+  font-size: var(--16);
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+.code-block {
+  background: var(--light_);
+  padding: var(--16);
+  border-radius: var(--8);
+  overflow-x: auto;
+  margin: var(--16) 0;
+
+  code {
+    font-family: 'Courier New', monospace;
+    font-size: var(--14);
+  }
+}
+
+footer {
+  text-align: center;
+  padding: var(--32) 0;
+  color: var(--dark_);
+  border-top: 1px solid var(--light__);
+  margin-top: var(--64);
+
+  a {
+    color: var(--brand);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+// Responsive utilities
+@media (max-width: 768px) {
+  .container {
+    padding: var(--16);
+  }
+
+  .hero {
+    padding: var(--32) var(--16);
+
+    h1 {
+      font-size: var(--32);
+    }
+  }
+}

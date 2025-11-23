@@ -1,0 +1,224 @@
+// EVA CSS - Dashboard App
+// Configuration is loaded from ../../eva.config.cjs
+
+@use 'eva-css/index';
+
+// Dashboard styles
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  transition: background 0.3s, color 0.3s;
+}
+
+.dashboard {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  min-height: 100vh;
+}
+
+.sidebar {
+  background: var(--light);
+  padding: var(--24);
+  border-right: 1px solid var(--light__);
+
+  .logo {
+    font-size: var(--24);
+    font-weight: bold;
+    color: var(--brand);
+    margin-bottom: var(--32);
+  }
+
+  nav {
+    display: flex;
+    flex-direction: column;
+    gap: var(--8);
+
+    a {
+      padding: var(--12) var(--16);
+      color: var(--dark);
+      text-decoration: none;
+      border-radius: var(--8);
+      font-size: var(--16);
+      transition: background 0.2s;
+
+      &:hover, &.active {
+        background: var(--brand_);
+        color: var(--brand);
+      }
+    }
+  }
+}
+
+.main-content {
+  padding: var(--32);
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--32);
+
+    h1 {
+      font-size: var(--32);
+      margin: 0;
+      color: var(--brand);
+    }
+
+    .theme-toggle {
+      padding: var(--8) var(--16);
+      background: var(--brand);
+      color: var(--light);
+      border: none;
+      border-radius: var(--8);
+      cursor: pointer;
+      font-size: var(--14);
+      transition: opacity 0.2s;
+
+      &:hover {
+        opacity: 0.9;
+      }
+    }
+  }
+
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--24);
+    margin-bottom: var(--32);
+  }
+
+  .metric-card {
+    background: var(--light);
+    padding: var(--24);
+    border-radius: var(--12);
+    box-shadow: 0 2px 8px var(--dark___);
+
+    .label {
+      font-size: var(--14);
+      color: var(--dark_);
+      margin-bottom: var(--8);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .value {
+      font-size: var(--40);
+      font-weight: bold;
+      margin-bottom: var(--8);
+      color: var(--brand);
+    }
+
+    .change {
+      font-size: var(--14);
+      font-weight: 600;
+
+      &.positive {
+        color: var(--accent);
+      }
+
+      &.negative {
+        color: var(--extra);
+      }
+    }
+  }
+
+  .chart-section {
+    background: var(--light);
+    padding: var(--32);
+    border-radius: var(--12);
+    box-shadow: 0 2px 8px var(--dark___);
+    margin-bottom: var(--24);
+
+    h2 {
+      font-size: var(--24);
+      margin: 0 0 var(--24) 0;
+      color: var(--brand);
+    }
+
+    .placeholder {
+      height: 300px;
+      background: var(--light_);
+      border-radius: var(--8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--dark_);
+      font-size: var(--18);
+    }
+  }
+
+  .data-table {
+    background: var(--light);
+    padding: var(--32);
+    border-radius: var(--12);
+    box-shadow: 0 2px 8px var(--dark___);
+
+    h2 {
+      font-size: var(--24);
+      margin: 0 0 var(--24) 0;
+      color: var(--brand);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+
+      th, td {
+        padding: var(--16);
+        text-align: left;
+        border-bottom: 1px solid var(--light__);
+      }
+
+      th {
+        background: var(--light_);
+        font-weight: 600;
+        color: var(--brand);
+        font-size: var(--14);
+        text-transform: uppercase;
+      }
+
+      td {
+        font-size: var(--16);
+      }
+
+      tr:hover {
+        background: var(--light_);
+      }
+    }
+  }
+}
+
+.badge {
+  display: inline-block;
+  padding: var(--4) var(--12);
+  border-radius: var(--12);
+  font-size: var(--12);
+  font-weight: 600;
+
+  &.success {
+    background: var(--accent_);
+    color: var(--accent);
+  }
+
+  &.warning {
+    background: var(--extra_);
+    color: var(--extra);
+  }
+
+  &.info {
+    background: var(--brand_);
+    color: var(--brand);
+  }
+}
+
+@media (max-width: 1024px) {
+  .dashboard {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    border-right: none;
+    border-bottom: 1px solid var(--light__);
+  }
+}

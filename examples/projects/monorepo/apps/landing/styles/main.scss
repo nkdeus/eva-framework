@@ -1,0 +1,189 @@
+// EVA CSS - Landing App
+// Configuration is loaded from ../../eva.config.cjs
+
+@use 'eva-css/index';
+
+// Landing page styles
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  transition: background 0.3s, color 0.3s;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--16) var(--32);
+  background: var(--light);
+  box-shadow: 0 2px 8px var(--dark___);
+
+  .logo {
+    font-size: var(--24);
+    font-weight: bold;
+    color: var(--brand);
+  }
+
+  nav {
+    display: flex;
+    gap: var(--24);
+
+    a {
+      color: var(--dark);
+      text-decoration: none;
+      font-size: var(--16);
+      transition: color 0.2s;
+
+      &:hover {
+        color: var(--brand);
+      }
+    }
+  }
+
+  .theme-toggle {
+    padding: var(--8) var(--16);
+    background: var(--brand);
+    color: var(--light);
+    border: none;
+    border-radius: var(--8);
+    cursor: pointer;
+    font-size: var(--14);
+    transition: opacity 0.2s;
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+}
+
+.hero {
+  text-align: center;
+  padding: var(--96) var(--32);
+  background: linear-gradient(135deg, var(--brand), var(--accent));
+  color: var(--light);
+
+  h1 {
+    font-size: var(--64);
+    margin: 0 0 var(--24) 0;
+    font-weight: bold;
+  }
+
+  p {
+    font-size: var(--24);
+    margin: 0 0 var(--48) 0;
+    opacity: 0.9;
+  }
+
+  .cta-buttons {
+    display: flex;
+    gap: var(--16);
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}
+
+.button {
+  display: inline-block;
+  padding: var(--16) var(--32);
+  background: var(--light);
+  color: var(--brand);
+  border: none;
+  border-radius: var(--8);
+  font-size: var(--18);
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px var(--dark__);
+  }
+
+  &.secondary {
+    background: transparent;
+    color: var(--light);
+    border: 2px solid var(--light);
+  }
+}
+
+.features {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--96) var(--32);
+
+  h2 {
+    text-align: center;
+    font-size: var(--48);
+    margin: 0 0 var(--64) 0;
+    color: var(--brand);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--32);
+  }
+
+  .feature-card {
+    background: var(--light);
+    padding: var(--32);
+    border-radius: var(--16);
+    box-shadow: 0 2px 8px var(--dark___);
+    transition: transform 0.2s, box-shadow 0.2s;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px var(--dark__);
+    }
+
+    .icon {
+      font-size: var(--48);
+      margin-bottom: var(--16);
+    }
+
+    h3 {
+      font-size: var(--24);
+      margin: 0 0 var(--12) 0;
+      color: var(--brand);
+    }
+
+    p {
+      font-size: var(--16);
+      line-height: 1.6;
+      margin: 0;
+      color: var(--dark_);
+    }
+  }
+}
+
+footer {
+  text-align: center;
+  padding: var(--48) var(--32);
+  background: var(--light_);
+  color: var(--dark_);
+  margin-top: var(--96);
+
+  p {
+    margin: var(--8) 0;
+    font-size: var(--14);
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    gap: var(--16);
+  }
+
+  .hero {
+    h1 {
+      font-size: var(--40);
+    }
+
+    p {
+      font-size: var(--18);
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "name": "eva-css-example-json-config",
+  "version": "1.0.0",
+  "description": "EVA CSS example using JSON configuration",
+  "private": true,
+  "scripts": {
+    "validate": "cd ../../.. && npx eva-css validate --config examples/projects/json-config/eva.config.cjs",
+    "build": "npm run build:main",
+    "build:main": "node scripts/build-with-config.js styles/main.scss dist/main.css",
+    "watch": "nodemon --watch styles --watch eva.config.cjs --ext scss,cjs --exec 'npm run build'",
+    "dev": "npm run build && npx http-server -p 8001 -o"
+  },
+  "keywords": ["eva-css", "example", "json-config"],
+  "author": "EVA CSS",
+  "license": "MIT",
+  "devDependencies": {
+    "sass": "^1.70.0",
+    "nodemon": "^3.0.0",
+    "http-server": "^14.1.1"
+  },
+  "dependencies": {
+    "eva-css-fluid": "file:../../../packages/eva-css"
+  }
+}

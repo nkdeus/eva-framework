@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EVA CSS - Simple SCSS Example</title>
+  <link rel="stylesheet" href="dist/main.css">
+  <style>
+    /* Additional demo styles */
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      background: var(--light_);
+      color: var(--dark);
+      border-radius: 12px;
+      font-size: 12px;
+      margin-right: 8px;
+    }
+    .badge.primary { background: var(--brand); color: var(--light); }
+    .badge.success { background: var(--accent); color: var(--light); }
+  </style>
+</head>
+<body class="current-theme theme-eva all-grads _bg-light _c-dark_">
+  <div class="container">
+    <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--32);">
+      <div style="font-size: var(--24); font-weight: bold; color: var(--brand);">EVA CSS</div>
+      <button onclick="document.body.classList.toggle('toggle-theme')" style="padding: var(--8) var(--16); background: var(--brand); color: white; border: none; border-radius: var(--8); cursor: pointer; font-size: var(--14);">
+        🌓 Toggle Theme
+      </button>
+    </header>
+
+    <div class="hero">
+      <h1>EVA CSS - Simple SCSS Example</h1>
+      <p>This example demonstrates using EVA CSS with SCSS variables</p>
+    </div>
+
+    <div class="card" style="margin-bottom: var(--32);">
+      <h2>Configuration Method: SCSS Variables</h2>
+      <p>
+        This project uses <strong>inline SCSS configuration</strong> with the
+        <code>@use 'eva-css-fluid' with ()</code> syntax.
+        All configuration is defined directly in the <code>styles/main.scss</code> file.
+      </p>
+
+      <div class="code-block">
+        <code>
+@use 'eva-css-fluid' with (
+  $sizes: 4, 8, 16, 32, 64, 128,
+  $font-sizes: 14, 16, 20, 24, 32, 48,
+  $build-class: true
+);
+        </code>
+      </div>
+
+      <p>
+        <span class="badge primary">Simple</span>
+        <span class="badge success">No build script</span>
+        <span class="badge">Works immediately</span>
+      </p>
+    </div>
+
+    <h2 style="margin-bottom: var(--16); color: var(--brand);">Features Demonstrated</h2>
+
+    <div class="grid">
+      <div class="card">
+        <h2>Fluid Sizing</h2>
+        <p>
+          All spacing and font sizes use EVA's fluid clamp() functions.
+          Resize your browser to see elements scale smoothly without media queries.
+        </p>
+      </div>
+
+      <div class="card">
+        <h2>Utility Classes</h2>
+        <p>
+          EVA generates utility classes like <code>.w-64</code>, <code>.p-16</code>,
+          <code>.fs-24</code> that you can use directly in HTML.
+        </p>
+      </div>
+
+      <div class="card">
+        <h2>CSS Variables</h2>
+        <p>
+          Use variables like <code>var(--32)</code> or <code>var(--24)</code>
+          in your custom SCSS for consistent, fluid spacing.
+        </p>
+      </div>
+    </div>
+
+    <h2 style="margin: var(--32) 0 var(--16) 0; color: var(--brand);">Utility Class Examples</h2>
+
+    <div class="grid">
+      <div class="w-128 h-128 _bg-brand p-16 _c-light" style="display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+        <strong>.w-128 .h-128 .p-16</strong>
+      </div>
+
+      <div class="w-64 h-64 _bg-accent p-8 _c-light" style="display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+        <strong>.w-64 .h-64 .p-8</strong>
+      </div>
+
+      <div class="w-32 h-32 _bg-extra p-4" style="display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+        <strong>.w-32 .h-32 .p-4</strong>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top: var(--32);">
+      <h2>Font Size Examples</h2>
+      <p class="fs-48" style="margin: var(--16) 0;">Heading size (fs-48)</p>
+      <p class="fs-32" style="margin: var(--16) 0;">Subheading size (fs-32)</p>
+      <p class="fs-24" style="margin: var(--16) 0;">Large text (fs-24)</p>
+      <p class="fs-20" style="margin: var(--16) 0;">Medium text (fs-20)</p>
+      <p class="fs-16" style="margin: var(--16) 0;">Body text (fs-16)</p>
+      <p class="fs-14" style="margin: var(--16) 0;">Small text (fs-14)</p>
+    </div>
+
+    <div class="card" style="margin-top: var(--32);">
+      <h2>How to Use This Example</h2>
+
+      <div style="margin: var(--16) 0;">
+        <h3 style="font-size: var(--20); margin-bottom: var(--8);">1. Build the CSS</h3>
+        <div class="code-block">
+          <code>npm install<br>npm run build</code>
+        </div>
+      </div>
+
+      <div style="margin: var(--16) 0;">
+        <h3 style="font-size: var(--20); margin-bottom: var(--8);">2. Watch for changes</h3>
+        <div class="code-block">
+          <code>npm run watch</code>
+        </div>
+      </div>
+
+      <div style="margin: var(--16) 0;">
+        <h3 style="font-size: var(--20); margin-bottom: var(--8);">3. Customize configuration</h3>
+        <p>Edit <code>styles/main.scss</code> and change the sizes in the <code>@use</code> statement.</p>
+      </div>
+
+      <a href="../json-config/" class="button" style="margin-top: var(--16);">
+        See JSON Config Example →
+      </a>
+    </div>
+
+    <footer style="text-align: center; padding: var(--32) 0; color: #666;">
+      <p>EVA CSS - Fluid design framework</p>
+      <p style="font-size: var(--14);">
+        <a href="https://eva-css.xyz" style="color: var(--brand);">Documentation</a> |
+        <a href="https://github.com/nkdeus/eva" style="color: var(--brand);">GitHub</a>
+      </p>
+    </footer>
+  </div>
+
+  <script>
+    // Save theme preference
+    const savedTheme = localStorage.getItem('eva-theme');
+
+    if (savedTheme === 'dark') {
+      document.body.classList.add('toggle-theme');
+    }
+
+    // Update localStorage on theme toggle
+    document.body.addEventListener('click', (e) => {
+      if (e.target.closest('button[onclick*="toggle-theme"]')) {
+        setTimeout(() => {
+          const isDark = document.body.classList.contains('toggle-theme');
+          localStorage.setItem('eva-theme', isDark ? 'dark' : 'light');
+        }, 0);
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+// ===========================================
+// EVA CSS - Example with Custom Class Mode
+// ===========================================
+// This example shows how to use $custom-class mode
+// to generate ONLY the classes you need
+// Perfect for production builds!
+// ===========================================
+
+// Import EVA CSS with custom class configuration
+@use 'eva-css/index' with (
+  // Define all available sizes
+  $sizes: (16, 24, 50, 100),
+
+  // Enable custom class filtering
+  $custom-class: true,
+
+  // Specify which classes to generate
+  // This will ONLY generate the classes you specify
+  // Note: Values must be lists, even for single items
+  $class-config: (
+    w: (50, 100),      // Only .w-50 and .w-100
+    h: (50, 100),      // Only .h-50 and .h-100
+    px: (24,),         // Only .px-24 (padding-inline)
+    py: (24,),         // Only .py-24 (padding-block)
+    g: (24, 50),       // Only .g-24 and .g-50 (gap)
+    br: (16,)          // Only .br-16 (border-radius)
+  )
+);
+
+// Result: Significantly smaller CSS output!
+// Instead of generating ALL classes for ALL sizes,
+// you get ONLY what you specified above.
+
+// Benefits:
+// ✅ Smaller CSS bundle size
+// ✅ Faster compilation
+// ✅ Better performance
+// ✅ Perfect for production
+
+// Example: Normal mode would generate 64 classes (4 sizes × 16 properties)
+// Custom class mode generates only 9 classes (exactly what you need)
+
+// You can still use CSS variables for any size:
+.custom {
+  padding: var(--16);  // Available even if not in class-config
+  margin: var(--24);   // Available even if not in class-config
+}
+
+// But utility classes are limited to class-config:
+// ✅ Works: .w-50, .w-100, .h-50, .h-100, .px-24, .py-24, .g-24, .g-50, .br-16
+// ❌ Won't exist: .w-16, .w-24, .p-16, .m-24, etc.

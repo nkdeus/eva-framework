@@ -1,0 +1,21 @@
+{
+  "name": "eva-css-example-simple-scss",
+  "version": "1.0.0",
+  "description": "Simple EVA CSS example using SCSS variables",
+  "private": true,
+  "scripts": {
+    "build": "cd ../../.. && npx sass --load-path=packages examples/projects/simple-scss/styles/main.scss:examples/projects/simple-scss/dist/main.css",
+    "watch": "cd ../../.. && npx sass --load-path=packages --watch examples/projects/simple-scss/styles/main.scss:examples/projects/simple-scss/dist/main.css",
+    "dev": "npm run build && npx http-server -p 8000 -o"
+  },
+  "keywords": ["eva-css", "example", "scss"],
+  "author": "EVA CSS",
+  "license": "MIT",
+  "devDependencies": {
+    "sass": "^1.70.0",
+    "http-server": "^14.1.1"
+  },
+  "dependencies": {
+    "eva-css-fluid": "file:../../../packages/eva-css"
+  }
+}

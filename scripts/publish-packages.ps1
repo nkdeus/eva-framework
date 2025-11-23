@@ -28,9 +28,10 @@ Write-Host ""
 
 # Simple package info
 Write-Host "Packages a publier:" -ForegroundColor Yellow
-Write-Host "  - eva-colors v1.0.4" -ForegroundColor Cyan
-Write-Host "  - eva-css-fluid v1.0.4" -ForegroundColor Cyan
-Write-Host "  - eva-css-purge v1.0.4" -ForegroundColor Cyan
+Write-Host "  - eva-colors v2.0.0" -ForegroundColor Cyan
+Write-Host "  - eva-css-fluid v2.0.0" -ForegroundColor Cyan
+Write-Host "  - eva-css-purge v2.0.0" -ForegroundColor Cyan
+Write-Host "  - create-eva-css v2.0.0" -ForegroundColor Cyan
 Write-Host ""
 
 Write-Host "Etes-vous pret a publier ces packages sur NPM ?" -ForegroundColor Yellow
@@ -87,13 +88,27 @@ else {
 }
 Pop-Location
 
+Write-Host "  Publishing create-eva-css..." -ForegroundColor Cyan
+Push-Location packages\create-eva-css
+npm publish
+if ($LASTEXITCODE -eq 0) {
+    Write-Host "  create-eva-css publie avec succes" -ForegroundColor Green
+}
+else {
+    Write-Host "  Erreur lors de la publication de create-eva-css" -ForegroundColor Red
+    Pop-Location
+    exit 1
+}
+Pop-Location
+
 Write-Host ""
 Write-Host "Tous les packages ont ete publies avec succes !" -ForegroundColor Green
 Write-Host ""
 Write-Host "Prochaines etapes recommandees:" -ForegroundColor Cyan
-Write-Host "   1. Creer un tag git: git tag v1.0.4 && git push --tags"
+Write-Host "   1. Creer un tag git: git tag v2.0.0 && git push --tags"
 Write-Host "   2. Verifier sur NPM:"
 Write-Host "      - https://www.npmjs.com/package/eva-colors"
 Write-Host "      - https://www.npmjs.com/package/eva-css-fluid"
 Write-Host "      - https://www.npmjs.com/package/eva-css-purge"
+Write-Host "      - https://www.npmjs.com/package/create-eva-css"
 Write-Host ""

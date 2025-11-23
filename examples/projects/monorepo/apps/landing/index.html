@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Landing - EVA CSS Monorepo Example</title>
+  <link rel="stylesheet" href="dist/main.css">
+</head>
+<body class="current-theme theme-eva all-grads _bg-light _c-dark_">
+  <nav class="navbar">
+    <div class="logo">EVA CSS</div>
+    <nav>
+      <a href="#features">Features</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="theme-toggle" onclick="document.body.classList.toggle('toggle-theme')">
+      🌓 Toggle Theme
+    </button>
+  </nav>
+
+  <section class="hero">
+    <h1>Build Faster with EVA CSS</h1>
+    <p>A fluid design framework with automatic dark mode and shared configuration</p>
+    <div class="cta-buttons">
+      <a href="#" class="button">Get Started</a>
+      <a href="../dashboard/index.html" class="button secondary">View Dashboard</a>
+    </div>
+  </section>
+
+  <section class="features">
+    <h2>Why Choose EVA CSS?</h2>
+    <div class="grid">
+      <div class="feature-card">
+        <div class="icon">🎨</div>
+        <h3>Fluid Design</h3>
+        <p>
+          All sizing and typography scale smoothly across devices using
+          CSS clamp() functions. No media queries needed.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon">🌓</div>
+        <h3>Auto Dark Mode</h3>
+        <p>
+          OKLCH color system automatically inverts lightness for dark mode.
+          No manual dark mode styles required.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon">⚙️</div>
+        <h3>Shared Config</h3>
+        <p>
+          Configure once in eva.config.cjs and use across all apps in your
+          monorepo. Consistent design tokens everywhere.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon">📦</div>
+        <h3>Utility Classes</h3>
+        <p>
+          Generated utility classes from your config for rapid prototyping.
+          Use .w-64, .p-16, .fs-24 directly in HTML.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon">✅</div>
+        <h3>Validated Config</h3>
+        <p>
+          Built-in validation ensures your configuration is correct before
+          building. Catch errors early with npx eva-css validate.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon">🚀</div>
+        <h3>Production Ready</h3>
+        <p>
+          Optimized CSS output with optional purging. Reduce file size by
+          60-90% by removing unused classes.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>EVA CSS - Monorepo Landing Example</p>
+    <p>
+      <a href="../dashboard/index.html" style="color: var(--brand);">Dashboard</a> |
+      <a href="../docs/index.html" style="color: var(--brand);">Documentation</a>
+    </p>
+  </footer>
+
+  <script>
+    // Save theme preference
+    const savedTheme = localStorage.getItem('eva-theme');
+    if (savedTheme === 'dark') {
+      document.body.classList.add('toggle-theme');
+    }
+
+    document.body.addEventListener('click', (e) => {
+      if (e.target.closest('.theme-toggle')) {
+        setTimeout(() => {
+          const isDark = document.body.classList.contains('toggle-theme');
+          localStorage.setItem('eva-theme', isDark ? 'dark' : 'light');
+        }, 0);
+      }
+    });
+  </script>
+</body>
+</html>

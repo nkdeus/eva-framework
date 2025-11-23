@@ -1,0 +1,255 @@
+// EVA CSS Example - JSON Configuration
+// Configuration is loaded from eva.config.cjs at project root
+
+// Simple import - config is injected by build script
+@use 'eva-css/index';
+
+// Custom styles using EVA CSS variables
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  // Background and color are handled by utility classes on <body>:
+  // class="_bg-light _c-dark_"
+  transition: background 0.3s, color 0.3s;
+}
+
+// Theme switching is handled by EVA's toggle-theme system automatically
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--32);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--32);
+
+  .logo {
+    font-size: var(--24);
+    font-weight: bold;
+    color: var(--brand);
+  }
+
+  .theme-toggle {
+    padding: var(--8) var(--16);
+    background: var(--brand);
+    color: var(--light);
+    border: none;
+    border-radius: var(--8);
+    cursor: pointer;
+    font-size: var(--14);
+    transition: opacity 0.2s;
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+}
+
+.hero {
+  padding: var(--64) var(--32);
+  background: linear-gradient(135deg, var(--brand), var(--accent));
+  color: var(--light);
+  border-radius: var(--16);
+  margin-bottom: var(--32);
+
+  h1 {
+    font-size: var(--48);
+    margin: 0 0 var(--16) 0;
+  }
+
+  p {
+    font-size: var(--20);
+    margin: 0;
+    opacity: 0.9;
+  }
+}
+
+.badge {
+  display: inline-block;
+  padding: var(--4) var(--16);
+  background: var(--light_);
+  color: var(--dark);
+  border-radius: var(--16);
+  font-size: var(--14);
+  margin-right: var(--8);
+  font-weight: 500;
+
+  &.success {
+    background: var(--accent_);
+    color: var(--accent);
+  }
+
+  &.warning {
+    background: var(--extra_);
+    color: var(--extra);
+  }
+}
+
+.card {
+  background: var(--light);
+  padding: var(--32);
+  border-radius: var(--8);
+  box-shadow: 0 2px 8px var(--dark___);
+  margin-bottom: var(--16);
+  transition: box-shadow 0.3s;
+
+  &:hover {
+    box-shadow: 0 4px 16px var(--dark__);
+  }
+
+  h2 {
+    font-size: var(--24);
+    margin: 0 0 var(--16) 0;
+    color: var(--brand);
+  }
+
+  h3 {
+    font-size: var(--20);
+    margin: var(--16) 0 var(--8) 0;
+  }
+
+  p {
+    font-size: var(--16);
+    line-height: 1.6;
+    margin: 0 0 var(--16) 0;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  code {
+    background: var(--light_);
+    padding: var(--4) var(--8);
+    border-radius: var(--4);
+    font-family: 'Courier New', monospace;
+    font-size: var(--14);
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--16);
+  margin-bottom: var(--32);
+}
+
+.code-block {
+  background: var(--dark);
+  color: var(--light_);
+  padding: var(--16);
+  border-radius: var(--8);
+  overflow-x: auto;
+  margin: var(--16) 0;
+  font-family: 'Courier New', monospace;
+  font-size: var(--14);
+  line-height: 1.5;
+
+  .comment {
+    color: var(--accent_);
+  }
+
+  .keyword {
+    color: var(--brand_);
+  }
+
+  .string {
+    color: var(--extra_);
+  }
+}
+
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: var(--16) 0;
+
+  th, td {
+    padding: var(--16);
+    text-align: left;
+    border-bottom: 1px solid var(--light__);
+  }
+
+  th {
+    background: var(--light_);
+    font-weight: 600;
+    color: var(--brand);
+  }
+
+  tr:hover {
+    background: var(--light_);
+  }
+}
+
+.button {
+  display: inline-block;
+  padding: var(--16) var(--32);
+  background: var(--brand);
+  color: var(--light);
+  border: none;
+  border-radius: var(--8);
+  font-size: var(--16);
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity 0.2s, transform 0.1s;
+
+  &:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &.secondary {
+    background: var(--light);
+    color: var(--brand);
+    border: 2px solid var(--brand);
+  }
+}
+
+footer {
+  text-align: center;
+  padding: var(--32) 0;
+  color: var(--dark_);
+  border-top: 1px solid var(--light__);
+  margin-top: var(--64);
+
+  a {
+    color: var(--brand);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+// Dark mode is automatic thanks to EVA's OKLCH system!
+// All colors (--light, --dark, --brand, --accent, etc.) automatically inverse
+// their lightness when .toggle-theme is applied. No manual dark mode styles needed!
+
+// Responsive
+@media (max-width: 768px) {
+  .container {
+    padding: var(--16);
+  }
+
+  .hero {
+    padding: var(--32) var(--16);
+
+    h1 {
+      font-size: var(--32);
+    }
+  }
+
+  .header {
+    flex-direction: column;
+    gap: var(--16);
+  }
+}

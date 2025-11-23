@@ -64,6 +64,38 @@ yarn add eva-css-fluid
 
 **Migrating from another framework?** See the [Migration Guide](./MIGRATION.md) for detailed instructions.
 
+## 🚦 Which Configuration Method Should I Use?
+
+EVA CSS can be configured in two ways. **Choose based on your project needs:**
+
+### For Quick Start / Learning
+👉 **Use SCSS Variables** - Everything in one file, works immediately
+
+### For Production Projects
+Choose based on your needs:
+
+| You want... | Use... |
+|-------------|--------|
+| Simplicity, no build scripts | **SCSS Variables** (`@use ... with ()`) |
+| Centralized config, multiple SCSS files | **JSON Config** (requires custom build script) |
+| Watch mode without complexity | **SCSS Variables** |
+| Config validation, better DX | **JSON Config** (requires custom build script) |
+
+💡 **You can start with SCSS variables and migrate to JSON later - the generated CSS is identical!**
+
+### Option Comparison
+
+| Feature | SCSS Variables | JSON Config |
+|---------|----------------|-------------|
+| **Setup complexity** | ⭐ Simple | ⭐⭐⭐ Requires script |
+| **Works with `npx sass`** | ✅ Yes, immediately | ⚠️ No, needs custom script |
+| **Config location** | Inside SCSS file | Separate `eva.config.cjs` |
+| **Multiple SCSS files** | ⚠️ Config duplicated | ✅ Shared config |
+| **Validation** | ❌ No | ✅ `npx eva-css validate` |
+| **Generated CSS** | ✅ Identical output | ✅ Identical output |
+
+**See detailed workflows below** for implementation examples.
+
 ## 🚀 Quick Start
 
 ### New Project (Recommended)
@@ -120,9 +152,39 @@ npx sass --load-path=node_modules styles/main.scss:styles/main.css
 
 ### Using SCSS with Custom Configuration
 
-**This is the main feature of EVA CSS!** You can configure EVA CSS in two ways:
+**This is the main feature of EVA CSS!** Extract sizes from your design and configure EVA to generate only what you need.
 
-#### Option 1: JSON Configuration (Recommended)
+#### Option 1: SCSS Variables (Recommended for Beginners)
+
+**Direct configuration in your SCSS file** - Works immediately with `npx sass`:
+
+```scss
+// Example: Sizes extracted from Figma design
+@use 'eva-css-fluid' with (
+  $sizes: 4, 8, 16, 32, 64, 128,        // 👈 Change these to YOUR design sizes!
+  $font-sizes: 14, 16, 20, 24, 32,      // 👈 Change these to YOUR font sizes!
+  $build-class: true,
+  $px-rem-suffix: false
+);
+```
+
+**Compile immediately:**
+
+```bash
+npx sass --load-path=node_modules styles/main.scss:styles/main.css
+```
+
+✅ **Advantages:**
+- Works immediately with standard Sass compilation
+- No additional build scripts needed
+- Perfect for watch mode: `npx sass --watch ...`
+- Great for learning and simple projects
+
+⚠️ **Note:** If you import EVA in multiple SCSS files, you'll need to duplicate the configuration.
+
+#### Option 2: JSON Configuration (Advanced - Requires Build Script)
+
+**Centralized configuration file** - Better for complex projects with multiple SCSS files:
 
 Create `eva.config.cjs` in your project root:
 
@@ -136,42 +198,57 @@ module.exports = {
 };
 ```
 
-Or add to your `package.json`:
-
-```json
-{
-  "eva": {
-    "sizes": [4, 8, 16, 32, 64, 128],
-    "fontSizes": [14, 16, 20, 24, 32],
-    "buildClass": true
-  }
-}
-```
-
-Then simply import EVA CSS:
+Then in your SCSS:
 
 ```scss
 @use 'eva-css-fluid';
 ```
 
-And build with the integrated script:
+⚠️ **IMPORTANT:** JSON configuration requires a **custom build script** to work. SCSS cannot execute JavaScript directly.
 
+**You have two choices:**
+
+**A) Use the EVA package's build script** (for building EVA itself):
 ```bash
+# This is only for building the EVA CSS package itself, NOT for your project
+cd node_modules/eva-css-fluid
 npm run build
-# Configuration is automatically loaded from eva.config.cjs or package.json
 ```
 
-#### Option 2: SCSS Variables
+**B) Create your own build script** (recommended for user projects):
 
-```scss
-// Example: Sizes extracted from Figma design
-@use 'eva-css-fluid' with (
-  $sizes: 4, 8, 16, 32, 64, 128,        // 👈 Change these to YOUR design sizes!
-  $font-sizes: 14, 16, 20, 24, 32,      // 👈 Change these to YOUR font sizes!
-  $build-class: true,
-  $px-rem-suffix: false
-);
-```
+1. Copy the build script template:
+   ```bash
+   # Download the template (see examples/ folder for ready-to-use script)
+   curl -o scripts/build-eva.js https://raw.githubusercontent.com/nkdeus/eva/main/examples/user-scripts/build-with-config.js
+   ```
+
+2. Add npm script to your `package.json`:
+   ```json
+   {
+     "scripts": {
+       "build:css": "node scripts/build-eva.js styles/main.scss dist/main.css"
+     }
+   }
+   ```
+
+3. Build your CSS:
+   ```bash
+   npm run build:css
+   ```
+
+✅ **Advantages:**
+- Single config file shared across multiple SCSS files
+- Config validation with `npx eva-css validate`
+- Cleaner SCSS files
+- Better for large projects
+
+⚠️ **Disadvantages:**
+- Requires custom build script setup
+- More complex workflow
+- Not compatible with standard `npx sass` command
+
+💡 **New to EVA CSS?** Start with **Option 1 (SCSS Variables)** and migrate to JSON config later if needed!
 
 **Real example from a Figma project:**
 
@@ -188,6 +265,60 @@ npm run build
 // Now all these sizes are available as fluid variables!
 // var(--4), var(--8), var(--16), var(--32), var(--64), var(--120), var(--141)
 ```
+
+## ❓ FAQ - Configuration
+
+### Q: Why doesn't `@use 'eva-css-fluid'` automatically load `eva.config.cjs`?
+
+**A:** SCSS cannot execute JavaScript during compilation. The `eva.config.cjs` file must be read **before** SCSS compilation and transformed into SCSS variables.
+
+**Solutions:**
+- **Simple:** Use `@use ... with ()` directly in your SCSS (no script needed)
+- **Advanced:** Create a build script that reads the config and injects it into SCSS (see Option 2 above)
+
+### Q: What's the difference between "JSON config" and "SCSS variables"?
+
+**A:** The generated CSS is **100% identical**. It's only a matter of workflow organization:
+
+| Method | Configuration Location | Compilation Command |
+|--------|----------------------|---------------------|
+| SCSS Variables | Inside SCSS file with `@use ... with ()` | `npx sass styles.scss` |
+| JSON Config | Separate `eva.config.cjs` file | Custom script required |
+
+**Choose based on your workflow:**
+- **Simple projects:** SCSS variables (quick and easy)
+- **Complex projects with multiple SCSS files:** JSON config (shared configuration)
+
+### Q: Can I use the `scripts/build-with-config.cjs` from the eva-css package?
+
+**A:** That script is designed to **build EVA CSS itself** (the framework), not your project.
+
+For your project, you need to:
+1. Create your own build script (see template in `examples/user-scripts/`)
+2. Or use SCSS variables with `@use ... with ()` instead
+
+### Q: Which option should I use for my project?
+
+**A:** Follow this decision tree:
+
+```
+Do you have multiple SCSS files that need the same EVA config?
+├─ NO  → Use SCSS Variables (simpler)
+└─ YES → Do you want config validation and centralized settings?
+    ├─ YES → Use JSON Config (requires build script setup)
+    └─ NO  → Use SCSS Variables (simpler, just duplicate config)
+```
+
+### Q: Can I migrate from SCSS variables to JSON config later?
+
+**A:** Yes! Since both methods generate identical CSS, you can switch at any time:
+
+1. Create `eva.config.cjs` with your settings
+2. Set up a build script (see examples/)
+3. Update your SCSS from `@use ... with ()` to `@use 'eva-css-fluid'`
+4. Update your build command
+
+No CSS changes needed!
 
 ## 🎨 Configuration Options
 

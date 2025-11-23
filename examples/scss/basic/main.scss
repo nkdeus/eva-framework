@@ -1,0 +1,27 @@
+// ===========================================
+// EVA CSS - Basic Example
+// ===========================================
+// The simplest possible EVA CSS setup
+// Uses default configuration with minimal customization
+// ===========================================
+
+// Import EVA CSS with basic configuration
+@use 'eva-css/index' with (
+  // Just a few essential sizes
+  $sizes: (8, 16, 24, 32, 48, 64),
+
+  // Font sizes for typography
+  $font-sizes: (14, 16, 20, 24, 32),
+
+  // Generate utility classes
+  $build-class: true
+);
+
+// That's it! You now have:
+// - CSS Variables: var(--8), var(--16), var(--24), var(--32), var(--48), var(--64)
+// - Utility Classes: .w-16, .p-24, .h-64, etc.
+// - Font Classes: .fs-14, .fs-16, .fs-20, .fs-24, .fs-32
+// - EVA color system: var(--brand), var(--accent), var(--light), var(--dark)
+// - Automatic dark mode with OKLCH color inversion
+
+// Add your custom styles below

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Documentation - EVA CSS Monorepo Example</title>
+  <link rel="stylesheet" href="dist/main.css">
+</head>
+<body class="current-theme theme-eva all-grads _bg-light_ _c-dark_">
+  <div class="docs">
+    <aside class="sidebar">
+      <div class="logo">EVA CSS Docs</div>
+      <input type="text" class="search" placeholder="Search documentation...">
+
+      <nav>
+        <div class="section">
+          <h3>Getting Started</h3>
+          <ul>
+            <li><a href="#" class="active">Introduction</a></li>
+            <li><a href="#">Installation</a></li>
+            <li><a href="#">Configuration</a></li>
+            <li><a href="#">Quick Start</a></li>
+          </ul>
+        </div>
+
+        <div class="section">
+          <h3>Monorepo Setup</h3>
+          <ul>
+            <li><a href="#">Shared Config</a></li>
+            <li><a href="#">Build Scripts</a></li>
+            <li><a href="#">Multiple Apps</a></li>
+          </ul>
+        </div>
+
+        <div class="section">
+          <h3>Core Concepts</h3>
+          <ul>
+            <li><a href="#">Fluid Sizing</a></li>
+            <li><a href="#">OKLCH Colors</a></li>
+            <li><a href="#">Utility Classes</a></li>
+            <li><a href="#">Theme System</a></li>
+          </ul>
+        </div>
+
+        <div class="section">
+          <h3>API Reference</h3>
+          <ul>
+            <li><a href="#">Configuration</a></li>
+            <li><a href="#">CLI Commands</a></li>
+            <li><a href="#">Build Script</a></li>
+          </ul>
+        </div>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <div class="header">
+        <h1>Monorepo Example</h1>
+        <button class="theme-toggle" onclick="document.body.classList.toggle('toggle-theme')">
+          🌓 Toggle Theme
+        </button>
+      </div>
+
+      <div class="breadcrumb">
+        <a href="#">Home</a>
+        <span>›</span>
+        <a href="#">Examples</a>
+        <span>›</span>
+        <span>Monorepo</span>
+      </div>
+
+      <p>
+        This example demonstrates how to use EVA CSS in a monorepo with multiple
+        applications sharing a single configuration file.
+      </p>
+
+      <h2>Overview</h2>
+
+      <p>
+        In this monorepo setup, we have three applications:
+      </p>
+
+      <ul>
+        <li><strong>Landing</strong> - Marketing landing page with hero and features</li>
+        <li><strong>Dashboard</strong> - Admin dashboard with metrics and charts</li>
+        <li><strong>Documentation</strong> - Technical documentation site (this page)</li>
+      </ul>
+
+      <p>
+        All three apps share the same <code>eva.config.cjs</code> at the monorepo root,
+        ensuring consistent design tokens across the entire product.
+      </p>
+
+      <h2>Project Structure</h2>
+
+      <pre><code>monorepo/
+├── eva.config.cjs              # Shared configuration
+├── package.json                # Build scripts
+├── scripts/
+│   └── build-with-config.js    # Shared build script
+└── apps/
+    ├── landing/
+    │   ├── index.html
+    │   ├── styles/main.scss
+    │   └── dist/main.css
+    ├── dashboard/
+    │   ├── index.html
+    │   ├── styles/main.scss
+    │   └── dist/main.css
+    └── docs/
+        ├── index.html
+        ├── styles/main.scss
+        └── dist/main.css</code></pre>
+
+      <h2>Configuration</h2>
+
+      <p>
+        The shared <code>eva.config.cjs</code> contains all design tokens:
+      </p>
+
+      <pre><code>module.exports = {
+  sizes: [4, 8, 12, 16, 24, 32, 48, 64, 96, 128],
+  fontSizes: [12, 14, 16, 18, 20, 24, 32, 40, 48, 64],
+  buildClass: true,
+
+  theme: {
+    name: 'eva',
+    lightMode: { lightness: 96.4, darkness: 6.4 },
+    darkMode: { lightness: 5, darkness: 95 }
+  }
+};</code></pre>
+
+      <div class="note">
+        <p>
+          <strong>Note:</strong> Changes to <code>eva.config.cjs</code> will affect
+          all apps when you rebuild. This ensures consistency but requires coordination
+          in team environments.
+        </p>
+      </div>
+
+      <h2>Build Commands</h2>
+
+      <p>
+        The monorepo <code>package.json</code> includes scripts for building all apps:
+      </p>
+
+      <div class="api-section">
+        <h4>npm run build</h4>
+        <div class="params">Build all apps (landing, dashboard, docs)</div>
+      </div>
+
+      <div class="api-section">
+        <h4>npm run build:landing</h4>
+        <div class="params">Build only the landing app</div>
+      </div>
+
+      <div class="api-section">
+        <h4>npm run build:dashboard</h4>
+        <div class="params">Build only the dashboard app</div>
+      </div>
+
+      <div class="api-section">
+        <h4>npm run build:docs</h4>
+        <div class="params">Build only the documentation app</div>
+      </div>
+
+      <div class="api-section">
+        <h4>npm run validate</h4>
+        <div class="params">Validate the shared configuration</div>
+      </div>
+
+      <h2>Key Features</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Shared Config</td>
+            <td>One eva.config.cjs for all apps</td>
+          </tr>
+          <tr>
+            <td>Consistent Design</td>
+            <td>Same sizes, colors, theme across apps</td>
+          </tr>
+          <tr>
+            <td>Independent Builds</td>
+            <td>Build apps separately or all at once</td>
+          </tr>
+          <tr>
+            <td>Auto Dark Mode</td>
+            <td>OKLCH system handles theme switching</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="warning">
+        <p>
+          <strong>Important:</strong> In a real monorepo, you might want to use tools like
+          Turborepo or Nx to optimize builds and caching. This example focuses on the
+          EVA CSS configuration aspect.
+        </p>
+      </div>
+
+      <h2>Try Other Apps</h2>
+
+      <p>
+        Navigate to the other applications to see how the same configuration produces
+        different UIs while maintaining design consistency:
+      </p>
+
+      <ul>
+        <li><a href="../landing/index.html">Landing Page</a> - Marketing site with hero and features</li>
+        <li><a href="../dashboard/index.html">Dashboard</a> - Admin interface with metrics</li>
+      </ul>
+
+      <h2>Next Steps</h2>
+
+      <ol>
+        <li>Edit <code>eva.config.cjs</code> to customize shared design tokens</li>
+        <li>Run <code>npm run validate</code> to check configuration</li>
+        <li>Run <code>npm run build</code> to rebuild all apps</li>
+        <li>Add more apps by creating new folders under <code>apps/</code></li>
+      </ol>
+    </main>
+  </div>
+
+  <script>
+    const savedTheme = localStorage.getItem('eva-theme');
+    if (savedTheme === 'dark') {
+      document.body.classList.add('toggle-theme');
+    }
+
+    document.body.addEventListener('click', (e) => {
+      if (e.target.closest('.theme-toggle')) {
+        setTimeout(() => {
+          const isDark = document.body.classList.contains('toggle-theme');
+          localStorage.setItem('eva-theme', isDark ? 'dark' : 'light');
+        }, 0);
+      }
+    });
+  </script>
+</body>
+</html>

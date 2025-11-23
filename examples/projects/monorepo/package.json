@@ -1,0 +1,28 @@
+{
+  "name": "eva-css-example-monorepo",
+  "version": "1.0.0",
+  "description": "EVA CSS monorepo example - shared configuration across multiple apps",
+  "private": true,
+  "scripts": {
+    "validate": "cd ../../.. && npx eva-css validate --config examples/projects/monorepo/eva.config.cjs",
+    "build": "npm run build:landing && npm run build:dashboard && npm run build:docs",
+    "build:landing": "node scripts/build-with-config.js apps/landing/styles/main.scss apps/landing/dist/main.css",
+    "build:dashboard": "node scripts/build-with-config.js apps/dashboard/styles/main.scss apps/dashboard/dist/main.css",
+    "build:docs": "node scripts/build-with-config.js apps/docs/styles/main.scss apps/docs/dist/main.css",
+    "watch": "nodemon --watch apps --watch eva.config.cjs --ext scss,cjs --exec 'npm run build'",
+    "dev:landing": "npm run build:landing && npx http-server apps/landing -p 8010 -o",
+    "dev:dashboard": "npm run build:dashboard && npx http-server apps/dashboard -p 8020 -o",
+    "dev:docs": "npm run build:docs && npx http-server apps/docs -p 8030 -o"
+  },
+  "keywords": ["eva-css", "example", "monorepo", "shared-config"],
+  "author": "EVA CSS",
+  "license": "MIT",
+  "devDependencies": {
+    "sass": "^1.70.0",
+    "nodemon": "^3.0.0",
+    "http-server": "^14.1.1"
+  },
+  "dependencies": {
+    "eva-css-fluid": "file:../../../packages/eva-css"
+  }
+}

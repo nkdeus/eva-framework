@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EVA CSS - JSON Config Example</title>
+  <link rel="stylesheet" href="dist/main.css">
+</head>
+<body class="current-theme theme-eva all-grads _bg-light _c-dark_">
+  <div class="container">
+    <header class="header">
+      <div class="logo">EVA CSS</div>
+      <button class="theme-toggle" onclick="document.body.classList.toggle('toggle-theme')">
+        🌓 Toggle Theme
+      </button>
+    </header>
+
+    <div class="hero">
+      <h1>EVA CSS - JSON Configuration Example</h1>
+      <p>This example demonstrates using EVA CSS with a centralized configuration file</p>
+    </div>
+
+    <div class="card" style="margin-bottom: var(--32);">
+      <h2>Configuration Method: JSON Config</h2>
+      <p>
+        This project uses a <strong>centralized eva.config.cjs</strong> file
+        that is loaded by a custom build script. This allows you to:
+      </p>
+      <ul style="margin: var(--16) 0; line-height: 1.8;">
+        <li>✅ Share configuration across multiple SCSS files</li>
+        <li>✅ Validate configuration with <code>npx eva-css validate</code></li>
+        <li>✅ Keep SCSS files clean and focused</li>
+        <li>✅ Manage design tokens centrally</li>
+      </ul>
+
+      <p>
+        <span class="badge">JSON Config</span>
+        <span class="badge success">Validated</span>
+        <span class="badge warning">Requires script</span>
+      </p>
+
+      <div class="code-block">
+<span class="comment">// eva.config.cjs</span>
+<span class="keyword">module.exports</span> = {
+  sizes: [<span class="string">4, 8, 16, 32, 64, 128</span>],
+  fontSizes: [<span class="string">14, 16, 20, 24, 32, 48</span>],
+  buildClass: <span class="keyword">true</span>,
+
+  theme: {
+    name: <span class="string">'demo'</span>,
+    colors: {
+      brand: <span class="string">'#6366f1'</span>,
+      accent: <span class="string">'#f43f5e'</span>
+    }
+  }
+};
+      </div>
+    </div>
+
+    <h2 style="margin-bottom: var(--16); color: var(--brand);">Build Process Comparison</h2>
+
+    <div class="grid">
+      <div class="card">
+        <h2>SCSS Variables</h2>
+        <p>Configuration inline in SCSS:</p>
+        <div class="code-block">
+<span class="keyword">@use</span> <span class="string">'eva-css-fluid'</span> <span class="keyword">with</span> (
+  $sizes: 4, 8, 16, 32
+);
+        </div>
+        <p style="margin-top: var(--16);">Build with:</p>
+        <div class="code-block">
+npx sass styles/main.scss
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>JSON Config</h2>
+        <p>Clean SCSS import:</p>
+        <div class="code-block">
+<span class="keyword">@use</span> <span class="string">'eva-css-fluid'</span>;
+        </div>
+        <p style="margin-top: var(--16);">Build with custom script:</p>
+        <div class="code-block">
+node scripts/build-with-config.js \
+  styles/main.scss dist/main.css
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top: var(--32);">
+      <h2>Configuration Validation</h2>
+      <p>
+        One of the main advantages of JSON config is the ability to validate
+        your configuration before building:
+      </p>
+      <div class="code-block">
+$ npx eva-css validate
+
+✅ Configuration is valid
+
+📋 Configuration Summary:
+  - Sizes: 4, 8, 16, 32, 64, 128 (6 values)
+  - Font sizes: 14, 16, 20, 24, 32, 48 (6 values)
+  - Build class: true
+  - Theme: demo
+      </div>
+    </div>
+
+    <h2 style="margin: var(--32) 0 var(--16) 0; color: var(--brand);">Features Demonstrated</h2>
+
+    <div class="grid">
+      <div class="card">
+        <h2>🎨 Theme System</h2>
+        <p>
+          Click the "Toggle Theme" button in the header to see automatic
+          light/dark mode switching. Colors are defined in <code>eva.config.cjs</code>
+          and automatically converted to OKLCH.
+        </p>
+      </div>
+
+      <div class="card">
+        <h2>📐 Fluid Sizing</h2>
+        <p>
+          All spacing uses EVA's fluid clamp() functions. Resize your browser
+          to see elements scale smoothly from mobile to desktop without
+          media queries.
+        </p>
+      </div>
+
+      <div class="card">
+        <h2>🔧 Utility Classes</h2>
+        <p>
+          EVA generates utility classes from your config:
+          <code>.w-64</code>, <code>.p-16</code>, <code>.fs-24</code>, etc.
+          Try them in the examples below.
+        </p>
+      </div>
+
+      <div class="card">
+        <h2>✅ Validation</h2>
+        <p>
+          Configuration is validated before building, catching errors early.
+          Run <code>npm run validate</code> to check your config file.
+        </p>
+      </div>
+    </div>
+
+    <h2 style="margin: var(--32) 0 var(--16) 0; color: var(--brand);">Utility Class Examples</h2>
+
+    <div class="grid">
+      <div class="w-128 h-128 _bg-brand p-16 _c-light" style="display: flex; align-items: center; justify-content: center; border-radius: 8px; flex-direction: column; gap: var(--8);">
+        <strong style="font-size: var(--20);">.w-128 .h-128</strong>
+        <span style="font-size: var(--14); opacity: 0.9;">.p-16 ._bg-brand</span>
+      </div>
+
+      <div class="w-64 h-64 _bg-accent p-8 _c-light" style="display: flex; align-items: center; justify-content: center; border-radius: 8px; flex-direction: column; gap: var(--8);">
+        <strong style="font-size: var(--16);">.w-64 .h-64</strong>
+        <span style="font-size: var(--14); opacity: 0.9;">.p-8 ._bg-accent</span>
+      </div>
+
+      <div class="w-32 h-32 _bg-extra p-4" style="display: flex; align-items: center; justify-content: center; border-radius: 8px; flex-direction: column;">
+        <strong style="font-size: var(--14);">.w-32 .h-32</strong>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top: var(--32);">
+      <h2>Font Size Scale</h2>
+      <p>Font sizes defined in <code>eva.config.cjs</code>:</p>
+      <div style="margin-top: var(--16);">
+        <p class="fs-48" style="margin: var(--8) 0;">Heading (fs-48)</p>
+        <p class="fs-32" style="margin: var(--8) 0;">Subheading (fs-32)</p>
+        <p class="fs-24" style="margin: var(--8) 0;">Large text (fs-24)</p>
+        <p class="fs-20" style="margin: var(--8) 0;">Medium text (fs-20)</p>
+        <p class="fs-16" style="margin: var(--8) 0;">Body text (fs-16)</p>
+        <p class="fs-14" style="margin: var(--8) 0;">Small text (fs-14)</p>
+      </div>
+    </div>
+
+    <h2 style="margin: var(--32) 0 var(--16) 0; color: var(--brand);">Setup Instructions</h2>
+
+    <div class="card">
+      <h3>1. Install Dependencies</h3>
+      <div class="code-block">
+npm install
+      </div>
+
+      <h3>2. Validate Configuration (Optional)</h3>
+      <div class="code-block">
+npm run validate
+      </div>
+
+      <h3>3. Build CSS</h3>
+      <div class="code-block">
+npm run build
+      </div>
+
+      <h3>4. Watch Mode (Auto-rebuild)</h3>
+      <div class="code-block">
+npm run watch
+      </div>
+      <p style="margin-top: var(--16);">
+        This watches for changes to <code>styles/*.scss</code> and <code>eva.config.cjs</code>
+        and automatically rebuilds when you save.
+      </p>
+
+      <h3>5. Customize Configuration</h3>
+      <p>Edit <code>eva.config.cjs</code> to change sizes, colors, or theme:</p>
+      <div class="code-block">
+<span class="keyword">module.exports</span> = {
+  sizes: [<span class="string">10, 20, 40, 80</span>],  <span class="comment">// Your custom sizes</span>
+  fontSizes: [<span class="string">16, 24, 36</span>],  <span class="comment">// Your font sizes</span>
+
+  theme: {
+    colors: {
+      brand: <span class="string">'#your-color'</span>
+    }
+  }
+};
+      </div>
+      <p>Save the file and the build will automatically update if watch mode is running.</p>
+    </div>
+
+    <div class="card" style="margin-top: var(--32);">
+      <h2>When to Use JSON Config</h2>
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>Use JSON Config When...</th>
+            <th>Use SCSS Variables When...</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>✅ Multiple SCSS files</td>
+            <td>✅ Single SCSS file</td>
+          </tr>
+          <tr>
+            <td>✅ Team collaboration</td>
+            <td>✅ Solo developer</td>
+          </tr>
+          <tr>
+            <td>✅ Need validation</td>
+            <td>✅ Want simplicity</td>
+          </tr>
+          <tr>
+            <td>✅ Production projects</td>
+            <td>✅ Quick prototypes</td>
+          </tr>
+          <tr>
+            <td>✅ Design system</td>
+            <td>✅ Learning EVA CSS</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card" style="margin-top: var(--32);">
+      <h2>Project Structure</h2>
+      <div class="code-block">
+json-config/
+├── eva.config.cjs          <span class="comment">← Configuration file</span>
+├── package.json
+├── scripts/
+│   └── build-with-config.js <span class="comment">← Build script</span>
+├── styles/
+│   └── main.scss           <span class="comment">← Clean SCSS (no config)</span>
+└── dist/
+    └── main.css            <span class="comment">← Generated CSS</span>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top: var(--32);">
+      <h2>Next Steps</h2>
+      <ul style="line-height: 2;">
+        <li>📝 Edit <code>eva.config.cjs</code> to customize sizes and colors</li>
+        <li>🎨 Modify <code>styles/main.scss</code> to add your own styles</li>
+        <li>👀 Run <code>npm run watch</code> for automatic rebuilds</li>
+        <li>✅ Run <code>npm run validate</code> to check your configuration</li>
+        <li>📖 Read the <a href="../../packages/eva-css/docs/JSON-CONFIG.md" style="color: var(--brand);">JSON Config Guide</a></li>
+      </ul>
+
+      <div style="margin-top: var(--32); display: flex; gap: var(--16); flex-wrap: wrap;">
+        <a href="../simple-scss/" class="button secondary">
+          ← SCSS Variables Example
+        </a>
+        <a href="../../packages/eva-css/docs/WORKFLOWS.md" class="button">
+          Compare Workflows →
+        </a>
+      </div>
+    </div>
+
+    <footer>
+      <p style="font-size: var(--16); margin-bottom: var(--8);">EVA CSS - Fluid design framework</p>
+      <p style="font-size: var(--14);">
+        <a href="https://eva-css.xyz">Documentation</a> |
+        <a href="https://github.com/nkdeus/eva">GitHub</a> |
+        <a href="../../packages/eva-css/README.md">Main README</a>
+      </p>
+    </footer>
+  </div>
+
+  <script>
+    // Save theme preference
+    const themeToggle = document.querySelector('.theme-toggle');
+    const savedTheme = localStorage.getItem('eva-theme');
+
+    if (savedTheme === 'dark') {
+      document.body.classList.add('toggle-theme');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      const isDark = document.body.classList.contains('toggle-theme');
+      localStorage.setItem('eva-theme', isDark ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

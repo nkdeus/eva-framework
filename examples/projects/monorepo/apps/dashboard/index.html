@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - EVA CSS Monorepo Example</title>
+  <link rel="stylesheet" href="dist/main.css">
+</head>
+<body class="current-theme theme-eva all-grads _bg-light_ _c-dark_">
+  <div class="dashboard">
+    <aside class="sidebar">
+      <div class="logo">EVA Dashboard</div>
+      <nav>
+        <a href="#" class="active">Overview</a>
+        <a href="#">Analytics</a>
+        <a href="#">Reports</a>
+        <a href="#">Users</a>
+        <a href="#">Settings</a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <div class="header">
+        <h1>Dashboard Overview</h1>
+        <button class="theme-toggle" onclick="document.body.classList.toggle('toggle-theme')">
+          🌓 Toggle Theme
+        </button>
+      </div>
+
+      <div class="metrics">
+        <div class="metric-card">
+          <div class="label">Total Users</div>
+          <div class="value">12,543</div>
+          <div class="change positive">↑ 12.5%</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="label">Revenue</div>
+          <div class="value">$48,392</div>
+          <div class="change positive">↑ 8.2%</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="label">Active Sessions</div>
+          <div class="value">892</div>
+          <div class="change negative">↓ 3.1%</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="label">Conversion</div>
+          <div class="value">3.47%</div>
+          <div class="change positive">↑ 0.3%</div>
+        </div>
+      </div>
+
+      <div class="chart-section">
+        <h2>Analytics Overview</h2>
+        <div class="placeholder">Chart Placeholder - Using shared EVA theme colors</div>
+      </div>
+
+      <div class="data-table">
+        <h2>Recent Activity</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Action</th>
+              <th>Status</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>John Doe</td>
+              <td>Created account</td>
+              <td><span class="badge success">Active</span></td>
+              <td>2025-11-23</td>
+            </tr>
+            <tr>
+              <td>Jane Smith</td>
+              <td>Updated profile</td>
+              <td><span class="badge info">Pending</span></td>
+              <td>2025-11-23</td>
+            </tr>
+            <tr>
+              <td>Mike Johnson</td>
+              <td>Deleted item</td>
+              <td><span class="badge warning">Review</span></td>
+              <td>2025-11-22</td>
+            </tr>
+            <tr>
+              <td>Sarah Williams</td>
+              <td>Uploaded file</td>
+              <td><span class="badge success">Active</span></td>
+              <td>2025-11-22</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin-top: var(--32); padding: var(--24); background: var(--light); border-radius: var(--12); box-shadow: 0 2px 8px var(--dark___);">
+        <h2 style="margin: 0 0 var(--16) 0; color: var(--brand); font-size: var(--24);">Monorepo Configuration</h2>
+        <p style="margin: 0; font-size: var(--16); line-height: 1.6;">
+          This dashboard uses the <strong>same eva.config.cjs</strong> as the landing page and documentation.
+          All apps share the same design tokens, ensuring consistency across your entire product.
+        </p>
+        <div style="margin-top: var(--16); display: flex; gap: var(--8);">
+          <a href="../landing/index.html" style="color: var(--brand); text-decoration: none; font-size: var(--14);">← Landing</a>
+          <span style="color: var(--dark_);">|</span>
+          <a href="../docs/index.html" style="color: var(--brand); text-decoration: none; font-size: var(--14);">Documentation →</a>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const savedTheme = localStorage.getItem('eva-theme');
+    if (savedTheme === 'dark') {
+      document.body.classList.add('toggle-theme');
+    }
+
+    document.body.addEventListener('click', (e) => {
+      if (e.target.closest('.theme-toggle')) {
+        setTimeout(() => {
+          const isDark = document.body.classList.contains('toggle-theme');
+          localStorage.setItem('eva-theme', isDark ? 'dark' : 'light');
+        }, 0);
+      }
+    });
+  </script>
+</body>
+</html>

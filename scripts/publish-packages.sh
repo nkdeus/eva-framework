@@ -55,6 +55,11 @@ cd packages/eva-purge
 npm pack --dry-run 2>&1 | grep "package size\|total files" | sed 's/npm notice /    /'
 cd ../..
 
+echo "  create-eva-css:"
+cd packages/create-eva-css
+npm pack --dry-run 2>&1 | grep "package size\|total files" | sed 's/npm notice /    /'
+cd ../..
+
 echo ""
 echo -e "${YELLOW}⚠️  Êtes-vous prêt à publier ces packages sur NPM ?${NC}"
 echo "   Cette action est irréversible !"
@@ -89,13 +94,20 @@ npm publish
 echo -e "${GREEN}✓ @eva/purge publié${NC}"
 cd ../..
 
+echo "  Publishing create-eva-css..."
+cd packages/create-eva-css
+npm publish
+echo -e "${GREEN}✓ create-eva-css publié${NC}"
+cd ../..
+
 echo ""
 echo -e "${GREEN}🎉 Tous les packages ont été publiés avec succès !${NC}"
 echo ""
 echo "📝 Prochaines étapes recommandées:"
-echo "   1. Créer un tag git: git tag v1.0.0 && git push --tags"
+echo "   1. Créer un tag git: git tag v2.0.0 && git push --tags"
 echo "   2. Vérifier sur NPM:"
-echo "      - https://www.npmjs.com/package/@eva/colors"
-echo "      - https://www.npmjs.com/package/@eva/css"
-echo "      - https://www.npmjs.com/package/@eva/purge"
+echo "      - https://www.npmjs.com/package/eva-colors"
+echo "      - https://www.npmjs.com/package/eva-css-fluid"
+echo "      - https://www.npmjs.com/package/eva-css-purge"
+echo "      - https://www.npmjs.com/package/create-eva-css"
 echo ""
