@@ -345,7 +345,233 @@ $build-class: true;
 
 ## Integration Examples
 
-### Vite Integration
+### Complete Project Examples
+
+#### VuePress Documentation Site
+
+Perfect for documentation sites with consistent design system.
+
+```
+vuepress-docs/
+├── eva.config.cjs          ← Centralized config
+├── scripts/
+│   └── build-eva.js        ← Build script
+├── docs/
+│   ├── .vuepress/
+│   │   ├── config.js
+│   │   └── styles/
+│   │       └── index.scss  ← Simplified (no config)
+│   └── README.md
+└── package.json
+```
+
+**eva.config.cjs:**
+```javascript
+module.exports = {
+  sizes: [4, 8, 16, 24, 32, 48, 64],
+  fontSizes: [14, 16, 18, 20, 24, 32, 40],
+  buildClass: true,
+  theme: {
+    name: 'docs',
+    colors: {
+      brand: '#3eaf7c',      // VuePress green
+      accent: '#2c3e50',     // Dark text
+      extra: '#42b983'       // Bright green
+    },
+    lightMode: { lightness: 98, darkness: 10 },
+    darkMode: { lightness: 12, darkness: 95 }
+  }
+};
+```
+
+**docs/.vuepress/styles/index.scss:**
+```scss
+// Clean import - config from eva.config.cjs
+@use 'eva-css-fluid';
+
+// Custom VuePress overrides
+.theme-default-content {
+  padding: var(--32);
+  max-width: var(--800);
+
+  h1 { font-size: var(--40); }
+  h2 { font-size: var(--32); }
+  p { font-size: var(--16); }
+}
+```
+
+**package.json:**
+```json
+{
+  "scripts": {
+    "build:css": "node scripts/build-eva.js docs/.vuepress/styles/index.scss docs/.vuepress/public/eva.css",
+    "dev": "npm run build:css && vuepress dev docs",
+    "build": "npm run build:css && vuepress build docs"
+  }
+}
+```
+
+#### Next.js Application
+
+Modern React app with global styles and component-level styling.
+
+```
+nextjs-app/
+├── eva.config.cjs          ← Shared config
+├── scripts/
+│   └── build-eva.js
+├── styles/
+│   ├── globals.scss        ← Global EVA styles
+│   └── components.scss     ← Component styles
+├── pages/
+│   └── _app.js
+└── package.json
+```
+
+**eva.config.cjs:**
+```javascript
+module.exports = {
+  // Design system from Figma
+  sizes: [4, 8, 12, 16, 24, 32, 48, 64, 96, 128],
+  fontSizes: [12, 14, 16, 18, 20, 24, 32, 48, 64],
+  buildClass: true,
+
+  theme: {
+    name: 'app',
+    colors: {
+      brand: '#0070f3',      // Next.js blue
+      accent: '#7928ca',     // Purple
+      extra: '#ff0080'       // Pink
+    },
+    autoSwitch: true  // Auto dark mode
+  },
+
+  // Production optimization
+  purge: {
+    enabled: process.env.NODE_ENV === 'production',
+    content: ['pages/**/*.{js,jsx}', 'components/**/*.{js,jsx}'],
+    css: 'styles/globals.css',
+    output: 'public/eva-optimized.css'
+  }
+};
+```
+
+**styles/globals.scss:**
+```scss
+@use 'eva-css-fluid';
+
+// Global resets and variables available everywhere
+body {
+  padding: var(--0);
+  margin: var(--0);
+  font-size: var(--16);
+  background: var(--light);
+  color: var(--dark);
+}
+```
+
+**pages/_app.js:**
+```javascript
+import '../styles/globals.css';
+
+function MyApp({ Component, pageProps }) {
+  return (
+    <div className="current-theme theme-app">
+      <Component {...pageProps} />
+    </div>
+  );
+}
+
+export default MyApp;
+```
+
+**package.json:**
+```json
+{
+  "scripts": {
+    "prebuild": "npm run build:css",
+    "build:css": "node scripts/build-eva.js styles/globals.scss styles/globals.css",
+    "dev": "npm run build:css && next dev",
+    "build": "next build"
+  }
+}
+```
+
+#### React + Vite SPA
+
+Fast development with HMR and optimized production builds.
+
+```
+react-vite-app/
+├── eva.config.cjs
+├── scripts/
+│   └── build-eva.js
+├── src/
+│   ├── main.jsx
+│   └── styles/
+│       ├── main.scss       ← Entry point
+│       ├── components.scss
+│       └── utilities.scss
+├── vite.config.js
+└── package.json
+```
+
+**eva.config.cjs:**
+```javascript
+module.exports = {
+  sizes: [4, 8, 16, 24, 32, 48, 64],
+  fontSizes: [14, 16, 20, 24, 32],
+  buildClass: true,
+  customClass: false,  // Full utilities for rapid prototyping
+
+  theme: {
+    name: 'vite',
+    colors: {
+      brand: '#646cff',      // Vite purple
+      accent: '#42b883',     // Vue green
+      extra: '#ffc107'       // Amber
+    }
+  }
+};
+```
+
+**vite.config.js (with auto-rebuild):**
+```javascript
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import { execSync } from 'child_process';
+
+export default defineConfig({
+  plugins: [
+    react(),
+    {
+      name: 'eva-css-build',
+      buildStart() {
+        console.log('Building EVA CSS...');
+        execSync('node scripts/build-eva.js src/styles/main.scss src/styles/main.css');
+      }
+    }
+  ]
+});
+```
+
+**src/main.jsx:**
+```javascript
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+import './styles/main.css';
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <div className="current-theme theme-vite">
+    <App />
+  </div>
+);
+```
+
+### Framework-Specific Integrations
+
+#### Vite Integration
 
 ```javascript
 // vite.config.js
@@ -365,7 +591,7 @@ export default defineConfig({
 });
 ```
 
-### Webpack Integration
+#### Webpack Integration
 
 ```javascript
 // webpack.config.js
@@ -384,6 +610,44 @@ module.exports = {
 };
 ```
 
+#### Nuxt.js Integration
+
+```javascript
+// nuxt.config.js
+export default {
+  hooks: {
+    build: {
+      before() {
+        const { execSync } = require('child_process');
+        execSync('node scripts/build-eva.js assets/styles/main.scss static/eva.css');
+      }
+    }
+  },
+  css: ['~/static/eva.css']
+};
+```
+
+#### Astro Integration
+
+```javascript
+// astro.config.mjs
+import { defineConfig } from 'astro/config';
+import { execSync } from 'child_process';
+
+export default defineConfig({
+  integrations: [
+    {
+      name: 'eva-css',
+      hooks: {
+        'astro:build:start': () => {
+          execSync('node scripts/build-eva.js src/styles/main.scss public/eva.css');
+        }
+      }
+    }
+  ]
+});
+```
+
 ### npm Scripts for CI/CD
 
 ```json
@@ -397,6 +661,39 @@ module.exports = {
   }
 }
 ```
+
+### Monorepo Setup
+
+Perfect for design systems shared across multiple apps:
+
+```
+monorepo/
+├── eva.config.cjs          ← Shared by all apps
+├── scripts/
+│   └── build-eva.js
+├── apps/
+│   ├── landing/
+│   │   └── styles/main.scss
+│   ├── dashboard/
+│   │   └── styles/main.scss
+│   └── docs/
+│       └── styles/main.scss
+└── package.json
+```
+
+**Root package.json:**
+```json
+{
+  "scripts": {
+    "build:css:landing": "node scripts/build-eva.js apps/landing/styles/main.scss apps/landing/dist/main.css",
+    "build:css:dashboard": "node scripts/build-eva.js apps/dashboard/styles/main.scss apps/dashboard/dist/main.css",
+    "build:css:docs": "node scripts/build-eva.js apps/docs/styles/main.scss apps/docs/dist/main.css",
+    "build:css:all": "npm run build:css:landing && npm run build:css:dashboard && npm run build:css:docs"
+  }
+}
+```
+
+All apps share the same `eva.config.cjs` = consistent design system! 🎨
 
 ## Troubleshooting
 

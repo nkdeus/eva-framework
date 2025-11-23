@@ -21,11 +21,12 @@ EVA CSS is a modern, fluid design framework that converts static UI designs (lik
 
 This monorepo contains multiple npm packages:
 
-| Package | Description | Version |
-|---------|-------------|---------|
-| [eva-css-fluid](./packages/eva-css) | Core fluid design framework | 1.0.4 |
-| [eva-colors](./packages/eva-colors) | OKLCH color utilities | 1.0.4 |
-| [eva-css-purge](./packages/eva-purge) | Intelligent CSS purging | 1.0.4 |
+| Package | Description | Version | NPM |
+|---------|-------------|---------|-----|
+| [eva-css-fluid](./packages/eva-css) | Core fluid design framework | 2.0.5 | [![npm](https://img.shields.io/npm/v/eva-css-fluid)](https://www.npmjs.com/package/eva-css-fluid) |
+| [eva-colors](./packages/eva-colors) | OKLCH color utilities | 2.0.5 | [![npm](https://img.shields.io/npm/v/eva-colors)](https://www.npmjs.com/package/eva-colors) |
+| [eva-css-purge](./packages/eva-purge) | Intelligent CSS purging | 2.0.5 | [![npm](https://img.shields.io/npm/v/eva-css-purge)](https://www.npmjs.com/package/eva-css-purge) |
+| [create-eva-css](./packages/create-eva-css) | Project scaffolding tool | 2.0.5 | [![npm](https://img.shields.io/npm/v/create-eva-css)](https://www.npmjs.com/package/create-eva-css) |
 
 ## 🚀 Quick Start
 
@@ -169,21 +170,98 @@ Check out the `demo/` directory for a complete showcase with examples.
 
 [View Live Demo →](https://eva-css.xyz/demo/)
 
-## 🛠️ Development
+## 🛠️ Monorepo Development
+
+This project uses **pnpm workspaces** to manage multiple packages efficiently.
+
+### Initial Setup
 
 ```bash
-# Install dependencies
-pnpm install
+# Install pnpm globally (if not already installed)
+npm install -g pnpm
 
-# Build all packages
+# Install all dependencies for all packages
+pnpm install
+```
+
+### Building Packages
+
+```bash
+# Build all packages at once
 pnpm run build
 
-# Test packages
-pnpm run test
+# Build specific package
+cd packages/eva-css
+pnpm run build
 
-# Develop packages
+# Watch mode for development
 cd packages/eva-css
 pnpm run watch
+```
+
+### Package Structure
+
+```
+eva-framework/
+├── packages/
+│   ├── eva-css/          # Main framework (SCSS)
+│   ├── eva-colors/       # Color utilities (Node.js)
+│   ├── eva-purge/        # CSS purging tool
+│   └── create-eva-css/   # Scaffolding tool
+├── examples/
+│   ├── projects/         # Complete project examples
+│   │   ├── simple-scss/  # SCSS variables approach
+│   │   ├── json-config/  # JSON config approach
+│   │   └── monorepo/     # Multi-app setup
+│   ├── scss/             # Small SCSS examples
+│   └── user-scripts/     # Reusable build scripts
+├── demo/                 # Live demo site
+├── scripts/              # Monorepo management scripts
+└── pnpm-workspace.yaml   # Workspace configuration
+```
+
+### Working with Examples
+
+The monorepo includes several complete examples to learn from:
+
+```bash
+# Try the simple SCSS example
+cd examples/projects/simple-scss
+pnpm install
+pnpm run dev
+
+# Try the JSON config example
+cd examples/projects/json-config
+pnpm install
+pnpm run dev
+
+# Try the monorepo example
+cd examples/projects/monorepo
+pnpm install
+pnpm run build:css:all
+```
+
+### Publishing Packages
+
+```bash
+# From project root, use the publish script
+./scripts/publish-packages.sh
+
+# Or manually for a specific package
+cd packages/eva-css
+npm version patch  # or minor, major
+npm publish
+```
+
+### Running Tests
+
+```bash
+# Test all packages
+pnpm run test
+
+# Test specific package
+cd packages/eva-purge
+pnpm test
 ```
 
 ## 🤝 Contributing

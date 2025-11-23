@@ -219,15 +219,22 @@ npm run build
 
 1. Copy the build script template:
    ```bash
-   # Download the template (see examples/ folder for ready-to-use script)
-   curl -o scripts/build-eva.js https://raw.githubusercontent.com/nkdeus/eva/main/examples/user-scripts/build-with-config.js
+   # Create scripts directory if needed
+   mkdir -p scripts
+
+   # Copy the ready-to-use script from the monorepo examples
+   cp node_modules/eva-css-fluid/../../examples/user-scripts/build-with-config.js scripts/build-eva.js
+
+   # Or download directly from GitHub
+   curl -o scripts/build-eva.js https://raw.githubusercontent.com/nkdeus/eva-framework/main/examples/user-scripts/build-with-config.js
    ```
 
 2. Add npm script to your `package.json`:
    ```json
    {
      "scripts": {
-       "build:css": "node scripts/build-eva.js styles/main.scss dist/main.css"
+       "build:css": "node scripts/build-eva.js styles/main.scss dist/main.css",
+       "watch:css": "nodemon --watch eva.config.cjs --watch styles/ --exec 'npm run build:css'"
      }
    }
    ```
@@ -236,6 +243,14 @@ npm run build
    ```bash
    npm run build:css
    ```
+
+**What the script does:**
+- Reads your `eva.config.cjs` configuration
+- Converts JSON config → SCSS variables
+- Compiles SCSS with the injected config
+- Handles HEX → OKLCH color conversion automatically
+
+📚 **See [examples/user-scripts/README.md](../../examples/user-scripts/README.md) for detailed documentation**
 
 ✅ **Advantages:**
 - Single config file shared across multiple SCSS files
@@ -376,6 +391,30 @@ module.exports = {
   }
 };
 ```
+
+**Real-world example** (Tailwind colors to EVA theme):
+
+```javascript
+// Extract colors from your design system
+module.exports = {
+  theme: {
+    name: 'myproject',
+    colors: {
+      brand: '#3b82f6',    // Tailwind blue-500
+      accent: '#22c55e',   // Tailwind green-500
+      extra: '#a855f7'     // Tailwind purple-500
+    },
+    lightMode: { lightness: 98, darkness: 10 },
+    darkMode: { lightness: 8, darkness: 95 },
+    autoSwitch: true  // Auto dark mode with prefers-color-scheme
+  }
+};
+```
+
+**These HEX colors are automatically converted to:**
+- `#3b82f6` → `oklch(57.4% 0.213 263.8)` (perceptually uniform blue)
+- `#22c55e` → `oklch(72.6% 0.200 147.6)` (perceptually uniform green)
+- `#a855f7` → `oklch(60.8% 0.248 302.7)` (perceptually uniform purple)
 
 **Available colors:** `brand`, `accent`, `extra`, `dark`, `light`
 
@@ -611,6 +650,251 @@ var(--brand-b_)  // More brighter
   --current-darkness: 26.4%;   // Dark mode
 }
 ```
+
+## ❗ Troubleshooting
+
+### Common Issues and Solutions
+
+#### "The target selector was not found" with @extend
+
+**Error:**
+```
+Error: The target selector was not found.
+Use "@extend .w-64 !optional" to avoid this error.
+```
+
+**Cause:** You're using `@use` instead of `@forward` when trying to extend EVA classes.
+
+**Solution:** Use `@forward` to expose EVA classes in your module:
+
+```scss
+// ❌ Wrong - @use doesn't expose classes for @extend
+@use 'eva-css-fluid';
+
+.my-class {
+  @extend .w-64;  // Error!
+}
+
+// ✅ Correct - @forward exposes classes
+@forward 'eva-css-fluid';
+
+.my-class {
+  @extend .w-64;  // Works!
+}
+```
+
+#### Theme colors not appearing in compiled CSS
+
+**Problem:** You defined colors in `eva.config.cjs` but they don't show up in the output CSS.
+
+**Solutions:**
+
+1. **Using JSON config?** Make sure you're using the build script:
+   ```bash
+   # Won't work - SCSS can't read .cjs files
+   npx sass styles/main.scss dist/main.css
+
+   # Use this instead
+   node scripts/build-eva.js styles/main.scss dist/main.css
+   ```
+
+2. **Import colors module** if using SCSS variables:
+   ```scss
+   @use 'eva-css-fluid/src/colors' with (
+     $theme-name: 'myapp',
+     $theme-colors: (
+       brand: (lightness: 62.8, chroma: 0.258, hue: 29.23),
+       // ... more colors
+     )
+   );
+   ```
+
+3. **Apply theme class in HTML:**
+   ```html
+   <!-- Without this class, theme colors won't be active -->
+   <body class="current-theme theme-myapp">
+     <h1 class="_c-brand">Now this works!</h1>
+   </body>
+   ```
+
+#### HEX colors not converting to OKLCH
+
+**Problem:** You put HEX colors in `eva.config.cjs` but get an error or they don't work.
+
+**Cause:** The build script needs `eva-colors` to convert HEX → OKLCH automatically.
+
+**Solution:**
+
+1. Install `eva-colors` as a dependency:
+   ```bash
+   npm install eva-colors
+   ```
+
+2. Or convert colors manually:
+   ```bash
+   npx eva-color convert "#ff5733"
+   # Output: oklch(62.8% 0.258 29.23)
+   ```
+
+3. Then use OKLCH format in config:
+   ```javascript
+   // eva.config.cjs
+   module.exports = {
+     theme: {
+       colors: {
+         brand: { lightness: 62.8, chroma: 0.258, hue: 29.23 }
+       }
+     }
+   };
+   ```
+
+#### Configuration not loading / "Invalid configuration" error
+
+**Problem:** Your `eva.config.cjs` isn't being read or validation fails.
+
+**Checklist:**
+
+1. **File location:** Must be in project root (same level as `package.json`)
+2. **File name:** Must be exactly `eva.config.cjs` or `eva.config.js`
+3. **Syntax:** Must use `module.exports`, not ESM `export`
+4. **Validate config:**
+   ```bash
+   npx eva-css validate
+   ```
+
+**Common mistakes:**
+
+```javascript
+// ❌ Wrong - ESM syntax
+export default {
+  sizes: [16, 24]
+};
+
+// ✅ Correct - CommonJS
+module.exports = {
+  sizes: [16, 24]
+};
+```
+
+#### Dark mode toggle not working
+
+**Problem:** Clicking toggle button doesn't switch themes.
+
+**Required setup:**
+
+1. **HTML structure:**
+   ```html
+   <body class="current-theme theme-myapp">
+     <!-- Both classes required ^^ -->
+     <button onclick="document.body.classList.toggle('toggle-theme')">
+       Toggle Dark Mode
+     </button>
+   </body>
+   ```
+
+2. **Theme configuration:**
+   ```javascript
+   // eva.config.cjs
+   module.exports = {
+     theme: {
+       name: 'myapp',  // Must match class: .theme-myapp
+       lightMode: { lightness: 96.4, darkness: 6.4 },
+       darkMode: { lightness: 5, darkness: 95 },
+       autoSwitch: false  // Set true for auto prefers-color-scheme
+     }
+   };
+   ```
+
+3. **Toggle class:** The `.toggle-theme` class triggers dark mode when present.
+
+#### CSS file size is huge (100KB+)
+
+**Problem:** Generated CSS file is very large.
+
+**Solutions:**
+
+1. **Enable custom class mode** to generate only needed classes:
+   ```scss
+   @use 'eva-css-fluid' with (
+     $sizes: (16, 24, 32, 64),
+     $custom-class: true,
+     $class-config: (
+       w: (64,),      // Only .w-64
+       p: (16, 24),   // Only .p-16 and .p-24
+       fs: (16, 24)   // Only .fs-16 and .fs-24
+     )
+   );
+   ```
+   **Result:** Reduces output by ~85%
+
+2. **Use CSS purging** to remove unused classes:
+   ```bash
+   npm install --save-dev eva-css-purge
+   npx eva-purge --css dist/eva.css --content "src/**/*.html"
+   ```
+   **Result:** Typically 60-90% size reduction
+
+3. **Use variables mode** instead of utility classes:
+   ```scss
+   @use 'eva-css-fluid' with (
+     $build-class: false  // No utility classes, only variables
+   );
+   ```
+   **Result:** Much smaller CSS (only variables, no classes)
+
+#### Sass compilation error: "Cannot find module"
+
+**Error:**
+```
+Error: Can't find stylesheet to import.
+  ╷
+1 │ @use 'eva-css-fluid';
+  │ ^^^^^^^^^^^^^^^^^^^^^
+```
+
+**Solutions:**
+
+1. **Add load-path** if using older Sass:
+   ```bash
+   npx sass --load-path=node_modules styles/main.scss dist/main.css
+   ```
+
+2. **Check package is installed:**
+   ```bash
+   npm ls eva-css-fluid
+   # Should show: eva-css-fluid@x.x.x
+   ```
+
+3. **Try explicit path:**
+   ```scss
+   @use '../node_modules/eva-css-fluid/src';
+   ```
+
+#### Watch mode not detecting config changes
+
+**Problem:** Changing `eva.config.cjs` doesn't trigger rebuild.
+
+**Solution:** Use `nodemon` to watch config file:
+
+```json
+{
+  "scripts": {
+    "watch:css": "nodemon --watch eva.config.cjs --watch styles/ --exec 'node scripts/build-eva.js styles/main.scss dist/main.css'"
+  }
+}
+```
+
+Install nodemon:
+```bash
+npm install --save-dev nodemon
+```
+
+#### Need help?
+
+- 📖 [Full Documentation](https://eva-css.xyz/)
+- 💬 [GitHub Issues](https://github.com/nkdeus/eva/issues)
+- 📦 [NPM Package](https://www.npmjs.com/package/eva-css-fluid)
+- 🎯 [Working Examples](../../examples/)
 
 ## 📚 Documentation
 
