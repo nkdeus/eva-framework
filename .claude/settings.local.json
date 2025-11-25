@@ -9,7 +9,8 @@
       "Bash(done)",
       "Bash(find:*)",
       "Bash(bash -n:*)",
-      "Bash(dos2unix:*)"
+      "Bash(dos2unix:*)",
+      "WebFetch(domain:raw.githubusercontent.com)"
     ],
     "deny": [],
     "ask": []
