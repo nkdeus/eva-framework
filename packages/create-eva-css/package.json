@@ -1,6 +1,6 @@
 {
   "name": "create-eva-css",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "description": "Scaffolding tool for EVA CSS projects - npm init eva-css",
   "type": "module",
   "bin": {

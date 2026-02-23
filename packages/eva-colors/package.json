@@ -1,6 +1,6 @@
 {
   "name": "eva-colors",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "description": "OKLCH color utilities for EVA CSS framework",
   "type": "module",
   "main": "src/index.js",

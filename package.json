@@ -12,7 +12,8 @@
     "watch-projects": "node scripts/watch-projects.js",
     "build-css": "npx sass styles/main.scss:styles/main.css --style expanded",
     "build-legacy": "npm run build-css && npm run purge",
-    "purge": "node scripts/purge-css.js"
+    "purge": "node scripts/purge-css.js",
+    "publish-packages": "powershell -ExecutionPolicy Bypass -File scripts/publish-packages-v2.ps1"
   },
   "devDependencies": {
     "culori": "^4.0.2",
