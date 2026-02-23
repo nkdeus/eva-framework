@@ -10,7 +10,9 @@
       "Bash(find:*)",
       "Bash(bash -n:*)",
       "Bash(dos2unix:*)",
-      "WebFetch(domain:raw.githubusercontent.com)"
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(npx sass packages/eva-css/src/index.scss --no-source-map 2>&1 | grep -i -E \"\\(warning|error|deprecat\\)\" || echo \"No warnings or errors found\")",
+      "Bash(npx sass packages/eva-css/src/index.scss --no-source-map 2>&1 | grep -E \"current-lightness|current-darkness\" | head -20)"
     ],
     "deny": [],
     "ask": []

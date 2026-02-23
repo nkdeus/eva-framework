@@ -14,8 +14,8 @@ $dark-mode-darkness: 95% !default;       // Darkness en mode sombre
 
 :root {
 
-  --current-lightness: 95%;
-  --current-darkness: 5%;
+  --current-lightness: #{$light-mode-lightness};
+  --current-darkness: #{$light-mode-darkness};
 
   --brand-lightness: 80%;
   --brand-chroma: 0;
@@ -205,8 +205,8 @@ $build-color-classes: true !default;
       --brighter_: -15%;
 
 
-      --current-lightness: 5%;
-      --current-darkness: 95%;
+      --current-lightness: #{$dark-mode-lightness};
+      --current-darkness: #{$dark-mode-darkness};
 
       --dark-lightness: var(--current-darkness) !important;
       --light-lightness: var(--current-lightness) !important;
@@ -223,8 +223,8 @@ $build-color-classes: true !default;
     --brighter_: -15%;
 
 
-    --current-lightness: 5%;
-    --current-darkness: 95%;
+    --current-lightness: #{$dark-mode-lightness};
+    --current-darkness: #{$dark-mode-darkness};
 
     --dark-lightness: var(--current-darkness) !important;
     --light-lightness: var(--current-lightness) !important;

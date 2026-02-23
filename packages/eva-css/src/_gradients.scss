@@ -52,7 +52,12 @@
 // Emmet-style color setters
 @each $color in colors.$gradients {
   @each $variation in colors.$all-variations {
-    $color-name: if($variation == "", $color, "#{$color}#{$variation}");
+    $color-name: "";
+    @if $variation == "" {
+      $color-name: $color;
+    } @else {
+      $color-name: "#{$color}#{$variation}";
+    }
     
     .from-#{$color-name} {
       --current-from-color: var(--#{$color-name});
