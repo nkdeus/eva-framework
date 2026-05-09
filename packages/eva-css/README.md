@@ -2,6 +2,22 @@
 
 > Revolutionary fluid design framework - Transform static Figma designs into truly responsive fluid systems
 
+> [!WARNING]
+> **The JSON config workflow is deprecated and will be removed in v3.0.**
+>
+> Going forward, the only supported configuration is the **direct SCSS workflow**:
+>
+> ```scss
+> @use 'eva-css-fluid' with (
+>   $sizes: (4, 8, 12, 16, 24, 32, 48, 64, 96, 128),
+>   $font-sizes: (12, 14, 16, 18, 20, 24, 32, 48)
+> );
+> ```
+>
+> The generated CSS is identical to what the JSON workflow produces. Migration is mechanical: copy the values from `eva.config.cjs` into the `with (...)` block.
+>
+> Concretely deprecated in v2.x and removed in v3.0: `eva.config.cjs`, the CLI commands `init`/`setup`/`validate`/`generate`, and the custom `build-with-config.cjs` script. See the SCSS-only reference at [eva-css.xyz/framework/doc.html](https://eva-css.xyz/framework/doc.html).
+
 **EVA CSS** replaces traditional breakpoint-based responsive design with **automatic fluid scaling**. Instead of defining arbitrary breakpoints for every screen size, EVA converts your static pixel values from Figma into intelligent `clamp()` functions that scale smoothly across all devices.
 
 ## 💡 The Revolutionary Concept
@@ -182,7 +198,10 @@ npx sass --load-path=node_modules styles/main.scss:styles/main.css
 
 ⚠️ **Note:** If you import EVA in multiple SCSS files, you'll need to duplicate the configuration.
 
-#### Option 2: JSON Configuration (Advanced - Requires Build Script)
+#### Option 2: JSON Configuration [DEPRECATED] (Advanced - Requires Build Script)
+
+> [!WARNING]
+> This workflow is deprecated and will be removed in v3.0. Use **Option 1 (SCSS Variables)** instead. The generated CSS is identical.
 
 **Centralized configuration file** - Better for complex projects with multiple SCSS files:
 
@@ -337,7 +356,9 @@ No CSS changes needed!
 
 ## 🎨 Configuration Options
 
-### JSON Configuration (eva.config.cjs or package.json)
+### JSON Configuration (eva.config.cjs or package.json) [DEPRECATED]
+
+> Deprecated in v2.x, removed in v3.0. Migrate to the SCSS `@use ... with (...)` syntax above.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|

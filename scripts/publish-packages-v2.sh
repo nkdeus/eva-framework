@@ -42,6 +42,7 @@ PACKAGES=(
     ["eva-css-fluid"]="packages/eva-css"
     ["eva-css-purge"]="packages/eva-purge"
     ["create-eva-css"]="packages/create-eva-css"
+    ["eva-css-for-tailwind"]="packages/eva-ycode"
 )
 
 for pkg_name in "${!PACKAGES[@]}"; do
@@ -156,6 +157,14 @@ echo -e "${GREEN}✓ Build terminé${NC}"
 cd ../..
 echo ""
 
+# Build eva-css-for-tailwind
+echo "🔨 Build de eva-css-for-tailwind..."
+cd packages/eva-ycode
+pnpm build &> /dev/null
+echo -e "${GREEN}✓ Build terminé${NC}"
+cd ../..
+echo ""
+
 # Verify package contents
 echo "📦 Vérification des packages..."
 echo ""
@@ -263,6 +272,7 @@ if [[ $FAILED_COUNT -eq 0 ]]; then
     echo "     - https://www.npmjs.com/package/eva-css-fluid"
     echo "     - https://www.npmjs.com/package/eva-css-purge"
     echo "     - https://www.npmjs.com/package/create-eva-css"
+    echo "     - https://www.npmjs.com/package/eva-css-for-tailwind"
     echo ""
 else
     echo -e "${YELLOW}⚠️  Publication partielle${NC}"

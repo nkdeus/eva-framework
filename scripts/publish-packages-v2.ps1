@@ -28,6 +28,7 @@ $packages = @{
     "eva-css-fluid" = "packages\eva-css"
     "eva-css-purge" = "packages\eva-purge"
     "create-eva-css" = "packages\create-eva-css"
+    "eva-css-for-tailwind" = "packages\eva-ycode"
 }
 
 $currentVersions = @{}
@@ -145,6 +146,14 @@ Write-Host "Build de eva-css-fluid..." -ForegroundColor Yellow
 Push-Location packages\eva-css
 $null = pnpm build 2>&1
 $null = pnpm build:min 2>&1
+Write-Host "Build termine" -ForegroundColor Green
+Pop-Location
+Write-Host ""
+
+# Build eva-css-for-tailwind
+Write-Host "Build de eva-css-for-tailwind..." -ForegroundColor Yellow
+Push-Location packages\eva-ycode
+$null = pnpm build 2>&1
 Write-Host "Build termine" -ForegroundColor Green
 Pop-Location
 Write-Host ""
@@ -269,6 +278,7 @@ if ($failedCount -eq 0) {
     Write-Host "     - https://www.npmjs.com/package/eva-css-fluid"
     Write-Host "     - https://www.npmjs.com/package/eva-css-purge"
     Write-Host "     - https://www.npmjs.com/package/create-eva-css"
+    Write-Host "     - https://www.npmjs.com/package/eva-css-for-tailwind"
     Write-Host ""
 } else {
     Write-Host "Publication partielle" -ForegroundColor Yellow

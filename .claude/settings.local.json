@@ -12,7 +12,15 @@
       "Bash(dos2unix:*)",
       "WebFetch(domain:raw.githubusercontent.com)",
       "Bash(npx sass packages/eva-css/src/index.scss --no-source-map 2>&1 | grep -i -E \"\\(warning|error|deprecat\\)\" || echo \"No warnings or errors found\")",
-      "Bash(npx sass packages/eva-css/src/index.scss --no-source-map 2>&1 | grep -E \"current-lightness|current-darkness\" | head -20)"
+      "Bash(npx sass packages/eva-css/src/index.scss --no-source-map 2>&1 | grep -E \"current-lightness|current-darkness\" | head -20)",
+      "Bash(find /c/dev/eva-framework/packages -type f -name \"*.json\" | grep -E \"package.json$\")",
+      "Bash(cd C:/dev/eva-framework && pnpm install --filter @eva-css/ycode 2>&1)",
+      "Bash(cd C:/dev/eva-framework/packages/eva-ycode && pnpm run build 2>&1)",
+      "Bash(cd C:/dev/eva-framework && npx sass packages/eva-ycode/test-reference.scss packages/eva-ycode/test-reference.css --style=expanded 2>&1)",
+      "Bash(cd C:/dev/eva-framework && npx sass packages/eva-ycode/test-reference.scss --style=expanded 2>&1 | head -50)",
+      "Bash(cd C:/dev/eva-framework && npx sass packages/eva-ycode/test-reference.scss --style=expanded 2>&1)",
+      "Bash(cd C:/dev/eva-framework/packages/eva-ycode && npm pack --dry-run 2>&1)",
+      "Bash(cd C:/dev/eva-framework/packages/eva-ycode && npm publish --access public 2>&1)"
     ],
     "deny": [],
     "ask": []

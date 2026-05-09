@@ -1,0 +1,30 @@
+{
+  "name": "eva-css-for-tailwind",
+  "version": "1.0.0",
+  "description": "Fluid design tokens bridge for yCode — converts Tailwind pixel values to clamp()",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "eva-css-for-tailwind": "dist/cli.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "tsup && node --test test/*.test.mjs"
+  },
+  "keywords": ["eva-css", "ycode", "tailwind", "fluid", "clamp", "responsive"],
+  "license": "MIT",
+  "devDependencies": {
+    "tsup": "^8.0.0",
+    "typescript": "^5.4.0"
+  }
+}

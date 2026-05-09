@@ -19,10 +19,10 @@ Usage:
   eva-css <command> [options]
 
 Commands:
-  init           Initialize EVA CSS in existing project (creates eva.config.cjs)
-  setup          Complete project setup with workflow choice (SCSS vs JSON)
-  validate       Validate eva.config.js or package.json configuration
-  generate       Generate SCSS variables from config file
+  init           [DEPRECATED] Initialize EVA CSS in existing project (creates eva.config.cjs)
+  setup          [DEPRECATED] Complete project setup with workflow choice (SCSS vs JSON)
+  validate       [DEPRECATED] Validate eva.config.js or package.json configuration
+  generate       [DEPRECATED] Generate SCSS variables from config file
   help           Show this help message
 
 Examples:
@@ -31,29 +31,47 @@ Examples:
   eva-css validate          # Validate configuration
   eva-css generate output.scss
 
-Getting Started:
-  For new projects:         eva-css setup
-  For existing projects:    eva-css init
+Recommended workflow (SCSS-only):
+  @use 'eva-css-fluid' with (
+    $sizes: (4, 8, 12, 16, 24, 32, 48, 64, 96, 128),
+    $font-sizes: (12, 14, 16, 18, 20, 24, 32, 48)
+  );
 
 Documentation:
-  https://github.com/nkdeus/eva/blob/main/packages/eva-css/README.md
+  https://eva-css.xyz/framework/doc.html
+`);
+}
+
+function printDeprecationWarning(command) {
+  if (process.env.EVA_CSS_NO_DEPRECATION_WARNING) return;
+
+  console.warn(`
+⚠️  DEPRECATED: \`eva-css ${command}\` and the JSON config workflow will be removed in v3.0.
+   Migrate to direct SCSS config:
+     @use 'eva-css-fluid' with ($sizes: (...), $font-sizes: (...));
+   See: https://eva-css.xyz/framework/doc.html
+   (silence this warning with EVA_CSS_NO_DEPRECATION_WARNING=1)
 `);
 }
 
 switch (command) {
   case 'init':
+    printDeprecationWarning('init');
     initCommand();
     break;
 
   case 'setup':
+    printDeprecationWarning('setup');
     setupCommand();
     break;
 
   case 'validate':
+    printDeprecationWarning('validate');
     validateConfigCommand();
     break;
 
   case 'generate':
+    printDeprecationWarning('generate');
     const outputPath = args[1] || 'src/_config-generated.scss';
     generateScssCommand(outputPath);
     break;

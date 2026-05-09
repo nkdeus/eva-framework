@@ -42,7 +42,8 @@
                   "scripts/",
                   "eva.config.template.js",
                   "README.md",
-                  "MIGRATION.md"
+                  "MIGRATION.md",
+                  "CHANGELOG.md"
               ],
     "keywords":  [
                      "css",
