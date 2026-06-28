@@ -16,6 +16,10 @@ const defaults = {
   customClass: false,
   classConfig: {},
   debug: false,
+  fluidUnit: '1vw',       // unité fluide: '1vw' (livrable) ou '1cqi' (conteneur)
+  referenceWidth: 1440,   // largeur où les tokens atteignent leur valeur max
+  fluidRuntime: true,     // émettre var(--eva-fluid-unit) commutable à l'exécution
+  minFontSize: 0,         // plancher a11y (px) sur les min de font-size; 0 = désactivé
   theme: {
     name: 'eva',
     colors: {
@@ -110,12 +114,43 @@ function validateConfig(config, source = 'config file') {
   }
 
   // Validate boolean flags
-  const booleanFlags = ['buildClass', 'pxRemSuffix', 'nameBySize', 'customClass', 'debug'];
+  const booleanFlags = ['buildClass', 'pxRemSuffix', 'nameBySize', 'customClass', 'debug', 'fluidRuntime'];
   booleanFlags.forEach(flag => {
     if (config[flag] !== undefined && typeof config[flag] !== 'boolean') {
       errors.push(`${flag}: Must be a boolean (true or false)`);
     }
   });
+
+  // Validate fluidUnit (relative length: viewport or container unit)
+  if (config.fluidUnit !== undefined) {
+    if (typeof config.fluidUnit !== 'string') {
+      errors.push('fluidUnit: Must be a string CSS length (e.g. "1vw" or "1cqi")');
+    } else if (!/^\d*\.?\d+(vw|vi|vmin|vmax|cqi|cqw|cqmin|cqmax|svw|lvw|dvw)$/.test(config.fluidUnit.trim())) {
+      errors.push(
+        `fluidUnit: "${config.fluidUnit}" is not a recognized fluid unit. ` +
+        'Use a viewport unit (vw, vi, svw, lvw, dvw) or a container unit (cqi, cqw, cqmin, cqmax)'
+      );
+    }
+  }
+
+  // Validate referenceWidth
+  if (config.referenceWidth !== undefined) {
+    if (typeof config.referenceWidth !== 'number' || config.referenceWidth <= 0) {
+      errors.push('referenceWidth: Must be a positive number (px value, e.g. 1440)');
+    }
+  }
+
+  // Validate minFontSize (a11y readability floor, px; 0 = off)
+  if (config.minFontSize !== undefined) {
+    if (typeof config.minFontSize !== 'number' || config.minFontSize < 0) {
+      errors.push('minFontSize: Must be a number >= 0 (px value, e.g. 14; 0 disables the floor)');
+    } else if (config.minFontSize > 16) {
+      warnings.push(
+        `minFontSize: ${config.minFontSize}px is high for a mobile floor — the min bound is the ` +
+        `small-screen size, not the desktop body size (recommended: 13-14)`
+      );
+    }
+  }
 
   // Validate classConfig
   if (config.classConfig !== undefined) {
@@ -374,6 +409,12 @@ function toScssVariables(config) {
   lines.push(`$name-by-size: ${config.nameBySize};`);
   lines.push(`$custom-class: ${config.customClass};`);
   lines.push(`$debug: ${config.debug};`);
+
+  // Fluid engine (runtime-switchable unit)
+  lines.push(`$unit-fluid: ${config.fluidUnit || defaults.fluidUnit};`);
+  lines.push(`$reference-width: ${config.referenceWidth || defaults.referenceWidth};`);
+  lines.push(`$fluid-runtime: ${config.fluidRuntime !== undefined ? config.fluidRuntime : defaults.fluidRuntime};`);
+  lines.push(`$min-font-size: ${config.minFontSize !== undefined ? config.minFontSize : defaults.minFontSize};`);
 
   // Class config (convert to SCSS map)
   if (config.customClass && Object.keys(config.classConfig).length > 0) {

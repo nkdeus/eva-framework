@@ -11,6 +11,10 @@ $font-sizes: 12, 14, 16, 18, 20, 24, 32, 48 !default;
 $px-rem-suffix: false !default;
 $name-by-size: true !default;
 $class-config: () !default;
+$unit-fluid: 1vw !default;        // unité fluide (vw|cqi) + fallback runtime
+$reference-width: 1440 !default;  // largeur où les tokens atteignent leur max
+$fluid-runtime: true !default;    // émettre var(--eva-fluid-unit) en calc()
+$min-font-size: 0 !default;       // plancher a11y (px) sur les min de font-size; 0 = off
 
 // Import only the core variable generation system
 @use '_eva' with (
@@ -20,7 +24,11 @@ $class-config: () !default;
   $px-rem-suffix: $px-rem-suffix,
   $name-by-size: $name-by-size,
   $custom-class: false,
-  $class-config: $class-config
+  $class-config: $class-config,
+  $unit-fluid: $unit-fluid,
+  $screen: $reference-width,
+  $fluid-runtime: $fluid-runtime,
+  $min-font-size: $min-font-size
 );
 
 // Import colors system

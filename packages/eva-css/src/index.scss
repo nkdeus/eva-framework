@@ -15,6 +15,10 @@ $name-by-size: true !default;
 $custom-class: false !default;
 $class-config: () !default;
 $debug: false !default;
+$unit-fluid: 1vw !default;        // unité fluide (vw|cqi) + fallback runtime
+$reference-width: 1440 !default;  // largeur où les tokens atteignent leur max
+$fluid-runtime: true !default;    // émettre var(--eva-fluid-unit) en calc()
+$min-font-size: 0 !default;       // plancher a11y (px) sur les min de font-size; 0 = off
 
 // ===========================================
 // CORE FRAMEWORK MODULES
@@ -31,7 +35,11 @@ $debug: false !default;
   $name-by-size: $name-by-size,
   $custom-class: $custom-class,
   $class-config: $class-config,
-  $debug: $debug
+  $debug: $debug,
+  $unit-fluid: $unit-fluid,
+  $screen: $reference-width,
+  $fluid-runtime: $fluid-runtime,
+  $min-font-size: $min-font-size
 );
 
 // OKLCH color system with opacity/brightness modifiers

@@ -73,7 +73,11 @@ async function build() {
       useStatement.push('  $name-by-size: cfg.$name-by-size,');
       useStatement.push('  $custom-class: cfg.$custom-class,');
       useStatement.push('  $class-config: cfg.$class-config,');
-      useStatement.push('  $debug: cfg.$debug');
+      useStatement.push('  $debug: cfg.$debug,');
+      useStatement.push('  $unit-fluid: cfg.$unit-fluid,');
+      useStatement.push('  $reference-width: cfg.$reference-width,');
+      useStatement.push('  $fluid-runtime: cfg.$fluid-runtime,');
+      useStatement.push('  $min-font-size: cfg.$min-font-size');
       useStatement.push(');');
 
       const wrapperContent = useStatement.join('\n');

@@ -11,9 +11,22 @@ $Φ: 1.61803398875;
 $min: 0.5rem;
 $ez: 142.4;
 $unit: 1rem;
-$unit-fluid: 1vw;
+$unit-fluid: 1vw !default;
 
-$screen: 1440;
+$screen: 1440 !default;
+
+// Émettre l'unité fluide comme custom property et la multiplier en calc(),
+// au lieu de la figer au build. Permet de basculer un sous-arbre vw -> cqi
+// à l'exécution (var --eva-fluid-unit) sans rebuild ni second fichier.
+// $fluid-runtime: false  -> sortie littérale (anciennes valeurs, zéro coût runtime).
+$fluid-runtime: true !default;
+
+// Plancher de lisibilité (a11y) — plus petite taille de texte tolérée, en px.
+// Floore la borne min des clamp() de font-size : la borne min EST la taille
+// petit écran (mobile), donc le plancher = taille mobile, pas le corps desktop.
+// 13-14 reste lisible sur mobile ; 16 écraserait le rétrécissement fluide.
+// 0 = désactivé (sortie inchangée, rétrocompatible).
+$min-font-size: 0 !default;
 
 $eva: 0;
 
@@ -195,6 +208,42 @@ $font-properties: (
   @return round2($percent * $unit-fluid);
 }
 
+// Construit le terme fluide central d'un clamp().
+// $vw-val : longueur fluide (ex. 0.14vw) issue de getVW (éventuellement divisée).
+// $op     : "+" ou "-" (offset rem ajouté/retranché).
+// $rem-val: offset statique en rem.
+//
+// Mode runtime ($fluid-runtime: true) :
+//   0.14vw + 0.75rem  ->  calc(0.14 * var(--eva-fluid-unit, 1vw) + 0.75rem)
+//   Le coefficient (0.14) est la valeur numérique de $vw-val ; l'unité devient
+//   commutable à l'exécution. Valeur calculée identique au mode littéral tant
+//   que --eva-fluid-unit n'est pas redéfinie (fallback = $unit-fluid).
+//
+// Mode littéral ($fluid-runtime: false) :
+//   renvoie l'expression historique "0.14vw + 0.75rem".
+@function fluidExpr($vw-val, $op, $rem-val) {
+  @if $fluid-runtime {
+    $coef: math.div($vw-val, $unit-fluid); // unité retirée -> coefficient pur
+    @if $op == "-" {
+      @return calc(#{$coef} * var(--eva-fluid-unit, #{$unit-fluid}) - #{$rem-val});
+    } @else {
+      @return calc(#{$coef} * var(--eva-fluid-unit, #{$unit-fluid}) + #{$rem-val});
+    }
+  } @else {
+    @return #{$vw-val} #{$op} #{$rem-val};
+  }
+}
+
+// Plancher de lisibilité : remonte une borne min (rem) à au moins
+// $min-font-size (converti px -> rem pour suivre le zoom utilisateur).
+// $min-font-size: 0 -> renvoie la valeur telle quelle (no-op).
+@function floorRem($rem-val) {
+  @if $min-font-size > 0 {
+    @return math.max($rem-val, toRem($min-font-size));
+  }
+  @return $rem-val;
+}
+
 @function getFinalMinDiv($size, $ratio) {
   @return round2(math.div($size, $ratio));
 }
@@ -228,6 +277,19 @@ $font-properties: (
   @return meta.type-of($var) == "map";
 }
 
+// UNITÉ FLUIDE COMMUTABLE À L'EXÉCUTION
+// =============================================================================
+// Typer la propriété (au lieu d'une chaîne re-parsée à chaque substitution) :
+// stockage d'une valeur <length> typée, zéro re-parse. inherits: true pour que
+// l'override sur un conteneur se propage à tout son sous-arbre.
+@if $fluid-runtime {
+  @property --eva-fluid-unit {
+    syntax: "<length>";
+    inherits: true;
+    initial-value: #{$unit-fluid};
+  }
+}
+
 // GÉNÉRATION DES VARIABLES CSS PERSONNALISÉES
 // =============================================================================
 // Génère toujours les variables CSS (mode dev et prod)
@@ -247,10 +309,10 @@ $font-properties: (
     $rem-min: getMinRem($calc-percent);
     $rem-max: getMaxRem($calc-percent);
 
-    $vw-light: #{round2(math.div(getVW($calc-percent), 4))} "+" #{round2(math.div($size-rem, 1.33))};
-    $vw-medium: #{round2(math.div(getVW($calc-percent), 2))} "+" #{round2(math.div($size-rem, 2))};
-    $vw-strong: #{round2(math.div(getVW($calc-percent), 1.33))} "+" #{round2(math.div($size-rem, 4))};
-    $vw-extrem: #{getVW($calc-percent_)} "-" #{$rem-min};
+    $vw-light: fluidExpr(round2(math.div(getVW($calc-percent), 4)), "+", round2(math.div($size-rem, 1.33)));
+    $vw-medium: fluidExpr(round2(math.div(getVW($calc-percent), 2)), "+", round2(math.div($size-rem, 2)));
+    $vw-strong: fluidExpr(round2(math.div(getVW($calc-percent), 1.33)), "+", round2(math.div($size-rem, 4)));
+    $vw-extrem: fluidExpr(getVW($calc-percent_), "-", $rem-min);
 
     $final-min__: $min;
     $final-min_: getFinalMinDiv($rem-min, $Φ);
@@ -315,9 +377,9 @@ $font-properties: (
 
     $rem-min: getMinRem($calc-percent);
 
-    $vw-light: #{round2(math.div(getVW($calc-percent), 4))} "+" #{round2(math.div($size-rem, 1.33))};
-    $vw-medium: #{round2(math.div(getVW($calc-percent), 2))} "+" #{round2(math.div($size-rem, 2))};
-    $vw-strong: #{round2(math.div(getVW($calc-percent), 1.33))} "+" #{round2(math.div($size-rem, 4))};
+    $vw-light: fluidExpr(round2(math.div(getVW($calc-percent), 4)), "+", round2(math.div($size-rem, 1.33)));
+    $vw-medium: fluidExpr(round2(math.div(getVW($calc-percent), 2)), "+", round2(math.div($size-rem, 2)));
+    $vw-strong: fluidExpr(round2(math.div(getVW($calc-percent), 1.33)), "+", round2(math.div($size-rem, 4)));
 
     $rem-max: getMaxRem($calc-percent);
 
@@ -326,17 +388,17 @@ $font-properties: (
 
     $css-fs-vars: (
       "__": (
-        min: $final-min__,
+        min: floorRem($final-min__),
         fluid: $vw-strong,
         max: $rem-max
       ),
       "_": (
-        min: $rem-min,
+        min: floorRem($rem-min),
         fluid: $vw-medium,
         max: $rem-max
       ),
       "": (
-        min: $final-min,
+        min: floorRem($final-min),
         fluid: $vw-light,
         max: $rem-max
       ),
@@ -414,5 +476,26 @@ $fs: "fs";
     @each $key, $prop in $font-properties {
       @include getAllFontSizeClass($prop, $key, $eva);
     }
+  }
+}
+
+// UTILITAIRES CONTENEUR (opt-in) — unité fluide à l'exécution
+// =============================================================================
+// Disponibles uniquement en mode runtime + génération de classes.
+//   .eva-root : conteneur pleine largeur. cqi ≡ vw pour le livrable, et tout
+//               conteneur imbriqué peut alors override localement.
+//               (caveat: container-type sur un élément racine interagit avec
+//                position:sticky / overflow — à poser délibérément.)
+//   .eva-cqi  : bascule les tokens EVA de ce sous-arbre sur la largeur de
+//               l'élément (cards dashboard, cellule de lab, demi-colonne…).
+//               container-type + override de --eva-fluid-unit, indissociables.
+@if $fluid-runtime and $build-class {
+  .eva-root {
+    container: eva-root / inline-size;
+  }
+
+  .eva-cqi {
+    container-type: inline-size;
+    --eva-fluid-unit: 1cqi;
   }
 }

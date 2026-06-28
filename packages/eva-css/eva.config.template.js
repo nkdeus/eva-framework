@@ -91,6 +91,56 @@ module.exports = {
   debug: false,
 
   /**
+   * Fluid unit used to scale every token.
+   * '1vw'  → tokens follow the viewport (default deliverable).
+   * '1cqi' → tokens follow the nearest inline-size container.
+   * In runtime mode (see fluidRuntime) this is only the *fallback* of
+   * var(--eva-fluid-unit); you can still switch any subtree at runtime.
+   *
+   * @type {string}
+   * @default '1vw'
+   */
+  fluidUnit: '1vw',
+
+  /**
+   * Reference width (px) at which tokens reach their max value.
+   * With container units this is the width of the *container* at the cap.
+   *
+   * @type {number}
+   * @default 1440
+   */
+  referenceWidth: 1440,
+
+  /**
+   * Emit the fluid unit as a runtime custom property:
+   *   --16: clamp(.., calc(0.56 * var(--eva-fluid-unit, 1vw) + .5rem), ..)
+   * true  → one stylesheet supports vw AND cqi; switch a subtree at runtime
+   *         with `.eva-cqi` (or `--eva-fluid-unit: 1cqi` + container-type).
+   *         Computed values are identical to the literal output by default.
+   * false → literal output (legacy bytes, zero runtime cost, unit fixed at build).
+   *
+   * @type {boolean}
+   * @default true
+   */
+  fluidRuntime: true,
+
+  /**
+   * Accessibility readability floor (px) for font-size tokens.
+   * Raises the lower bound (`min`) of every font-size clamp() so fluid type in a
+   * small `cqi` container / on mobile never renders below this size. Expressed in
+   * rem under the hood, so user zoom / root font-size preference still applies.
+   *
+   * NOTE: the `min` bound is the *small-screen (mobile)* size, not the desktop body
+   * size — so the floor is the smallest size text may reach. 13–14 stays readable on
+   * mobile; 16 would force mobile text to desktop size and flatten the fluid scale.
+   * 0 = disabled (output unchanged). Recommended: 13–14.
+   *
+   * @type {number}
+   * @default 0
+   */
+  minFontSize: 0,
+
+  /**
    * Theme configuration
    * Define your color palette with HEX or OKLCH values
    *
