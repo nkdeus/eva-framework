@@ -1,7 +1,7 @@
 # Unité fluide commutable à l'exécution — `vw` ↔ `cqi`
 
 > Résumé de l'update pour le site / la doc d'`eva-css-fluid`.
-> Statut : **livré**, rétrocompatible. Version cible : minor (ex. `2.2.0`).
+> Statut : **livré**, rétrocompatible. Version : **2.2.0**.
 
 ## En une phrase
 
@@ -76,7 +76,7 @@ Mesures du PoC (taille rendue de `--fs-48`, boîtes de largeur identique) :
 
 ## Configuration
 
-Trois nouvelles options, disponibles côté **SCSS** (voie recommandée) et côté
+Quatre nouvelles options, disponibles côté **SCSS** (voie recommandée) et côté
 **config JSON** (voie historique, dépréciée pour v3).
 
 | SCSS (`@use … with`) | JSON (`eva.config`) | Défaut | Rôle |
@@ -93,9 +93,10 @@ Trois nouvelles options, disponibles côté **SCSS** (voie recommandée) et côt
   $sizes: (4, 8, 16, 24, 48),
   $font-sizes: (16, 24, 48),
   // nouvelles options (toutes facultatives) :
-  $unit-fluid: 1vw,        // ou 1cqi
+  $unit-fluid: 1vw,         // ou 1cqi
   $reference-width: 1440,
-  $fluid-runtime: true      // false = ancienne sortie littérale
+  $fluid-runtime: true,     // false = ancienne sortie littérale
+  $min-font-size: 0          // ex. 14 = plancher a11y (taille mobile)
 );
 ```
 
@@ -107,7 +108,8 @@ module.exports = {
   fontSizes: [16, 24, 48],
   fluidUnit: '1vw',         // '1vw' (livrable) | '1cqi' (conteneur)
   referenceWidth: 1440,
-  fluidRuntime: true        // false = sortie littérale, zéro coût runtime
+  fluidRuntime: true,       // false = sortie littérale, zéro coût runtime
+  minFontSize: 0            // ex. 14 = plancher a11y (taille mobile)
 };
 ```
 

@@ -4,6 +4,8 @@ All notable changes to this package are documented here.
 
 ## [Unreleased]
 
+## [2.2.0] — 2026-06-28
+
 ### Added
 - **Runtime-switchable fluid unit.** Every token now emits its fluid term as
   `calc(<coef> * var(--eva-fluid-unit, 1vw) ± <offset>)` instead of a baked-in
