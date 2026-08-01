@@ -620,7 +620,7 @@ var(--dark)      // Dark color
 // Opacity modifiers
 var(--brand_)    // 65% opacity
 var(--brand__)   // 35% opacity
-var(--brand___)  // 5% opacity
+var(--brand___)  // 15% opacity
 
 // Brightness modifiers
 var(--brand-d)   // Darker
@@ -628,6 +628,74 @@ var(--brand-b)   // Brighter
 var(--brand-d_)  // More darker
 var(--brand-b_)  // More brighter
 ```
+
+### Per-role brightness offsets
+
+The four brightness steps read a global lightness offset by default:
+
+```css
+--darker:    -5%;   /* -d  */
+--brighter:  10%;   /* -b  */
+--darker_:  -15%;   /* -d_ */
+--brighter_: 30%;   /* -b_ */
+```
+
+Those defaults are shared by all five bases, which rarely fits everyone: neutrals
+usually want small steps, an accent wants large ones. Each base can override any
+step on its own with `--<base>-<token>`, falling back to the global value when
+unset:
+
+```css
+.current-theme {
+  /* Neutral ink: tight steps, so --dark-d stays readable next to --dark */
+  --dark-darker: -2%;
+  --dark-brighter: 4%;
+
+  /* Accent: wide steps for hover / pressed states */
+  --accent-brighter_: 12%;
+}
+```
+
+Only the step you name changes — `--dark-d` above moves, `--dark-b_` keeps using
+`--brighter_`. Available tokens: `darker`, `brighter`, `darker_`, `brighter_`,
+for each of `brand`, `accent`, `extra`, `dark`, `light`.
+
+### Proportional steps (opt-in)
+
+Lightness is clamped to `0%–100%`, so an absolute offset saturates once the base
+sits near an edge. On the neutrals this always bites: in light mode `--light-b`
+(+10%) and `--light-b_` (+30%) both land past 100% and resolve to the same white;
+in dark mode `--dark-d` and `--dark-d_` collapse the same way. Two steps, one
+colour.
+
+Each step can instead take a share of the **remaining room** up to its bound, via
+`--<base>-<token>-ratio` (a unitless fraction, `0` by default):
+
+```css
+lightness = base + absolute-offset + (bound − base) × ratio
+```
+
+Set the absolute part to `0` to go fully proportional:
+
+```css
+.current-theme {
+  --light-brighter:   0%;  --light-brighter-ratio:  .35;
+  --light-brighter_:  0%;  --light-brighter_-ratio: .7;
+}
+```
+
+`--light-b` and `--light-b_` now resolve to distinct lightnesses that stay in
+gamut in both theme modes, instead of two identical whites. Steps you don't opt
+in stay exactly as they were — the ratio defaults to `0`, which cancels the term.
+
+The two parts compose, so a small fixed nudge plus a proportional share is also
+valid: `--dark-darker: -2%; --dark-darker-ratio: .3`.
+
+**Bounds.** `--<token>-bound` is the edge a step heads toward. It ships flipped
+per theme mode, mirroring the offsets — `--brighter-bound` is `100%` in light
+mode and `0%` in dark mode, because `--brighter` itself flips from `10%` to
+`-5%`. You rarely need to touch it; override it per role
+(`--accent-brighter-bound`) only to aim a step at a different ceiling.
 
 ## 🎨 Gradient System
 

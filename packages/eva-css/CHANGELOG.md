@@ -4,6 +4,42 @@ All notable changes to this package are documented here.
 
 ## [Unreleased]
 
+### Added
+- **Décalages de luminosité par rôle.** Les quatre crans (`-d`, `-b`, `-d_`, `-b_`)
+  lisent désormais un token propre à leur base avant de retomber sur le token global :
+  `--<base>-<token>` (ex. `--dark-darker`, `--accent-brighter_`). Les neutres peuvent
+  prendre des pas de 2–4 points pendant que l'accent en prend 12–30, ce qui était
+  impossible avec un `--darker` unique partagé par les cinq bases.
+  ```css
+  .current-theme { --dark-darker: -2%; --accent-brighter_: 12%; }
+  ```
+- **Crans proportionnels (opt-in).** `--<base>-<token>-ratio` (fraction sans unité,
+  `0` par défaut) fait viser à un cran une part de la marge restante jusqu'à sa butée
+  au lieu d'un décalage absolu : `lightness = base + absolu + (butée − base) × ratio`.
+  Corrige la saturation en butée, où deux crans rendaient la même couleur — en mode
+  clair `--light-b` et `--light-b_` tombaient tous deux sur du blanc, en mode sombre
+  `--dark-d` et `--dark-d_` sur du noir.
+  ```css
+  .current-theme {
+    --light-brighter:  0%; --light-brighter-ratio:  .35;
+    --light-brighter_: 0%; --light-brighter_-ratio: .7;
+  }
+  ```
+- `--<token>-bound` — la butée visée par chaque cran, inversée par mode de thème comme
+  les offsets eux-mêmes (`--brighter-bound` : `100%` en clair, `0%` en sombre).
+  Surchargeable par rôle.
+
+### Fixed
+- README : `--brand___` était documenté à 5 % d'opacité, la valeur émise est 15 %.
+
+### Compatibility
+- Aucun changement de valeur calculée. Les 20 variantes (5 bases × 4 crans) ont été
+  comparées en `getComputedStyle` entre le build d'avant et celui d'après, en mode
+  clair et en mode sombre : 0 dérive. Le repli natif de `var()` restitue la valeur
+  globale tant qu'aucun token par rôle n'est défini, et le ratio vaut `0` tant qu'il
+  n'est pas posé.
+- Voir [`docs/BRIGHTNESS-ROLES.md`](docs/BRIGHTNESS-ROLES.md).
+
 ## [2.2.0] — 2026-06-28
 
 ### Added

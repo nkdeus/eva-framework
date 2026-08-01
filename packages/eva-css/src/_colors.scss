@@ -42,6 +42,21 @@ $dark-mode-darkness: 95% !default;       // Darkness en mode sombre
   --darker_: -15%;
   --brighter_: 30%;
 
+  // Butée visée par chaque cran, dans le sens où il pousse la lightness.
+  // Suit le mode, comme les offsets ci-dessus : en mode sombre les crans
+  // s'inversent, les butées aussi.
+  --darker-bound: 0%;
+  --brighter-bound: 100%;
+  --darker_-bound: 0%;
+  --brighter_-bound: 100%;
+
+  // Part proportionnelle de chaque cran, en fraction de la marge restante
+  // jusqu'à sa butée. À 0 le cran est purement absolu (comportement par défaut).
+  --darker-ratio: 0;
+  --brighter-ratio: 0;
+  --darker_-ratio: 0;
+  --brighter_-ratio: 0;
+
 }
 
 // =====================================================================
@@ -56,8 +71,10 @@ $fade-variations: "_", "__", "___";
 $fade-values: 65%, 35%, 15% !default;
 
 // Variations brightness (luminosité)
+// Chaque cran pointe vers un token. Le calcul lit d'abord l'override par rôle
+// (--dark-darker, --accent-brighter_…) et retombe sur le token global si absent.
 $brightness-variations: "-d", "-b", "-d_", "-b_";
-$brightness-values: var(--darker), var(--brighter), var(--darker_), var(--brighter_);
+$brightness-tokens: "darker", "brighter", "darker_", "brighter_";
 
 // =====================================================================
 // MAPS GÉNÉRÉES À PARTIR DES VARIABLES DE BASE
@@ -80,12 +97,12 @@ $fade-map: ();
   $fade-map: map.merge($fade-map, ($variation: $value));
 }
 
-// Map des variations brightness (générée dynamiquement)
+// Map des variations brightness (générée dynamiquement) : suffixe -> token
 $darkbright-map: ();
 @for $i from 1 through list.length($brightness-variations) {
   $variation: list.nth($brightness-variations, $i);
-  $value: list.nth($brightness-values, $i);
-  $darkbright-map: map.merge($darkbright-map, ($variation: $value));
+  $token: list.nth($brightness-tokens, $i);
+  $darkbright-map: map.merge($darkbright-map, ($variation: $token));
 }
 
 // Variables partagées consolidées
@@ -105,8 +122,8 @@ $all-variations: list.join(list.join(("",), $fade-variations), $brightness-varia
       --#{$color-name}#{$suffix}: oklch(var(--root-#{$color-name}) / #{$fade-value});
     }
 
-    @each $suffix, $darkbright-value in $darkbright-map {
-      --#{$color-name}#{$suffix}: oklch(calc(var(--#{$color-name}-lightness) + #{$darkbright-value}) var(--#{$color-name}-chroma) var(--#{$color-name}-hue));
+    @each $suffix, $token in $darkbright-map {
+      --#{$color-name}#{$suffix}: oklch(calc(var(--#{$color-name}-lightness) + var(--#{$color-name}-#{$token}, var(--#{$token})) + (var(--#{$color-name}-#{$token}-bound, var(--#{$token}-bound)) - var(--#{$color-name}-lightness)) * var(--#{$color-name}-#{$token}-ratio, var(--#{$token}-ratio, 0))) var(--#{$color-name}-chroma) var(--#{$color-name}-hue));
     }
   }
 
@@ -204,6 +221,11 @@ $build-color-classes: true !default;
       --darker_: 30%;
       --brighter_: -15%;
 
+      --darker-bound: 100%;
+      --brighter-bound: 0%;
+      --darker_-bound: 100%;
+      --brighter_-bound: 0%;
+
 
       --current-lightness: #{$dark-mode-lightness};
       --current-darkness: #{$dark-mode-darkness};
@@ -221,6 +243,11 @@ $build-color-classes: true !default;
     --brighter: -5%;
     --darker_: 30%;
     --brighter_: -15%;
+
+    --darker-bound: 100%;
+    --brighter-bound: 0%;
+    --darker_-bound: 100%;
+    --brighter_-bound: 0%;
 
 
     --current-lightness: #{$dark-mode-lightness};
