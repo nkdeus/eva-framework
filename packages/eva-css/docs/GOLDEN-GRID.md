@@ -84,6 +84,22 @@ module, la configuration directe est donc disponible.
 );
 ```
 
+### Sans Sass
+
+Le composant étant absent de `dist/eva.css`, une feuille pré-compilée est
+livrée à côté. Elle se pose **après** `eva.css`, dont elle consomme les
+variables (`--24`, `--dark`…) :
+
+```html
+<link rel="stylesheet" href="eva-css-fluid/dist/eva.css">
+<link rel="stylesheet" href="eva-css-fluid/dist/golden-grid.css">
+```
+
+2,1 Ko (1,8 Ko minifié). Elle porte la configuration **par défaut** : `$max`
+1440 px, repli à 54 rem, marge φ⁻⁶, classes sans préfixe, tracé de fond
+inclus. Tout autre réglage suppose une compilation Sass — mais les trois
+tokens d'exécution (§ 5.3) restent disponibles en CSS pur.
+
 ### Depuis eva.config.cjs
 
 ```javascript
@@ -563,10 +579,17 @@ l'implémentation de référence), le composant émet `.rail`, `.main`, `.wide`,
 `.spill`, `.bleed`, `.blocks` — des noms génériques dans un espace de noms
 partagé, et `.main` se confond à la lecture avec le sélecteur d'élément `main`.
 
-**En framework complet, poser `$golden-grid-prefix: 'gg-'`.** Le préfixe
-s'applique à toutes les classes, conteneur compris (`.gg-golden-grid`,
-`.gg-rail`, `.gg-main`…). Les lignes nommées ne changent pas : les placements
-écrits par les projets restent valides quel que soit le préfixe.
+Mesuré, cependant : **aucune de ces six classes n'apparaît dans `dist/eva.css`.**
+La collision n'est donc pas avec le framework, elle est avec les classes du
+projet — `.main`, `.blocks` et `.wide` sont des noms que beaucoup de bases de
+code utilisent déjà.
+
+**Poser `$golden-grid-prefix: 'gg-'` si le projet a ses propres classes de ce
+nom** — sinon le défaut convient, et c'est pourquoi la feuille pré-compilée
+l'utilise. Le préfixe s'applique à toutes les classes, conteneur compris
+(`.gg-golden-grid`, `.gg-rail`, `.gg-main`…). Les lignes nommées ne changent
+pas : les placements écrits par les projets restent valides quel que soit le
+préfixe.
 
 ---
 

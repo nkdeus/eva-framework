@@ -2,7 +2,7 @@
 
 All notable changes to this package are documented here.
 
-## [Unreleased]
+## [2.5.0] — 2026-09-03
 
 ### Added
 - **`golden-grid` — grille de page en sections dorées (opt-in).** Quatre pistes de
@@ -55,6 +55,19 @@ All notable changes to this package are documented here.
 
   Les gaps, eux, restent sur l'échelle : il y en a cinq, et au terme suivant de
   la série ils prendraient 403 px sur 1440 et videraient la composition.
+
+### Packaging
+- `docs/` part désormais dans le paquet npm. Le README y pointe, mais le champ
+  `files` ne l'incluait pas : le lien était mort pour un paquet installé. Les
+  sept documents du dossier sont maintenant livrés (tarball 82 → 113 Ko).
+- Nouvelle entrée `eva-css-fluid/golden-grid`, et `dist/golden-grid.css` pour
+  les projets qui consomment le CSS pré-compilé sans passer par Sass.
+
+---
+
+## [2.4.0] — 2026-08-01
+
+### Added
 - **Décalages de luminosité par rôle.** Les quatre crans (`-d`, `-b`, `-d_`, `-b_`)
   lisent désormais un token propre à leur base avant de retomber sur le token global :
   `--<base>-<token>` (ex. `--dark-darker`, `--accent-brighter_`). Les neutres peuvent

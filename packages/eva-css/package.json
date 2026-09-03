@@ -1,6 +1,6 @@
 {
     "name":  "eva-css-fluid",
-    "version":  "2.4.0",
+    "version":  "2.5.0",
     "description":  "Fluid design framework with OKLCH colors - Transform static designs into responsive fluid systems",
     "type":  "module",
     "main":  "src/index.scss",
@@ -33,8 +33,10 @@
                                  },
                     "./golden-grid":  {
                                           "sass":  "./src/golden-grid.scss",
+                                          "style":  "./dist/golden-grid.css",
                                           "default":  "./src/golden-grid.scss"
                                       },
+                    "./golden-grid.css":  "./dist/golden-grid.css",
                     "./src/*":  "./src/*.scss",
                     "./package.json":  "./package.json"
                 },
@@ -68,6 +70,7 @@
                     "build:purge":  "node scripts/build-with-config.cjs --purge",
                     "build:sass":  "sass src/index.scss dist/eva.css --style=expanded",
                     "build:sass:min":  "sass src/index.scss dist/eva.min.css --style=compressed",
+                    "build:golden-grid":  "sass src/golden-grid.scss dist/golden-grid.css --style=expanded && sass src/golden-grid.scss dist/golden-grid.min.css --style=compressed",
                     "watch":  "sass --watch src/index.scss dist/eva.css",
                     "dev":  "npm run watch",
                     "validate:config":  "node cli.cjs validate",

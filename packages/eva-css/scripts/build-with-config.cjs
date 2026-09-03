@@ -113,6 +113,24 @@ async function build() {
       process.exit(1);
     }
 
+    // Step 3b: Compile the standalone golden-grid stylesheet
+    // Le composant est opt-in, donc absent de dist/eva.css. Ce fichier permet
+    // de l'ajouter par-dessus, dans sa configuration par défaut, aux projets
+    // qui consomment le CSS pré-compilé sans passer par Sass.
+    const ggOutput = isMinified ? 'dist/golden-grid.min.css' : 'dist/golden-grid.css';
+    console.log(`📐 Compiling golden-grid to ${ggOutput}...`);
+
+    try {
+      execSync(
+        `sass src/golden-grid.scss ${ggOutput} --style=${outputStyle} --no-source-map`,
+        { stdio: 'inherit', cwd: path.join(__dirname, '..') }
+      );
+      console.log('✅ golden-grid compiled');
+    } catch (error) {
+      console.error('❌ Failed to compile golden-grid');
+      process.exit(1);
+    }
+
     // Step 4: Run purge if enabled
     if (configResult && configResult.config.purge && configResult.config.purge.enabled) {
       console.log('🗜️  Purge is enabled in config, running CSS optimization...');

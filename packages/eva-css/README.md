@@ -371,7 +371,7 @@ No CSS changes needed!
 | `classConfig` | `object` | `{}` | Map of properties to sizes for custom classes |
 | `debug` | `boolean` | `false` | Show configuration summary during compilation |
 | `goldenGrid` | `boolean` | `false` | Enable the golden-grid page grid (opt-in) |
-| `goldenGridPrefix` | `string` | `''` | Prefix for golden-grid placement classes (`'gg-'` recommended) |
+| `goldenGridPrefix` | `string` | `''` | Prefix for golden-grid placement classes (set `'gg-'` if your project already uses `.main` / `.blocks` / `.wide`) |
 | `goldenGridGutterPhi` | `number\|false` | `6` | Page margin = φ⁻ⁿ of the page; `false` falls back to the size scale |
 | **`theme.name`** | `string` | `'eva'` | Theme name (CSS class: `.theme-{name}`) |
 | **`theme.colors`** | `object` | See below | Theme colors (HEX or OKLCH) |
@@ -476,7 +476,7 @@ module.exports = {
 | `$class-config` | `()` | Map of properties to sizes when `$custom-class: true` |
 | `$debug` | `false` | Show class generation summary during compilation |
 | `$golden-grid` | `false` | Enable the golden-grid page grid (opt-in) |
-| `$golden-grid-prefix` | `''` | Prefix for golden-grid placement classes (`'gg-'` recommended) |
+| `$golden-grid-prefix` | `''` | Prefix for golden-grid placement classes (set `'gg-'` if your project already uses `.main` / `.blocks` / `.wide`) |
 | `$golden-grid-gutter-phi` | `6` | Page margin = φ⁻ⁿ of the page; `false` falls back to the size scale |
 
 Golden grid has nine more `$golden-grid-*` options (max width, breakpoint,
@@ -777,7 +777,7 @@ nothing until you turn it on:
 ```scss
 @use 'eva-css-fluid' with (
   $golden-grid: true,
-  $golden-grid-prefix: 'gg-'   // recommended: .main / .wide / .blocks are generic
+  $golden-grid-prefix: 'gg-'   // only if your project already uses .main / .wide / .blocks
 );
 ```
 
@@ -796,6 +796,17 @@ are never prefixed, so project placements survive a prefix change. Below
 `$golden-grid-breakpoint` every line collapses onto a single track and **no
 placement rule is rewritten** — adding a block never means writing its mobile
 counterpart.
+
+**Without Sass.** The component is absent from `dist/eva.css` by design, so a
+prebuilt stylesheet ships alongside it — layer it after `eva.css`:
+
+```html
+<link rel="stylesheet" href="eva-css-fluid/dist/eva.css">
+<link rel="stylesheet" href="eva-css-fluid/dist/golden-grid.css">  <!-- 2 kB -->
+```
+
+It carries the component's default configuration (1440px max, 54rem breakpoint,
+φ⁻⁶ margin, unprefixed classes). Anything else is a Sass build.
 
 Three runtime tokens — `--gg-column-gap`, `--gg-row-gap`,
 `--gg-blocks-row-gap` — retune the grid without recompiling. The gap is taken
