@@ -41,6 +41,7 @@
     "files":  [
                   "src/",
                   "dist/",
+                  "docs/",
                   "index.scss",
                   "cli.cjs",
                   "scripts/",
