@@ -2,7 +2,7 @@
 
 All notable changes to this package are documented here.
 
-## [2.5.0] — 2026-09-03
+## [2.6.0] — 2026-09-03
 
 ### Added
 - **`golden-grid` — grille de page en sections dorées (opt-in).** Quatre pistes de
