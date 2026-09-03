@@ -31,6 +31,10 @@
                                      "sass":  "./src/colors-only.scss",
                                      "default":  "./src/colors-only.scss"
                                  },
+                    "./golden-grid":  {
+                                          "sass":  "./src/golden-grid.scss",
+                                          "default":  "./src/golden-grid.scss"
+                                      },
                     "./src/*":  "./src/*.scss",
                     "./package.json":  "./package.json"
                 },

@@ -20,6 +20,9 @@ const defaults = {
   referenceWidth: 1440,   // largeur où les tokens atteignent leur valeur max
   fluidRuntime: true,     // émettre var(--eva-fluid-unit) commutable à l'exécution
   minFontSize: 0,         // plancher a11y (px) sur les min de font-size; 0 = désactivé
+  goldenGrid: false,      // grille de page en sections dorées (opt-in)
+  goldenGridPrefix: '',   // préfixe des classes de placement ('gg-' recommandé)
+  goldenGridGutterPhi: 6, // marge = φ⁻ⁿ de la page; false = cran d'échelle
   theme: {
     name: 'eva',
     colors: {
@@ -114,7 +117,7 @@ function validateConfig(config, source = 'config file') {
   }
 
   // Validate boolean flags
-  const booleanFlags = ['buildClass', 'pxRemSuffix', 'nameBySize', 'customClass', 'debug', 'fluidRuntime'];
+  const booleanFlags = ['buildClass', 'pxRemSuffix', 'nameBySize', 'customClass', 'debug', 'fluidRuntime', 'goldenGrid'];
   booleanFlags.forEach(flag => {
     if (config[flag] !== undefined && typeof config[flag] !== 'boolean') {
       errors.push(`${flag}: Must be a boolean (true or false)`);
@@ -148,6 +151,37 @@ function validateConfig(config, source = 'config file') {
       warnings.push(
         `minFontSize: ${config.minFontSize}px is high for a mobile floor — the min bound is the ` +
         `small-screen size, not the desktop body size (recommended: 13-14)`
+      );
+    }
+  }
+
+  // Validate goldenGridPrefix (CSS class name prefix)
+  if (config.goldenGridPrefix !== undefined) {
+    if (typeof config.goldenGridPrefix !== 'string') {
+      errors.push('goldenGridPrefix: Must be a string (e.g. "gg-")');
+    } else if (config.goldenGridPrefix !== '' && !/^[a-zA-Z][\w-]*$/.test(config.goldenGridPrefix)) {
+      errors.push(
+        `goldenGridPrefix: "${config.goldenGridPrefix}" is not a valid CSS class prefix. ` +
+        'Start with a letter, then letters, digits, hyphens or underscores (e.g. "gg-")'
+      );
+    } else if (config.goldenGridPrefix !== '' && config.goldenGrid === false) {
+      warnings.push('goldenGridPrefix: Setting goldenGridPrefix has no effect when goldenGrid is false');
+    }
+  }
+
+  // Validate goldenGridGutterPhi (exposant φ de la marge; null = échelle EVA)
+  if (config.goldenGridGutterPhi !== undefined && config.goldenGridGutterPhi !== null && config.goldenGridGutterPhi !== false) {
+    if (typeof config.goldenGridGutterPhi !== 'number' || !Number.isFinite(config.goldenGridGutterPhi)) {
+      errors.push('goldenGridGutterPhi: Must be a number or null (n in φ⁻ⁿ, e.g. 6)');
+    } else if (config.goldenGridGutterPhi < 4 || config.goldenGridGutterPhi > 12) {
+      errors.push(
+        `goldenGridGutterPhi: ${config.goldenGridGutterPhi} is out of range. ` +
+        'Use 4-12 (4 = 0.236 of the page, far too wide; 6 = 0.056, the default; 12 = 0.003)'
+      );
+    } else if (config.goldenGridGutterPhi < 6) {
+      warnings.push(
+        `goldenGridGutterPhi: ${config.goldenGridGutterPhi} makes the margin rival the shoulder ` +
+        '(0.146 of the composition), which is meant to stay the dominant void'
       );
     }
   }
@@ -415,6 +449,12 @@ function toScssVariables(config) {
   lines.push(`$reference-width: ${config.referenceWidth || defaults.referenceWidth};`);
   lines.push(`$fluid-runtime: ${config.fluidRuntime !== undefined ? config.fluidRuntime : defaults.fluidRuntime};`);
   lines.push(`$min-font-size: ${config.minFontSize !== undefined ? config.minFontSize : defaults.minFontSize};`);
+
+  // Golden grid (opt-in page grid)
+  lines.push(`$golden-grid: ${config.goldenGrid !== undefined ? config.goldenGrid : defaults.goldenGrid};`);
+  lines.push(`$golden-grid-prefix: '${config.goldenGridPrefix !== undefined ? config.goldenGridPrefix : defaults.goldenGridPrefix}';`);
+  var phi = config.goldenGridGutterPhi !== undefined ? config.goldenGridGutterPhi : defaults.goldenGridGutterPhi;
+  lines.push(`$golden-grid-gutter-phi: ${(phi === null || phi === false) ? 'false' : phi};`);
 
   // Class config (convert to SCSS map)
   if (config.customClass && Object.keys(config.classConfig).length > 0) {

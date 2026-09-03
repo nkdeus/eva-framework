@@ -1,0 +1,304 @@
+// ===========================================
+// EVA CSS - golden-grid (opt-in)
+// ===========================================
+// Grille de page en sections dorées : quatre pistes de largeurs inégales,
+// issues de la subdivision récursive du nombre d'or, dont la somme fait 1.
+// Aucun centrage, trois bords gauches selon le rôle.
+//
+// Un élément ne déclare jamais une largeur : il déclare le rôle qu'il joue
+// dans la page, et la piste correspondante lui donne sa mesure.
+//
+//   |- marge -|- rail -|- épaule -|---- texte ----|- débord -|- marge -|
+//              φ⁻³ .236  φ⁻⁴ .146    φ⁻² .382      φ⁻³ .236
+//
+// Composant OPT-IN : ce n'est pas un défaut raisonnable mais un parti pris
+// de mise en page. Il n'est chargé ni par core.scss ni par variables.scss,
+// et index.scss ne l'émet que si $golden-grid: true.
+//
+// Documentation : docs/GOLDEN-GRID.md
+// ===========================================
+
+@use 'sass:math';
+
+// -- Activation -------------------------------------------------------------
+// index.scss charge toujours le module mais n'émet rien tant que $enabled
+// est false (Sass n'autorise pas un @use conditionnel).
+$enabled: true !default;
+
+// -- Géométrie --------------------------------------------------------------
+$phi: 1.618034 !default;
+$max: 1440px !default;        // aligné par défaut sur $reference-width d'EVA
+$breakpoint: 54rem !default;  // unique point de repli (4 pistes -> 1)
+
+// -- La marge ---------------------------------------------------------------
+// La marge prolonge la série des pistes : elle vaut φ⁻ⁿ de la page, pas un cran
+// d'échelle. Elle reste donc dorée à toutes les largeurs, comme une part et non
+// comme une valeur posée.
+//
+// φ⁻⁶ ≈ 0,056 la place à peu près à la moitié de l'épaule (0,146 de la
+// composition) : assez large pour se lire comme une marge dessinée, assez
+// étroite pour que l'épaule reste le vide dominant de la page.
+//
+//   n   φ⁻ⁿ     à 1440    marge / épaule
+//   5   0,090   129,6 px  0,82  — concurrence l'épaule
+//   6   0,056    80,6 px  0,48  — défaut
+//   7   0,034    49,0 px  0,27
+//   8   0,021    30,2 px  0,17  — proche d'un cran d'échelle
+//
+// `false` repasse la marge sur $gutter-min, c'est-à-dire sur l'échelle EVA.
+// Pas `null` : Sass réapplique le `!default` sur une valeur nulle, donc une
+// configuration à null retomberait silencieusement sur la valeur par défaut.
+$gutter-phi: 6 !default;
+
+// -- Rythme -----------------------------------------------------------------
+// Valeurs de l'échelle EVA par défaut (4, 8, 12, 16, 24, 32, 48, 64, 96, 128).
+// Le fallback CSS garde le composant utilisable sur une autre échelle.
+//
+// Les gaps, eux, ne peuvent pas être dorés : il y en a cinq. Au terme suivant
+// de la série (φ⁻⁶), ils prendraient 403 px sur 1440 et videraient la
+// composition. Ils restent donc du ressort de l'échelle — et le § « Gaps et fr »
+// de la doc explique pourquoi c'est sans conséquence sur les proportions.
+$gutter-min: var(--24, 1.5rem) !default;  // marge quand $gutter-phi vaut false
+$column-gap: var(--24, 1.5rem) !default;
+$row-gap: var(--32, 2rem) !default;
+$blocks-row-gap: var(--48, 3rem) !default;
+
+// -- Nommage ----------------------------------------------------------------
+// '' reproduit le nommage de référence. 'gg-' est recommandé en framework
+// complet : `.main`, `.wide`, `.blocks` sont génériques dans un espace de noms
+// partagé. Les LIGNES nommées ne sont jamais préfixées — leur portée est celle
+// de la grille, aucune collision n'est possible, et c'est sur elles que
+// reposent les placements écrits par les projets.
+$prefix: '' !default;
+
+// -- Options ----------------------------------------------------------------
+$rules: true !default;               // émettre le tracé de fond
+$rail-align-mobile: right !default;  // right | left — voir docs, décisions
+$auto-theme-switch: false !default;  // aligné sur _colors.scss
+
+// φ⁻ⁿ arrondi à trois décimales. La somme des quatre pistes reste exactement 1
+// après arrondi (0.236 + 0.146 + 0.382 + 0.236 = 1.000) — c'est ce qui rend la
+// feuille lisible sans la fausser.
+@function phi-fraction($n) {
+  @return math.div(math.round(math.pow($phi, -$n) * 1000), 1000);
+}
+
+$track-rail: phi-fraction(3) !default;      // 0.236 — métadonnées
+$track-shoulder: phi-fraction(4) !default;  // 0.146 — le vide qui désaxe
+$track-main: phi-fraction(2) !default;      // 0.382 — la mesure de lecture
+$track-spill: phi-fraction(3) !default;     // 0.236 — le débord
+
+// Le plancher de la marge : une part de la page (φ⁻ⁿ) ou un cran d'échelle.
+$gutter-floor: if(
+  $gutter-phi == false or $gutter-phi == null,
+  $gutter-min,
+  math.percentage(phi-fraction($gutter-phi))
+);
+
+@if $enabled {
+  // -- Le conteneur ---------------------------------------------------------
+  // La gouttière est auto-centrante : un seul élément porte la largeur
+  // maximale, les marges et les pistes — sans wrapper, donc .bleed atteint le
+  // bord sans `margin-inline: calc(50% - 50vw)`.
+  //
+  // minmax(0, …) et non 0.236fr : le minimum automatique d'une piste est la
+  // contribution min-content de son contenu — une URL non sécable dans le rail
+  // élargirait la piste et casserait la proportion dorée, sans avertissement.
+  .#{$prefix}golden-grid {
+    // Sous $max, la marge vaut sa part de page ; au-dessus, elle absorbe la
+    // moitié du surplus et la composition se cale sur $max. Entre les deux, le
+    // terme le plus grand gagne : la marge continue de croître avec la page
+    // jusqu'à ce que la composition atteigne $max.
+    --gg-gutter: max(#{$gutter-floor}, calc((100% - #{$max}) / 2));
+
+    display: grid;
+    grid-template-columns:
+      [edge-start] var(--gg-gutter)
+      [rail-start] minmax(0, #{$track-rail}fr)
+      [rail-end shoulder-start] minmax(0, #{$track-shoulder}fr)
+      [shoulder-end main-start] minmax(0, #{$track-main}fr)
+      [main-end spill-start] minmax(0, #{$track-spill}fr)
+      [spill-end] var(--gg-gutter) [edge-end];
+    // Tokens d'exécution : le repli var() rend la valeur compilée, donc rien
+    // ne change tant que rien n'est posé. Les poser sur un ancêtre suffit —
+    // les propriétés personnalisées héritent.
+    column-gap: var(--gg-column-gap, #{$column-gap});
+    row-gap: var(--gg-row-gap, #{$row-gap});
+    align-items: start;
+  }
+
+  // Ancêtre du tracé de fond : sans contexte d'empilement, le `z-index: -1`
+  // des bandes les fait passer derrière le fond du body et elles disparaissent.
+  .#{$prefix}grid-page {
+    position: relative;
+    isolation: isolate;
+  }
+
+  // -- Flux éditorial : les pistes rendues aux enfants -----------------------
+  // subgrid hérite des pistes ET de leurs noms. Un bloc enfant peut écrire
+  // `grid-column: rail` sans rien savoir de la page qui le contient ; sans
+  // subgrid il faudrait recalculer les pistes en pourcentages dans chaque
+  // conteneur, c'est-à-dire réintroduire la dérive qu'on élimine.
+  //
+  // `dense` remonte le texte sur la rangée d'un titre placé au rail, au lieu
+  // d'ouvrir une rangée neuve. Il peut réordonner visuellement le contenu :
+  // toute règle qui déplace un bloc hors de `main` doit être vérifiée contre
+  // cette contrainte (ici seuls les titres partent, et un titre précède
+  // toujours ce qu'il annonce).
+  .#{$prefix}blocks {
+    grid-column: edge;
+    display: grid;
+    grid-template-columns: subgrid; // le gap horizontal est hérité du parent
+    row-gap: var(--gg-blocks-row-gap, #{$blocks-row-gap});
+    grid-auto-flow: row dense;
+  }
+
+  // Défaut du flux : la mesure de lecture.
+  // ORDRE CRITIQUE — `.blocks > *` et `.rail` ont la même spécificité (0,1,0) :
+  // le défaut doit être émis AVANT les classes de placement, sinon il les
+  // écrase toutes et tout enfant de `.blocks` retombe dans `main`.
+  .#{$prefix}blocks > * {
+    grid-column: main;
+  }
+
+  // -- Placements : un rôle, jamais une largeur -----------------------------
+  // Métadonnées, dates, numéros, titres de section. L'alignement à droite fait
+  // buter les mots contre le vide de l'épaule : c'est le second bord fort.
+  .#{$prefix}rail {
+    grid-column: rail;
+    text-align: right;
+  }
+
+  // Texte courant. Rien d'autre ne vit ici.
+  .#{$prefix}main {
+    grid-column: main;
+  }
+
+  // Titres, citations, images larges : part de l'épaule, donc casse
+  // l'alignement à gauche volontairement.
+  .#{$prefix}wide {
+    grid-column: shoulder-start / spill-end;
+  }
+
+  // Débord asymétrique : bord gauche sur la colonne de texte, bord droit sur
+  // le bord de page. L'alignement n'est cassé que d'un côté.
+  .#{$prefix}spill {
+    grid-column: main-start / edge-end;
+  }
+
+  // Pleine largeur, marges comprises.
+  .#{$prefix}bleed {
+    grid-column: edge;
+  }
+
+  // L'offset prend le rythme vertical, pas la marge : sur `top`, un
+  // pourcentage se résoudrait contre la hauteur du bloc conteneur.
+  .#{$prefix}rail--sticky {
+    position: sticky;
+    top: $row-gap;
+  }
+
+  // -- Le tracé de fond -----------------------------------------------------
+  // Ce n'est pas un repère de développement mais une pièce du dessin : sans
+  // lui, une piste inoccupée ressemble à un oubli ; avec lui, elle se lit
+  // comme une proportion tenue. L'élément porte la même classe que le
+  // contenu — ses bandes SONT les pistes, aucune approximation possible.
+  @if $rules {
+    :root {
+      --rule: 1.5%;
+      --rule-void: 2.75%;
+    }
+
+    @if $auto-theme-switch {
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --rule: 2%;
+          --rule-void: 3.5%;
+        }
+      }
+    } @else {
+      .toggle-theme {
+        --rule: 2%;
+        --rule-void: 3.5%;
+      }
+    }
+
+    // align-items: stretch et row-gap: 0, sinon les bandes héritent du
+    // `align-items: start` du conteneur et se réduisent à zéro.
+    .#{$prefix}grid-rules {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      align-items: stretch;
+      row-gap: 0;
+    }
+
+    .#{$prefix}grid-rules > * {
+      background: color-mix(in oklab, var(--dark) var(--rule, 1.5%), transparent);
+    }
+
+    .#{$prefix}rules-rail {
+      grid-column: rail;
+    }
+
+    .#{$prefix}rules-main {
+      grid-column: main;
+    }
+
+    .#{$prefix}rules-spill {
+      grid-column: spill-start / spill-end;
+    }
+
+    // L'épaule est marquée un cran plus fort : c'est elle qui désaxe la page.
+    .#{$prefix}rules-shoulder {
+      grid-column: shoulder-start / shoulder-end;
+      background: color-mix(in oklab, var(--dark) var(--rule-void, 2.75%), transparent);
+    }
+  }
+
+  // -- Repli mono-colonne : le re-mapping des noms --------------------------
+  // Toutes les lignes nommées se rabattent sur les deux bords de l'unique
+  // piste. AUCUNE règle de placement n'est réécrite : `.rail`, `.main`,
+  // `.wide` et les placements écrits par les projets continuent de résoudre,
+  // et résolvent tous vers la même colonne. Ajouter un bloc n'oblige donc pas
+  // à écrire sa contrepartie mobile — c'est le gain de maintenance principal.
+  @media (max-width: #{$breakpoint}) {
+    .#{$prefix}golden-grid {
+      grid-template-columns:
+        [edge-start] var(--gg-gutter)
+        [rail-start shoulder-start main-start spill-start] minmax(0, 1fr)
+        [rail-end shoulder-end main-end spill-end] var(--gg-gutter) [edge-end];
+    }
+
+    // Trois exceptions seulement : le débord garde son bord droit de page,
+    // le rail cesse de suivre la lecture, le tracé n'a plus rien à montrer.
+    .#{$prefix}spill {
+      grid-column: main-start / edge-end;
+    }
+
+    .#{$prefix}rail--sticky {
+      position: static;
+    }
+
+    @if $rail-align-mobile != right {
+      .#{$prefix}rail {
+        text-align: $rail-align-mobile;
+      }
+    }
+
+    @if $rules {
+      .#{$prefix}grid-rules {
+        display: none;
+      }
+    }
+  }
+
+  // -- Repère de développement ----------------------------------------------
+  // Le tracé montre les pistes, le liseré montre ce qui les occupe.
+  .#{$prefix}grid-debug .#{$prefix}golden-grid > *,
+  .#{$prefix}grid-debug .#{$prefix}blocks > * {
+    outline: 1px dashed var(--brand__);
+    outline-offset: 2px;
+  }
+}

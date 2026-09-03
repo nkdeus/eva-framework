@@ -370,6 +370,9 @@ No CSS changes needed!
 | `customClass` | `boolean` | `false` | Enable custom class filtering |
 | `classConfig` | `object` | `{}` | Map of properties to sizes for custom classes |
 | `debug` | `boolean` | `false` | Show configuration summary during compilation |
+| `goldenGrid` | `boolean` | `false` | Enable the golden-grid page grid (opt-in) |
+| `goldenGridPrefix` | `string` | `''` | Prefix for golden-grid placement classes (`'gg-'` recommended) |
+| `goldenGridGutterPhi` | `number\|false` | `6` | Page margin = φ⁻ⁿ of the page; `false` falls back to the size scale |
 | **`theme.name`** | `string` | `'eva'` | Theme name (CSS class: `.theme-{name}`) |
 | **`theme.colors`** | `object` | See below | Theme colors (HEX or OKLCH) |
 | **`theme.lightMode`** | `object` | `{lightness:96.4, darkness:6.4}` | Light mode configuration |
@@ -472,6 +475,12 @@ module.exports = {
 | `$custom-class` | `false` | Enable custom class filtering |
 | `$class-config` | `()` | Map of properties to sizes when `$custom-class: true` |
 | `$debug` | `false` | Show class generation summary during compilation |
+| `$golden-grid` | `false` | Enable the golden-grid page grid (opt-in) |
+| `$golden-grid-prefix` | `''` | Prefix for golden-grid placement classes (`'gg-'` recommended) |
+| `$golden-grid-gutter-phi` | `6` | Page margin = φ⁻ⁿ of the page; `false` falls back to the size scale |
+
+Golden grid has nine more `$golden-grid-*` options (max width, breakpoint,
+gaps, rules, rail alignment). See [docs/GOLDEN-GRID.md](docs/GOLDEN-GRID.md).
 
 ### CLI Commands
 
@@ -547,6 +556,9 @@ EVA CSS provides multiple entry points for different use cases:
 
 // Colors only - Just the OKLCH color system
 @use 'eva-css-fluid/colors';
+
+// Golden grid only - The opt-in page grid, on top of any entry point above
+@use 'eva-css-fluid/golden-grid';
 ```
 
 **When to use each:**
@@ -554,6 +566,7 @@ EVA CSS provides multiple entry points for different use cases:
 - **Variables** (`eva-css-fluid/variables`): Building custom components
 - **Core** (`eva-css-fluid/core`): Foundation + custom utilities
 - **Colors** (`eva-css-fluid/colors`): Adding EVA colors to existing projects
+- **Golden grid** (`eva-css-fluid/golden-grid`): Page grid in golden sections — see [Golden Grid](#-golden-grid-opt-in)
 
 ### Debug Mode
 
@@ -739,6 +752,59 @@ mode and `0%` in dark mode, because `--brighter` itself flips from `10%` to
   --current-darkness: 26.4%;   // Dark mode
 }
 ```
+
+## 📐 Golden Grid (opt-in)
+
+A page grid built on the golden ratio: four tracks of unequal width, obtained by
+recursively subdividing 1 by φ, whose fractions sum to exactly 1. Nothing is
+centred — the page has three left edges instead of an axis, and an element never
+declares a width, it declares the **role** it plays.
+
+```
+|-- margin --|- rail -|- shoulder -|---- text ----|- spill -|-- margin --|
+     0.056      0.236      0.146        0.382       0.236       0.056
+   of the page └──────────── of the composition ─────────┘   of the page
+```
+
+The margins are φ⁻⁶ of the page; the four tracks divide what's left. Two units,
+deliberately: the "1" of the golden ratio is not the window, it's what the
+margins and gaps leave.
+
+Opt-in by design — a golden grid is a layout stance, not a sensible default. It
+is loaded by neither `core.scss` nor `variables.scss`, and `index.scss` emits
+nothing until you turn it on:
+
+```scss
+@use 'eva-css-fluid' with (
+  $golden-grid: true,
+  $golden-grid-prefix: 'gg-'   // recommended: .main / .wide / .blocks are generic
+);
+```
+
+```html
+<div class="gg-golden-grid">
+  <div class="gg-blocks">
+    <h2 class="gg-rail">Method</h2>     <!-- metadata track, right-aligned -->
+    <p>Body copy lands on the reading measure by default.</p>
+    <img class="gg-spill" src="…" alt=""> <!-- text edge to page edge -->
+  </div>
+</div>
+```
+
+Named grid lines (`rail-start`, `main-end`, `edge`…) are the public contract and
+are never prefixed, so project placements survive a prefix change. Below
+`$golden-grid-breakpoint` every line collapses onto a single track and **no
+placement rule is rewritten** — adding a block never means writing its mobile
+counterpart.
+
+Three runtime tokens — `--gg-column-gap`, `--gg-row-gap`,
+`--gg-blocks-row-gap` — retune the grid without recompiling. The gap is taken
+before the `fr` distribution, so the four fractions hold whatever you set it to;
+only the composition tightens.
+
+Full documentation, including the geometry, the `subgrid` editorial flow, the
+background rules and the twelve configuration options:
+**[docs/GOLDEN-GRID.md](docs/GOLDEN-GRID.md)**
 
 ## ❗ Troubleshooting
 
@@ -989,6 +1055,9 @@ npm install --save-dev nodemon
 
 - [Full Documentation](https://eva-css.xyz/)
 - [GitHub Repository](https://github.com/nkdeus/eva)
+- [Golden Grid](docs/GOLDEN-GRID.md) — the opt-in page grid in golden sections
+- [Fluid Runtime](docs/FLUID-RUNTIME.md) — switching the fluid unit at runtime
+- [Brightness Roles](docs/BRIGHTNESS-ROLES.md) — per-role lightness offsets
 
 ## 🎨 Examples & Demo
 

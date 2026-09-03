@@ -20,6 +20,23 @@ $reference-width: 1440 !default;  // largeur où les tokens atteignent leur max
 $fluid-runtime: true !default;    // émettre var(--eva-fluid-unit) en calc()
 $min-font-size: 0 !default;       // plancher a11y (px) sur les min de font-size; 0 = off
 
+// Golden grid — grille de page en sections dorées (opt-in, voir docs/GOLDEN-GRID.md)
+// index.scss charge le module : toute la configuration du composant passe donc
+// par ces variables. Un `@use 'eva-css-fluid/golden-grid' with (...)` séparé
+// échouerait ("module already loaded").
+$golden-grid: false !default;                    // activer le composant
+$golden-grid-prefix: '' !default;                // 'gg-' recommandé en framework complet
+$golden-grid-max: null !default;                 // null = suit $reference-width
+$golden-grid-breakpoint: 54rem !default;         // point de repli (4 pistes → 1)
+$golden-grid-gutter-phi: 6 !default;             // marge = φ⁻ⁿ de la page; false = échelle
+$golden-grid-gutter-min: var(--24, 1.5rem) !default; // marge quand gutter-phi = false
+$golden-grid-column-gap: var(--24, 1.5rem) !default;
+$golden-grid-row-gap: var(--32, 2rem) !default;
+$golden-grid-blocks-row-gap: var(--48, 3rem) !default;
+$golden-grid-rules: true !default;               // émettre le tracé de fond
+$golden-grid-rail-align-mobile: right !default;  // right | left sous le repli
+$golden-grid-auto-theme-switch: false !default;  // aligné sur theme.autoSwitch
+
 // ===========================================
 // CORE FRAMEWORK MODULES
 // ===========================================
@@ -63,6 +80,26 @@ $min-font-size: 0 !default;       // plancher a11y (px) sur les min de font-size
 // Grid utilities with configuration
 @use '_grid' with (
   $sizes: $sizes
+);
+
+// Golden grid: grille de page en sections dorées (opt-in)
+// Sass n'autorise pas un @use conditionnel : le module est toujours chargé
+// mais n'émet aucune règle tant que $golden-grid vaut false.
+@use 'golden-grid' with (
+  $enabled: $golden-grid,
+  $prefix: $golden-grid-prefix,
+  // Par défaut la grille atteint sa largeur maximale exactement là où les
+  // tokens fluides atteignent la leur.
+  $max: if($golden-grid-max == null, $reference-width * 1px, $golden-grid-max),
+  $breakpoint: $golden-grid-breakpoint,
+  $gutter-phi: $golden-grid-gutter-phi,
+  $gutter-min: $golden-grid-gutter-min,
+  $column-gap: $golden-grid-column-gap,
+  $row-gap: $golden-grid-row-gap,
+  $blocks-row-gap: $golden-grid-blocks-row-gap,
+  $rules: $golden-grid-rules,
+  $rail-align-mobile: $golden-grid-rail-align-mobile,
+  $auto-theme-switch: $golden-grid-auto-theme-switch
 );
 
 // Component utilities

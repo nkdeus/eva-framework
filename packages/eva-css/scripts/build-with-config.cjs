@@ -77,7 +77,15 @@ async function build() {
       useStatement.push('  $unit-fluid: cfg.$unit-fluid,');
       useStatement.push('  $reference-width: cfg.$reference-width,');
       useStatement.push('  $fluid-runtime: cfg.$fluid-runtime,');
-      useStatement.push('  $min-font-size: cfg.$min-font-size');
+      useStatement.push('  $min-font-size: cfg.$min-font-size,');
+      useStatement.push('  $golden-grid: cfg.$golden-grid,');
+      useStatement.push('  $golden-grid-prefix: cfg.$golden-grid-prefix,');
+      useStatement.push('  $golden-grid-gutter-phi: cfg.$golden-grid-gutter-phi');
+      // Le tracé du golden-grid suit la même mécanique de bascule que les couleurs
+      if (configResult.config.theme) {
+        useStatement[useStatement.length - 1] += ',';
+        useStatement.push('  $golden-grid-auto-theme-switch: cfg.$auto-theme-switch');
+      }
       useStatement.push(');');
 
       const wrapperContent = useStatement.join('\n');

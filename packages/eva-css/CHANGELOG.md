@@ -5,6 +5,56 @@ All notable changes to this package are documented here.
 ## [Unreleased]
 
 ### Added
+- **`golden-grid` — grille de page en sections dorées (opt-in).** Quatre pistes de
+  largeurs inégales issues de la subdivision récursive du nombre d'or
+  (φ⁻³, φ⁻⁴, φ⁻², φ⁻³), dont la somme fait exactement 1 après arrondi. Aucun
+  centrage : la page a trois bords gauches au lieu d'un axe, et un élément ne
+  déclare jamais une largeur — il déclare le rôle qu'il joue. Le flux éditorial
+  passe par `subgrid`, donc un bloc écrit `grid-column: rail` sans rien savoir de
+  la page qui le contient.
+  ```scss
+  @use 'eva-css-fluid' with ($golden-grid: true, $golden-grid-prefix: 'gg-');
+  ```
+  Douze options `$golden-grid-*` (largeur max, point de repli, marge, gaps,
+  tracé de fond, alignement du rail en mono-colonne), plus `goldenGrid`,
+  `goldenGridPrefix` et `goldenGridGutterPhi` côté `eva.config.cjs`. Documentation :
+  [docs/GOLDEN-GRID.md](docs/GOLDEN-GRID.md).
+- Entrée `eva-css-fluid/golden-grid` pour charger le composant seul, par-dessus
+  `variables` ou `core`.
+- **Tokens d'exécution pour les gaps.** `--gg-column-gap`, `--gg-row-gap` et
+  `--gg-blocks-row-gap` retunent la grille sans recompiler, avec la valeur
+  compilée en repli `var()` — donc aucune valeur calculée ne change tant que
+  rien n'est posé, et un ancêtre suffit puisque les propriétés personnalisées
+  héritent.
+  ```css
+  .section--dense { --gg-column-gap: var(--12); }
+  ```
+  Le gap est le seul réglage sûr de la géométrie : il est prélevé avant la
+  distribution des `fr`, donc les quatre fractions restent
+  `0,236 / 0,146 / 0,382 / 0,236` quelle qu'en soit la valeur — seule la surface
+  de composition diminue.
+- `--gutter` devient `--gg-gutter`. Le nom était générique et hérité à tous les
+  descendants de la grille ; toute la surface d'exécution est maintenant en
+  `--gg-`.
+- L'offset de `.rail--sticky` prend le rythme vertical (`$row-gap`) et non la
+  marge : sur `top`, un pourcentage se résoudrait contre la hauteur du bloc
+  conteneur.
+- **Marge dorée (`$golden-grid-gutter-phi`, défaut `6`).** La marge de page vaut
+  désormais φ⁻ⁿ de la page — 5,6 % par défaut — au lieu d'un cran de l'échelle
+  `$sizes`. Une grille dorée dont les marges venaient d'un design system était
+  l'incohérence du composant : la marge est une part de la page, comme les
+  pistes sont des parts de la composition.
+  ```css
+  --gg-gutter: max(5.6%, calc((100% - 1440px) / 2));
+  ```
+  Le `max()` garde les deux régimes : part dorée sous `$max`, centrage au-dessus
+  (bascule à ≈ 1622 px). φ⁻⁶ place la marge à 0,47 de l'épaule, qui reste le vide
+  dominant. Coût assumé : la mesure de lecture passe de ≈ 60 à ≈ 53 signes à
+  1440 px ; `$golden-grid-gutter-phi: 7` la ramène à ≈ 56, et `false` repasse la
+  marge sur `$gutter-min`.
+
+  Les gaps, eux, restent sur l'échelle : il y en a cinq, et au terme suivant de
+  la série ils prendraient 403 px sur 1440 et videraient la composition.
 - **Décalages de luminosité par rôle.** Les quatre crans (`-d`, `-b`, `-d_`, `-b_`)
   lisent désormais un token propre à leur base avant de retomber sur le token global :
   `--<base>-<token>` (ex. `--dark-darker`, `--accent-brighter_`). Les neutres peuvent
