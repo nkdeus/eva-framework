@@ -26,7 +26,7 @@
   "dependencies": {},
   "repository": {
     "type": "git",
-    "url": "https://github.com/nkdeus/eva.git",
+    "url": "git+https://github.com/nkdeus/eva-framework.git",
     "directory": "packages/create-eva-css"
   },
   "author": {

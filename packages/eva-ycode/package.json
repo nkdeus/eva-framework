@@ -32,6 +32,12 @@
     "responsive"
   ],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nkdeus/eva-framework.git",
+    "directory": "packages/eva-ycode"
+  },
+  "homepage": "https://eva-css.xyz/",
   "devDependencies": {
     "tsup": "^8.0.0",
     "typescript": "^5.4.0"
